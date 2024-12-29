@@ -22,3 +22,15 @@ export const getUser = async (): Promise<User | null> => {
 
   return { email: user.email, username: '' };
 };
+
+export const verifyInviteEmailToken = async (
+  email: string,
+  token: string,
+): Promise<void> => {
+  const supabaseClient = await createSupabaseServerClient();
+  await supabaseClient.auth
+    .verifyOtp({ email, token, type: 'invite' })
+    .then((res) => {
+      if (res.error) throw res.error;
+    });
+};
