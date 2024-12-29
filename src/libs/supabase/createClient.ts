@@ -16,7 +16,7 @@ export const createSupabaseServerClient = async () => {
             cookieStore.set(name, value, options),
           );
         } catch (e) {
-          console.error(e);
+          console.warn(e);
           // Cookies can only be modified in a Server Action or Route Handler.
         }
       },
