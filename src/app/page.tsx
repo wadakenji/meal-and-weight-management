@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { getUser } from '@/usecase/authentication';
 import Link from 'next/link';
+import { getUser } from '@/usecase/user';
 
 const Page: FC = async () => {
   const user = await getUser();

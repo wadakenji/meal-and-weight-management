@@ -12,17 +12,6 @@ export const signIn = async (
     });
 };
 
-export const getUser = async (): Promise<User | null> => {
-  const supabaseClient = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabaseClient.auth.getUser();
-
-  if (user === null || user.email === undefined) return null;
-
-  return { email: user.email, username: '' };
-};
-
 export const verifyInviteEmailToken = async (
   email: string,
   token: string,
