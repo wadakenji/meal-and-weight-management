@@ -27,9 +27,17 @@ export const updateUser = async (
   id: string,
   name: string,
   password: string | null,
+  basalMetabolismRate: number,
+  energyPerStep: number,
 ): Promise<void> => {
   const supabaseClient = await createSupabaseServerClient();
   if (password !== null) await supabaseClient.auth.updateUser({ password });
-  const res = await supabaseClient.from('users').upsert({ id, name });
-  console.log(res);
+  await supabaseClient
+    .from('users')
+    .upsert({
+      id,
+      name,
+      basal_metabolism_rate: basalMetabolismRate,
+      energy_per_step: energyPerStep,
+    });
 };
