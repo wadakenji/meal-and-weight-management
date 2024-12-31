@@ -8,7 +8,7 @@ const Layout: FC<PropsWithChildren> = async ({ children }) => {
 
   return (
     <>
-      <header>{user.email}</header>
+      <header className="p-8px bg-[#ddeeff]">{user.name ?? user.email}</header>
       {children}
     </>
   );
