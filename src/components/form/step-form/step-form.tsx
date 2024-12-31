@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { registerStepAction } from '@/app/actions';
+import { registerStepAction } from '@/app/actions/register-step';
 import { formatDateInputValue, getYesterday } from '@/utils/date';
 
 export const StepForm: FC = () => {

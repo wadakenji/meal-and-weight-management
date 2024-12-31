@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { registerWeightAction } from '@/app/actions';
+import { registerWeightAction } from '@/app/actions/register-weight';
 import { formatDateInputValue } from '@/utils/date';
 
 export const WeightForm: FC = () => {

@@ -1,7 +1,7 @@
 'use client';
 
 import { FC } from 'react';
-import { signInAction } from '@/app/actions';
+import { signInAction } from '@/app/actions/sign-in';
 
 const Page: FC = () => {
   return (
