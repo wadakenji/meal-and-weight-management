@@ -34,6 +34,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      meals: {
+        Row: {
+          amount_of_energy: number
+          amount_of_protein: number | null
+          created_at: string
+          datetime: string
+          id: number
+          name: string
+          user_id: string
+        }
+        Insert: {
+          amount_of_energy: number
+          amount_of_protein?: number | null
+          created_at?: string
+          datetime: string
+          id?: number
+          name: string
+          user_id: string
+        }
+        Update: {
+          amount_of_energy?: number
+          amount_of_protein?: number | null
+          created_at?: string
+          datetime?: string
+          id?: number
+          name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      step_records: {
+        Row: {
+          created_at: string
+          date: string
+          id: number
+          step: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          id?: number
+          step: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: number
+          step?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       users: {
         Row: {
           basal_metabolism_rate: number
@@ -58,6 +112,30 @@ export type Database = {
           id?: string
           is_admin?: boolean
           name?: string
+        }
+        Relationships: []
+      }
+      weight_records: {
+        Row: {
+          created_at: string
+          date: string
+          id: number
+          user_id: string
+          weight: number
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          id?: number
+          user_id: string
+          weight: number
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: number
+          user_id?: string
+          weight?: number
         }
         Relationships: []
       }
