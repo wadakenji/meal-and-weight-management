@@ -2,10 +2,11 @@
 
 import { getUser } from '@/usecase/user';
 import { registerWeightRecord } from '@/usecase/weight-record';
+import { WEIGHT_FORM_VALUE_NAMES } from '@/constants/form-input-name';
 
 export const registerWeightAction = async (formData: FormData) => {
-  const dateString = formData.get('date');
-  const weight = formData.get('weight');
+  const dateString = formData.get(WEIGHT_FORM_VALUE_NAMES.DATE);
+  const weight = formData.get(WEIGHT_FORM_VALUE_NAMES.WEIGHT);
   const user = await getUser();
 
   // todo validation

@@ -2,10 +2,11 @@
 
 import { getUser } from '@/usecase/user';
 import { registerStepRecord } from '@/usecase/step-record';
+import { STEP_FORM_VALUE_NAMES } from '@/constants/form-input-name';
 
 export const registerStepAction = async (formData: FormData) => {
-  const dateString = formData.get('date');
-  const step = formData.get('step');
+  const dateString = formData.get(STEP_FORM_VALUE_NAMES.DATE);
+  const step = formData.get(STEP_FORM_VALUE_NAMES.STEP);
   const user = await getUser();
 
   // todo validation
