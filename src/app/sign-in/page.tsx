@@ -3,21 +3,30 @@
 import { FC } from 'react';
 import { signInAction } from '@/app/actions/sign-in';
 import { SIGN_IN_FORM_VALUE_NAMES } from '@/constants/form-input-name';
+import { Form } from '@/components/form/form-base/form-base';
+import { LabelInputSet } from '@/components/control/label-input-set/label-input-set';
+import { FormSubmitButton } from '@/components/control/button/form-submit-button/form-submit-button';
 
 const Page: FC = () => {
   return (
-    <main>
-      <form action={signInAction}>
-        <label>
-          email
-          <input type="text" name={SIGN_IN_FORM_VALUE_NAMES.EMAIL} />
-        </label>
-        <label>
-          password
-          <input type="password" name={SIGN_IN_FORM_VALUE_NAMES.PASSWORD} />
-        </label>
-        <button type="submit">submit</button>
-      </form>
+    <main className="p-16px">
+      <Form action={signInAction}>
+        <LabelInputSet
+          labelText="メールアドレス"
+          type="text"
+          name={SIGN_IN_FORM_VALUE_NAMES.EMAIL}
+          className="mb-16px"
+          required
+        />
+        <LabelInputSet
+          labelText="パスワード"
+          type="password"
+          name={SIGN_IN_FORM_VALUE_NAMES.PASSWORD}
+          className="mb-24px"
+          required
+        />
+        <FormSubmitButton />
+      </Form>
     </main>
   );
 };
