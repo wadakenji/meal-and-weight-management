@@ -14,7 +14,7 @@ const ITEMS = [
   },
   {
     href: '/my-account',
-    text: 'アカウント編集',
+    text: 'ユーザー編集',
     icon: <IconUser />,
   },
 ];

@@ -8,7 +8,7 @@ import { Form } from '@/components/form/form-base/form-base';
 
 const Page: FC = async () => {
   return (
-    <AuthenticatedTemplate pageTitle="アカウント編集">
+    <AuthenticatedTemplate pageTitle="ユーザー編集">
       <Form action={updateUserAction}>
         <LabelInputSet
           labelText="名前"
