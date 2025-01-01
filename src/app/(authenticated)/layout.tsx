@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { FC, PropsWithChildren } from 'react';
 import { getUser } from '@/usecase/user';
+import { Header } from '@/components/header/header';
 
 const Layout: FC<PropsWithChildren> = async ({ children }) => {
   const user = await getUser();
@@ -8,7 +9,7 @@ const Layout: FC<PropsWithChildren> = async ({ children }) => {
 
   return (
     <>
-      <header className="p-8px bg-[#ddeeff]">{user.name ?? user.email}</header>
+      <Header user={user} />
       {children}
     </>
   );
