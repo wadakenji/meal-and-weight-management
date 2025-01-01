@@ -9,21 +9,21 @@ import { LabelInputSet } from '@/components/control/label-input-set/label-input-
 export const WeightForm: FC = () => {
   return (
     <Form action={registerWeightAction}>
-      <LabelInputSet
-        labelText="日付"
-        type="date"
-        name={WEIGHT_FORM_VALUE_NAMES.DATE}
-        defaultValue={formatDateInputValue(new Date())}
-        className="mb-16px"
-        required
-      />
-      <LabelInputSet
-        labelText="体重（kg）"
-        type="number"
-        name={WEIGHT_FORM_VALUE_NAMES.WEIGHT}
-        className="mb-24px"
-        required
-      />
+      <div className="mb-24px space-y-16px">
+        <LabelInputSet
+          labelText="日付"
+          type="date"
+          name={WEIGHT_FORM_VALUE_NAMES.DATE}
+          defaultValue={formatDateInputValue(new Date())}
+          required
+        />
+        <LabelInputSet
+          labelText="体重（kg）"
+          type="number"
+          name={WEIGHT_FORM_VALUE_NAMES.WEIGHT}
+          required
+        />
+      </div>
       <FormSubmitButton />
     </Form>
   );

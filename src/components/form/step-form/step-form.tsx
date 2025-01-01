@@ -9,21 +9,21 @@ import { LabelInputSet } from '@/components/control/label-input-set/label-input-
 export const StepForm: FC = () => {
   return (
     <Form action={registerStepAction}>
-      <LabelInputSet
-        labelText="日付"
-        type="date"
-        name={STEP_FORM_VALUE_NAMES.DATE}
-        defaultValue={formatDateInputValue(getYesterday())}
-        className="mb-16px"
-        required
-      />
-      <LabelInputSet
-        labelText="歩数"
-        type="number"
-        name={STEP_FORM_VALUE_NAMES.STEP}
-        className="mb-24px"
-        required
-      />
+      <div className="mb-24px space-y-16px">
+        <LabelInputSet
+          labelText="日付"
+          type="date"
+          name={STEP_FORM_VALUE_NAMES.DATE}
+          defaultValue={formatDateInputValue(getYesterday())}
+          required
+        />
+        <LabelInputSet
+          labelText="歩数"
+          type="number"
+          name={STEP_FORM_VALUE_NAMES.STEP}
+          required
+        />
+      </div>
       <FormSubmitButton />
     </Form>
   );

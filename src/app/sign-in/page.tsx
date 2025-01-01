@@ -11,20 +11,20 @@ const Page: FC = () => {
   return (
     <main className="p-16px">
       <Form action={signInAction}>
-        <LabelInputSet
-          labelText="メールアドレス"
-          type="text"
-          name={SIGN_IN_FORM_VALUE_NAMES.EMAIL}
-          className="mb-16px"
-          required
-        />
-        <LabelInputSet
-          labelText="パスワード"
-          type="password"
-          name={SIGN_IN_FORM_VALUE_NAMES.PASSWORD}
-          className="mb-24px"
-          required
-        />
+        <div className="mb-24px space-y-16px">
+          <LabelInputSet
+            labelText="メールアドレス"
+            type="text"
+            name={SIGN_IN_FORM_VALUE_NAMES.EMAIL}
+            required
+          />
+          <LabelInputSet
+            labelText="パスワード"
+            type="password"
+            name={SIGN_IN_FORM_VALUE_NAMES.PASSWORD}
+            required
+          />
+        </div>
         <FormSubmitButton />
       </Form>
     </main>
