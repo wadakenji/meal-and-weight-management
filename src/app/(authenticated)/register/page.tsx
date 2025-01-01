@@ -7,16 +7,16 @@ import { AuthenticatedTemplate } from '@/components/template/authenticated-templ
 const Page: FC = () => {
   return (
     <AuthenticatedTemplate pageTitle="データ登録">
-      <section>
-        <h2>食事登録</h2>
+      <section className="mb-24px">
+        <h2 className="mb-8px font-bold">食事登録</h2>
         <MealForm />
       </section>
-      <section>
-        <h2>体重登録</h2>
+      <section className="mb-24px">
+        <h2 className="mb-8px font-bold">体重登録</h2>
         <WeightForm />
       </section>
       <section>
-        <h2>歩数登録</h2>
+        <h2 className="mb-8px font-bold">歩数登録</h2>
         <StepForm />
       </section>
     </AuthenticatedTemplate>
