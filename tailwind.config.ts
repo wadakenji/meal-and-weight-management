@@ -26,6 +26,7 @@ export default {
       sm: '14px',
       base: '16px',
       'app-title': '22px',
+      'page-title': '20px',
     },
     spacing: {
       '0': '0',

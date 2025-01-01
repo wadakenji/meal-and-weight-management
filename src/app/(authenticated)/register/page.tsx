@@ -6,7 +6,7 @@ import { AuthenticatedTemplate } from '@/components/template/authenticated-templ
 
 const Page: FC = () => {
   return (
-    <AuthenticatedTemplate>
+    <AuthenticatedTemplate pageTitle="データ登録">
       <section>
         <h2>食事登録</h2>
         <MealForm />

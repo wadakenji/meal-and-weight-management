@@ -5,7 +5,7 @@ import { AuthenticatedTemplate } from '@/components/template/authenticated-templ
 
 const Page: FC = async () => {
   return (
-    <AuthenticatedTemplate>
+    <AuthenticatedTemplate pageTitle="アカウント編集">
       <form action={updateUserAction} className="flex flex-col">
         <label>
           名前：
