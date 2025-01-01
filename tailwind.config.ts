@@ -11,17 +11,22 @@ export default {
       'title-family': '"Hiragino Maru Gothic ProN W6", sans-serif',
     },
     colors: {
-      primary: '#234E8E',
+      primary: {
+        light: '#ADC6EB',
+        DEFAULT: '#234E8E',
+      },
+      attention: '#E00000',
       white: '#FFFFFF',
       text: {
         default: '#212121',
         gray: '#666666',
       },
       line: {
-        DEFAULT: '#cccccc',
+        DEFAULT: '#CCCCCC',
       },
     },
     fontSize: {
+      '2xs': '10px',
       xs: '12px',
       sm: '14px',
       base: '16px',
