@@ -25,7 +25,7 @@ const Page: FC = () => {
             required
           />
         </div>
-        <FormSubmitButton />
+        <FormSubmitButton>ログイン</FormSubmitButton>
       </Form>
     </main>
   );
