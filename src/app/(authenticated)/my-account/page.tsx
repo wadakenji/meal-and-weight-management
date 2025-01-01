@@ -1,10 +1,11 @@
 import { FC } from 'react';
 import { updateUserAction } from '@/app/actions/update-user';
 import { USER_FORM_VALUE_NAMES } from '@/constants/form-input-name';
+import { AuthenticatedTemplate } from '@/components/template/authenticated-template/authenticated-template';
 
 const Page: FC = async () => {
   return (
-    <main>
+    <AuthenticatedTemplate>
       <form action={updateUserAction} className="flex flex-col">
         <label>
           名前：
@@ -34,7 +35,7 @@ const Page: FC = async () => {
         </label>
         <button type="submit">登録</button>
       </form>
-    </main>
+    </AuthenticatedTemplate>
   );
 };
 

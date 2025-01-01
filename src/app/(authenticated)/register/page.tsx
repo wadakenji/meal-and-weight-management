@@ -2,10 +2,11 @@ import { FC } from 'react';
 import { MealForm } from '@/components/form/meal-form/meal-form';
 import { WeightForm } from '@/components/form/weight-form/weight-form';
 import { StepForm } from '@/components/form/step-form/step-form';
+import { AuthenticatedTemplate } from '@/components/template/authenticated-template/authenticated-template';
 
 const Page: FC = () => {
   return (
-    <main>
+    <AuthenticatedTemplate>
       <section>
         <h2>食事登録</h2>
         <MealForm />
@@ -18,7 +19,7 @@ const Page: FC = () => {
         <h2>歩数登録</h2>
         <StepForm />
       </section>
-    </main>
+    </AuthenticatedTemplate>
   );
 };
 
