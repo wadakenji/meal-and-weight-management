@@ -1,13 +1,12 @@
 import { FC } from 'react';
-import Link from 'next/link';
 import { getUser } from '@/usecase/user';
+import { redirect } from 'next/navigation';
 
 const Page: FC = async () => {
   const user = await getUser();
 
-  if (!user) return <Link href="/sign-in">ログインしてください。</Link>;
-
-  return <div>ログイン中：{user.email}</div>;
+  if (user) redirect('/register');
+  else redirect('/sign-in');
 };
 
 export default Page;
