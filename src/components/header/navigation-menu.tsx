@@ -13,8 +13,8 @@ const ITEMS = [
     icon: <IconPenToSquare />,
   },
   {
-    href: '/my-account',
-    text: 'ユーザー編集',
+    href: '/user-settings',
+    text: 'ユーザー設定',
     icon: <IconUser />,
   },
 ];

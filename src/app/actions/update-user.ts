@@ -3,7 +3,7 @@
 import { getUser, updateUser } from '@/usecase/user';
 import { USER_FORM_VALUE_NAMES } from '@/constants/form-input-name';
 import { z } from 'zod';
-import { UpdateUserActionState } from '@/app/(authenticated)/my-account/_types';
+import { UpdateUserActionState } from '@/app/(authenticated)/user-settings/_types';
 import { ERROR_MESSAGES } from '@/constants/error-message';
 
 const userFormSchema = z.object({
