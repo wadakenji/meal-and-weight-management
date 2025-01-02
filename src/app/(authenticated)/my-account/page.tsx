@@ -9,7 +9,7 @@ const Page: FC = async () => {
 
   return (
     <AuthenticatedTemplate pageTitle="ユーザー編集">
-      <UserForm user={user} />
+      <UserForm initialUser={user} />
     </AuthenticatedTemplate>
   );
 };

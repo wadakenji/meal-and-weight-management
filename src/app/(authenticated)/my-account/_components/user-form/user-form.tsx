@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useState } from 'react';
+import { FC, useActionState, useState } from 'react';
 import { updateUserAction } from '@/app/actions/update-user';
 import { LabelInputSet } from '@/components/control/label-input-set/label-input-set';
 import { USER_FORM_VALUE_NAMES } from '@/constants/form-input-name';
@@ -9,16 +9,18 @@ import { Form } from '@/components/form/form-base/form-base';
 import { PrimaryButton } from '@/components/control/button/primary-button/primary-button';
 
 type Props = {
-  user: User;
+  initialUser: User;
 };
 
-export const UserForm: FC<Props> = ({ user }) => {
-  const [showsPasswordInput, setShowsPasswordInput] = useState(
-    user.name === undefined,
-  );
+export const UserForm: FC<Props> = ({ initialUser }) => {
+  const neverRegistered = initialUser.name === undefined;
+  const [showsPasswordInput, setShowsPasswordInput] = useState(neverRegistered);
+  const [state, formAction, isPending] = useActionState(updateUserAction, null);
+  const updatedUser = state?.updatedUser;
+  const user = updatedUser || initialUser;
 
   return (
-    <Form action={updateUserAction}>
+    <Form action={formAction}>
       <div className="mb-24px space-y-16px">
         <LabelInputSet
           labelText="名前"
@@ -47,6 +49,8 @@ export const UserForm: FC<Props> = ({ user }) => {
             labelText="パスワード"
             type="password"
             name={USER_FORM_VALUE_NAMES.PASSWORD}
+            placeholder="半角英数字8文字以上"
+            required={neverRegistered}
           />
         ) : (
           <PrimaryButton
@@ -59,6 +63,12 @@ export const UserForm: FC<Props> = ({ user }) => {
         )}
       </div>
       <FormSubmitButton />
+      {state?.error && !isPending && (
+        <p className="mt-16px text-center text-attention">{state.error}</p>
+      )}
+      {state?.updatedUser && !isPending && (
+        <p className="mt-16px text-center text-primary">登録が完了しました。</p>
+      )}
     </Form>
   );
 };

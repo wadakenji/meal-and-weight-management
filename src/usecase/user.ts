@@ -29,11 +29,14 @@ export const getUser = async (): Promise<User | null> => {
 
 export const updateUser = async (
   id: string,
-  name: string,
-  password: string | null,
-  basalMetabolismRate: number,
-  energyPerStep: number,
+  props: {
+    name: string;
+    password: string | null;
+    basalMetabolismRate: number;
+    energyPerStep: number;
+  },
 ): Promise<void> => {
+  const { name, password, basalMetabolismRate, energyPerStep } = props;
   const supabaseClient = await createSupabaseServerClient();
   if (password !== null) await supabaseClient.auth.updateUser({ password });
   await supabaseClient.from('users').upsert({
