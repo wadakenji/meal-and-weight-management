@@ -18,3 +18,17 @@ export const registerWeightRecord = async (props: {
       if (res.error) throw res.error;
     });
 };
+
+export const getTodayWeight = async (userId: string) => {
+  const supabaseClient = await createSupabaseServerClient();
+  const res = await supabaseClient
+    .from('weight_records')
+    .select('weight')
+    .eq('user_id', userId)
+    .eq('date', formatToDateColumnValue(new Date()))
+    .maybeSingle();
+
+  if (res.error) throw res.error;
+
+  return res.data && res.data.weight;
+};

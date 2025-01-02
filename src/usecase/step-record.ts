@@ -1,5 +1,5 @@
 import { createSupabaseServerClient } from '@/libs/supabase/createClient';
-import { formatToDateColumnValue } from '@/utils/date';
+import { formatToDateColumnValue, getYesterday } from '@/utils/date';
 
 export const registerStepRecord = async (props: {
   userId: string;
@@ -17,4 +17,18 @@ export const registerStepRecord = async (props: {
     .then((res) => {
       if (res.error) throw res.error;
     });
+};
+
+export const getYesterdayStep = async (userId: string) => {
+  const supabaseClient = await createSupabaseServerClient();
+  const res = await supabaseClient
+    .from('step_records')
+    .select('step')
+    .eq('user_id', userId)
+    .eq('date', formatToDateColumnValue(getYesterday()))
+    .maybeSingle();
+
+  if (res.error) throw res.error;
+
+  return res.data && res.data.step;
 };
