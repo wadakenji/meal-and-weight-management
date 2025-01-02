@@ -18,9 +18,13 @@ export const getUser = async (): Promise<User | null> => {
   const user = queryResponse.data?.[0];
   if (!user) return { id, email };
 
-  const { name } = user;
+  const {
+    name,
+    basal_metabolism_rate: basalMetabolismRate,
+    energy_per_step: energyPerStep,
+  } = user;
 
-  return { id, email, name };
+  return { id, email, name, basalMetabolismRate, energyPerStep };
 };
 
 export const updateUser = async (
