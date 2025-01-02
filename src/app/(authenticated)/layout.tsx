@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation';
 import { FC, PropsWithChildren } from 'react';
-import { getUser } from '@/usecase/user';
 import { Header } from '@/components/header/header';
+import { getUserCache } from '@/app/_cache/getUser';
 
 const Layout: FC<PropsWithChildren> = async ({ children }) => {
-  const user = await getUser();
+  const user = await getUserCache();
   if (!user) redirect('/sign-in');
 
   return (
