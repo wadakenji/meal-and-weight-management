@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import { MealForm } from '@/components/form/meal-form/meal-form';
-import { WeightForm } from '@/components/form/weight-form/weight-form';
-import { StepForm } from '@/components/form/step-form/step-form';
-import { AuthenticatedTemplate } from '@/components/template/authenticated-template/authenticated-template';
+import { MealForm } from '@/app/(authenticated)/register/_components/meal-form/meal-form';
+import { WeightForm } from '@/app/(authenticated)/register/_components/weight-form/weight-form';
+import { StepForm } from '@/app/(authenticated)/register/_components/step-form/step-form';
+import { AuthenticatedTemplate } from '@/app/(authenticated)/_components/template/authenticated-template/authenticated-template';
 
 const Page: FC = () => {
   return (

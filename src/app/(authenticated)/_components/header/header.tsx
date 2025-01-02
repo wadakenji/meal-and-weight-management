@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { NavigationMenu } from '@/components/header/navigation-menu';
+import { NavigationMenu } from '@/app/(authenticated)/_components/header/navigation-menu';
 
 type Props = {
   user: User;
