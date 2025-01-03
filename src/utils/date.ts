@@ -17,6 +17,8 @@ export const dateInputValueToDate = (value: string): Date =>
 
 export const dateToDatetimeColumnValue = (date: Date) => date.toISOString();
 
+export const datetimeColumnValueToDate = (value: string): Date => toDate(value);
+
 export const dateToDateColumnValue = (date: Date) => format(date, 'yyyy-MM-dd');
 
 export const dateColumnValueToDate = (value: string): Date =>

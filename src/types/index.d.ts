@@ -22,3 +22,14 @@ type StepRecord = {
   date: Date;
   step: number;
 };
+
+type Meal = {
+  id: number;
+  userId: string;
+  datetime: Date;
+  name: string;
+  amountOfEnergy: number;
+  amountOfProtein: number | null;
+};
+
+type MealToCreate = Omit<Meal, 'id'>;

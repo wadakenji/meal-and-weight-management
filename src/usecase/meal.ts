@@ -1,26 +1,22 @@
 import { createSupabaseServerClient } from '@/libs/supabase/createClient';
 import { dateToDatetimeColumnValue, getRangeOfDate } from '@/utils/date';
+import { mealRowToMeal, mealToMealProps } from '@/libs/supabase/interface/meal';
 
-export const registerMeal = async (props: {
-  userId: string;
-  datetime: Date;
-  name: string;
-  amountOfEnergy: number;
-  amountOfProtein: number | null;
-}) => {
+export const registerMeal = async (meal: MealToCreate) => {
   const supabaseClient = await createSupabaseServerClient();
-  await supabaseClient
+  const props = mealToMealProps(meal);
+  const res = await supabaseClient
     .from('meals')
-    .insert({
-      user_id: props.userId,
-      datetime: dateToDatetimeColumnValue(props.datetime),
-      name: props.name,
-      amount_of_energy: props.amountOfEnergy,
-      amount_of_protein: props.amountOfProtein,
-    })
-    .then((res) => {
-      if (res.error) throw res.error;
-    });
+    .insert(props)
+    .select()
+    .single();
+
+  if (res.error) {
+    console.error(res.error);
+    throw new Error('usecase: registerMeal');
+  }
+
+  return mealRowToMeal(res.data);
 };
 
 export const getTodayTotalEnergy = async (userId: string) => {
