@@ -6,6 +6,7 @@ import {
   toDate,
   isToday as dateFnsIsToday,
   isYesterday as dateFnsIsYesterday,
+  isValid,
 } from 'date-fns';
 
 export const dateToDatetimeInputValue = (date: Date) =>
@@ -38,3 +39,5 @@ export const getRangeOfDate = (date: Date) => {
 
 export const isToday = dateFnsIsToday;
 export const isYesterday = dateFnsIsYesterday;
+
+export const isValidDate = isValid;

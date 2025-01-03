@@ -1,8 +1,12 @@
 import { z } from 'zod';
-import { datetimeInputValueToDate } from '@/utils/date';
+import { datetimeInputValueToDate, isValidDate } from '@/utils/date';
 
 const mealFormSchema = z.object({
-  datetime: z.string().datetime(),
+  datetime: z.custom<string>((value: unknown) => {
+    if (typeof value !== 'string') return false;
+    if (!isValidDate(new Date(value))) return false;
+    return true;
+  }),
   name: z.string(),
   amountOfEnergy: z.number(),
   amountOfProtein: z.number().nullable(),
