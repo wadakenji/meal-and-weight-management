@@ -16,3 +16,9 @@ type WeightRecord = {
   date: Date;
   weight: number;
 };
+
+type StepRecord = {
+  userId: string;
+  date: Date;
+  step: number;
+};
