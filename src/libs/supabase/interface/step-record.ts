@@ -4,7 +4,7 @@ import { dateColumnValueToDate, dateToDateColumnValue } from '@/utils/date';
 type StepRecordRow = Database['public']['Tables']['step_records']['Row'];
 type StepRecordProps = Database['public']['Tables']['step_records']['Insert'];
 
-export const supabaseStepRecordToStepRecord = (
+export const stepRecordRowToStepRecord = (
   stepRecordRow: StepRecordRow,
 ): StepRecord => {
   return {
@@ -14,7 +14,7 @@ export const supabaseStepRecordToStepRecord = (
   };
 };
 
-export const stepRecordToSupabaseStepRecordProps = (
+export const stepRecordToStepRecordProps = (
   stepRecord: StepRecord,
 ): StepRecordProps => {
   return {

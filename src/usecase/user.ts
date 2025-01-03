@@ -1,8 +1,5 @@
 import { createSupabaseServerClient } from '@/libs/supabase/createClient';
-import {
-  supabaseUserToUser,
-  userToSupabaseUserProps,
-} from '@/libs/supabase/interface/user';
+import { userRowToUser, userToUserProps } from '@/libs/supabase/interface/user';
 
 export const getUser = async (): Promise<User | null> => {
   const supabaseClient = await createSupabaseServerClient();
@@ -22,7 +19,7 @@ export const getUser = async (): Promise<User | null> => {
   const user = queryResponse.data?.[0];
   if (!user) return { id, email };
 
-  return supabaseUserToUser(id, email, user);
+  return userRowToUser(id, email, user);
 };
 
 export const updateUser = async (
@@ -35,7 +32,7 @@ export const updateUser = async (
 
   const res = await supabaseClient
     .from('users')
-    .upsert(userToSupabaseUserProps(user))
+    .upsert(userToUserProps(user))
     .select()
     .single();
 
@@ -44,5 +41,5 @@ export const updateUser = async (
     throw new Error('usecase: updateUser');
   }
 
-  return supabaseUserToUser(user.id, user.email, res.data);
+  return userRowToUser(user.id, user.email, res.data);
 };

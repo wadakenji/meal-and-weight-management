@@ -3,7 +3,7 @@ import { Database } from '@/types/supabase';
 type UserRow = Database['public']['Tables']['users']['Row'];
 type UserProps = Database['public']['Tables']['users']['Insert'];
 
-export const supabaseUserToUser = (
+export const userRowToUser = (
   id: string,
   email: string,
   userRow: UserRow,
@@ -17,7 +17,7 @@ export const supabaseUserToUser = (
   };
 };
 
-export const userToSupabaseUserProps = (user: User): UserProps => {
+export const userToUserProps = (user: User): UserProps => {
   return {
     id: user.id,
     name: user.name,

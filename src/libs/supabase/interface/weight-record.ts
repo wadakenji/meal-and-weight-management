@@ -5,7 +5,7 @@ type WeightRecordRow = Database['public']['Tables']['weight_records']['Row'];
 type WeightRecordProps =
   Database['public']['Tables']['weight_records']['Insert'];
 
-export const supabaseWeightRecordToWeightRecord = (
+export const weightRecordRowToWeightRecord = (
   weightRecordRow: WeightRecordRow,
 ): WeightRecord => {
   return {
@@ -15,7 +15,7 @@ export const supabaseWeightRecordToWeightRecord = (
   };
 };
 
-export const weightRecordToSupabaseWeightRecordProps = (
+export const weightRecordToWeightRecordProps = (
   weightRecord: WeightRecord,
 ): WeightRecordProps => {
   return {

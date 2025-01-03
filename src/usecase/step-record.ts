@@ -1,13 +1,13 @@
 import { createSupabaseServerClient } from '@/libs/supabase/createClient';
 import { dateToDateColumnValue, getYesterday } from '@/utils/date';
 import {
-  stepRecordToSupabaseStepRecordProps,
-  supabaseStepRecordToStepRecord,
+  stepRecordToStepRecordProps,
+  stepRecordRowToStepRecord,
 } from '@/libs/supabase/interface/step-record';
 
 export const registerStepRecord = async (stepRecord: StepRecord) => {
   const supabaseClient = await createSupabaseServerClient();
-  const props = stepRecordToSupabaseStepRecordProps(stepRecord);
+  const props = stepRecordToStepRecordProps(stepRecord);
   const res = await supabaseClient
     .from('step_records')
     .insert(props)
@@ -16,7 +16,7 @@ export const registerStepRecord = async (stepRecord: StepRecord) => {
 
   if (res.error) throw res.error;
 
-  return supabaseStepRecordToStepRecord(res.data);
+  return stepRecordRowToStepRecord(res.data);
 };
 
 export const getYesterdayStep = async (userId: string) => {
