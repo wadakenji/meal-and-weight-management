@@ -5,12 +5,18 @@ import { IconChevronDown } from '@/components/icon/chevron-down';
 import clsx from 'clsx';
 import { IconPenToSquare } from '@/components/icon/pen-to-square';
 import { IconUser } from '@/components/icon/user';
+import { IconLineChart } from '@/components/icon/line-chart';
 
 const ITEMS = [
   {
     href: '/register',
     text: 'データ登録',
     icon: <IconPenToSquare />,
+  },
+  {
+    href: '/data-view',
+    text: 'グラフ表示',
+    icon: <IconLineChart />,
   },
   {
     href: '/user-settings',
