@@ -7,6 +7,7 @@ import {
   isToday as dateFnsIsToday,
   isYesterday as dateFnsIsYesterday,
   isValid,
+  subMonths,
 } from 'date-fns';
 
 export const dateToDatetimeInputValue = (date: Date) =>
@@ -31,6 +32,10 @@ export const dateColumnValueToDate = (value: string): Date =>
 export const getYesterday = () => {
   const today = new Date();
   return subDays(today, 1);
+};
+
+export const getOneMonthAgoDate = (date: Date = new Date()) => {
+  return subMonths(date, 1);
 };
 
 export const getRangeOfDate = (date: Date) => {

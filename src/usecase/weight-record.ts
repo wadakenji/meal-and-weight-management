@@ -1,5 +1,5 @@
 import { createSupabaseServerClient } from '@/libs/supabase/createClient';
-import { dateToDateColumnValue } from '@/utils/date';
+import { dateToDateColumnValue, getOneMonthAgoDate } from '@/utils/date';
 import {
   weightRecordRowToWeightRecord,
   weightRecordToWeightRecordProps,
@@ -40,4 +40,28 @@ export const getTodayWeight = async (userId: string) => {
   }
 
   return res.data && res.data.weight;
+};
+
+export const getLastOneMonthWeightRecords = async (
+  userId: string,
+): Promise<WeightRecord[]> => {
+  const supabaseClient = await createSupabaseServerClient();
+
+  const today = new Date();
+  const oneMonthAgo = getOneMonthAgoDate();
+
+  const res = await supabaseClient
+    .from('weight_records')
+    .select('*')
+    .eq('user_id', userId)
+    .gt('date', dateToDateColumnValue(oneMonthAgo))
+    .lte('date', dateToDateColumnValue(today))
+    .order('date');
+
+  if (res.error) {
+    console.error(res.error);
+    throw new Error('usecase: getTodayWeight');
+  }
+
+  return res.data.map((row) => weightRecordRowToWeightRecord(row));
 };
