@@ -5,6 +5,7 @@ import { MealForm } from '@/app/(authenticated)/register/_components/form/meal-f
 import { WeightForm } from '@/app/(authenticated)/register/_components/form/weight-form/weight-form';
 import { StepForm } from '@/app/(authenticated)/register/_components/form/step-form/step-form';
 import { useTodayWeightAndForm } from '@/app/(authenticated)/register/_hooks/use-today-weight-and-form';
+import { useYesterdayStepAndForm } from '@/app/(authenticated)/register/_hooks/use-yesterday-step-and-form';
 
 type Props = {
   initialValue: {
@@ -18,7 +19,9 @@ export const DataViewAndForms: FC<Props> = ({ initialValue }) => {
   const { todayWeight, registerWeightFormAction } = useTodayWeightAndForm(
     initialValue.todayWeight,
   );
-  const yesterdayStep = initialValue.yesterdayStep;
+  const { yesterdayStep, registerStepFormAction } = useYesterdayStepAndForm(
+    initialValue.yesterdayStep,
+  );
   const todayTotalEnergy = initialValue.todayTotalEnergy;
 
   return (
@@ -36,7 +39,7 @@ export const DataViewAndForms: FC<Props> = ({ initialValue }) => {
       </section>
       <section>
         <h2 className="mb-8px font-bold">歩数登録</h2>
-        <StepForm />
+        <StepForm registerStepAction={registerStepFormAction} />
       </section>
     </>
   );

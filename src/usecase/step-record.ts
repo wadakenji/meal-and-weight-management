@@ -10,7 +10,7 @@ export const registerStepRecord = async (stepRecord: StepRecord) => {
   const props = stepRecordToStepRecordProps(stepRecord);
   const res = await supabaseClient
     .from('step_records')
-    .insert(props)
+    .upsert(props, { onConflict: 'user_id,date' })
     .select()
     .single();
 
