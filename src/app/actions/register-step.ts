@@ -2,19 +2,22 @@
 
 import { getUser } from '@/usecase/user';
 import { registerStepRecord } from '@/usecase/step-record';
-import { STEP_FORM_VALUE_NAMES } from '@/constants/form-input-name';
+import {
+  parsedStepFormDataToStepRecord,
+  validateAndParseStepFormData,
+} from '@/helpers/form/register-step-record-form';
 
 export const registerStepAction = async (formData: FormData) => {
-  const dateString = formData.get(STEP_FORM_VALUE_NAMES.DATE);
-  const step = formData.get(STEP_FORM_VALUE_NAMES.STEP);
   const user = await getUser();
+  if (!user) return; // todo error handling
 
-  // todo validation
-  if (!user || typeof dateString !== 'string') throw new Error('');
+  const parseResult = validateAndParseStepFormData(formData);
+  if (!parseResult) return; // todo error handling
 
-  await registerStepRecord({
-    userId: user.id,
-    date: new Date(dateString),
-    step: Number(step),
-  });
+  const stepRecordToRegister = parsedStepFormDataToStepRecord(
+    user.id,
+    parseResult,
+  );
+
+  const registeredStepRecord = await registerStepRecord(stepRecordToRegister);
 };
