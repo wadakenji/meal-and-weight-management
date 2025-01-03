@@ -10,6 +10,8 @@ import {
 export const dateToDatetimeInputValue = (date: Date) =>
   format(date, 'yyyy-MM-dd') + 'T' + format(date, 'hh:mm');
 
+export const datetimeInputValueToDate = (value: string) => toDate(value);
+
 export const dateToDateInputValue = (date: Date) => format(date, 'yyyy-MM-dd');
 
 export const dateInputValueToDate = (value: string): Date =>
