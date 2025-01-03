@@ -10,3 +10,9 @@ type User = { id: string; email: string } & (
       energyPerStep?: never;
     }
 );
+
+type WeightRecord = {
+  userId: string;
+  date: Date;
+  weight: number;
+};

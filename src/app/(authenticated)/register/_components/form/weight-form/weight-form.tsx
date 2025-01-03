@@ -1,12 +1,15 @@
 import { FC } from 'react';
-import { registerWeightAction } from '@/app/actions/register-weight';
 import { formatDateInputValue } from '@/utils/date';
 import { WEIGHT_FORM_VALUE_NAMES } from '@/constants/form-input-name';
 import { Form } from '@/components/form/form-base/form-base';
 import { FormSubmitButton } from '@/components/control/button/form-submit-button/form-submit-button';
 import { LabelInputSet } from '@/components/control/label-input-set/label-input-set';
 
-export const WeightForm: FC = () => {
+type Props = {
+  registerWeightAction: (formData: FormData) => void;
+};
+
+export const WeightForm: FC<Props> = ({ registerWeightAction }) => {
   return (
     <Form action={registerWeightAction}>
       <div className="mb-24px space-y-16px">
