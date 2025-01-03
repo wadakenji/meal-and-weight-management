@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import { dateToDateInputValue } from '@/utils/date';
-import { WEIGHT_FORM_VALUE_NAMES } from '@/constants/form-input-name';
 import { Form } from '@/components/form/form-base/form-base';
 import { FormSubmitButton } from '@/components/control/button/form-submit-button/form-submit-button';
 import { LabelInputSet } from '@/components/control/label-input-set/label-input-set';
+import { WEIGHT_FORM_VALUE_NAMES } from '@/helpers/form/register-weight-record-form';
 
 type Props = {
   registerWeightAction: (formData: FormData) => void;

@@ -10,11 +10,6 @@ export const MEAL_FORM_VALUE_NAMES = {
   AMOUNT_OF_PROTEIN: 'amount_of_protein',
 } as const;
 
-export const WEIGHT_FORM_VALUE_NAMES = {
-  DATE: 'date',
-  WEIGHT: 'weight',
-} as const;
-
 export const STEP_FORM_VALUE_NAMES = {
   DATE: 'date',
   STEP: 'step',
