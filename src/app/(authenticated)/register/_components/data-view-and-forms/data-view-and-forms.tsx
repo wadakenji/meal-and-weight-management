@@ -1,11 +1,10 @@
 'use client';
 
-import { FC, useActionState, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { MealForm } from '@/app/(authenticated)/register/_components/form/meal-form/meal-form';
 import { WeightForm } from '@/app/(authenticated)/register/_components/form/weight-form/weight-form';
 import { StepForm } from '@/app/(authenticated)/register/_components/form/step-form/step-form';
-import { registerWeightAction } from '@/app/actions/register-weight';
-import { isToday } from '@/utils/date';
+import { useTodayWeightAndForm } from '@/app/(authenticated)/register/_hooks/use-today-weight-and-form';
 
 type Props = {
   initialValue: {
@@ -16,17 +15,9 @@ type Props = {
 };
 
 export const DataViewAndForms: FC<Props> = ({ initialValue }) => {
-  const [registerWeightState, registerWeightFormAction] = useActionState(
-    registerWeightAction,
-    null,
+  const { todayWeight, registerWeightFormAction } = useTodayWeightAndForm(
+    initialValue.todayWeight,
   );
-  const [todayWeight, setTodayWeight] = useState(initialValue.todayWeight);
-  useEffect(() => {
-    if (!registerWeightState?.registeredWeightRecord) return;
-    if (!isToday(registerWeightState.registeredWeightRecord.date)) return;
-    setTodayWeight(registerWeightState.registeredWeightRecord.weight);
-  }, [registerWeightState]);
-
   const yesterdayStep = initialValue.yesterdayStep;
   const todayTotalEnergy = initialValue.todayTotalEnergy;
 
