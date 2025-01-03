@@ -1,5 +1,5 @@
 import { createSupabaseServerClient } from '@/libs/supabase/createClient';
-import { formatToDatetimeColumnValue, getRangeOfDate } from '@/utils/date';
+import { dateToDatetimeColumnValue, getRangeOfDate } from '@/utils/date';
 
 export const registerMeal = async (props: {
   userId: string;
@@ -13,7 +13,7 @@ export const registerMeal = async (props: {
     .from('meals')
     .insert({
       user_id: props.userId,
-      datetime: formatToDatetimeColumnValue(props.datetime),
+      datetime: dateToDatetimeColumnValue(props.datetime),
       name: props.name,
       amount_of_energy: props.amountOfEnergy,
       amount_of_protein: props.amountOfProtein,
@@ -30,8 +30,8 @@ export const getTodayTotalEnergy = async (userId: string) => {
     .from('meals')
     .select('amount_of_energy')
     .eq('user_id', userId)
-    .gte('datetime', formatToDatetimeColumnValue(startOfDate))
-    .lte('datetime', formatToDatetimeColumnValue(endOfDate));
+    .gte('datetime', dateToDatetimeColumnValue(startOfDate))
+    .lte('datetime', dateToDatetimeColumnValue(endOfDate));
 
   if (res.error) throw res.error;
 

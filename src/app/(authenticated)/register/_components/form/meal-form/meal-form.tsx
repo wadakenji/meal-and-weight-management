@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { registerMealAction } from '@/app/actions/register-meal';
-import { formatDatetimeInputValue } from '@/utils/date';
+import { dateToDatetimeInputValue } from '@/utils/date';
 import { MEAL_FORM_VALUE_NAMES } from '@/constants/form-input-name';
 import { Form } from '@/components/form/form-base/form-base';
 import { LabelInputSet } from '@/components/control/label-input-set/label-input-set';
@@ -14,7 +14,7 @@ export const MealForm: FC = () => {
           labelText="日時"
           type="datetime-local"
           name={MEAL_FORM_VALUE_NAMES.DATETIME}
-          defaultValue={formatDatetimeInputValue(new Date())}
+          defaultValue={dateToDatetimeInputValue(new Date())}
           required
         />
         <LabelInputSet

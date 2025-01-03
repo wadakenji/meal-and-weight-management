@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { formatDateInputValue } from '@/utils/date';
+import { dateToDateInputValue } from '@/utils/date';
 import { WEIGHT_FORM_VALUE_NAMES } from '@/constants/form-input-name';
 import { Form } from '@/components/form/form-base/form-base';
 import { FormSubmitButton } from '@/components/control/button/form-submit-button/form-submit-button';
@@ -17,7 +17,7 @@ export const WeightForm: FC<Props> = ({ registerWeightAction }) => {
           labelText="日付"
           type="date"
           name={WEIGHT_FORM_VALUE_NAMES.DATE}
-          defaultValue={formatDateInputValue(new Date())}
+          defaultValue={dateToDateInputValue(new Date())}
           required
         />
         <LabelInputSet

@@ -1,5 +1,5 @@
 import { createSupabaseServerClient } from '@/libs/supabase/createClient';
-import { formatToDateColumnValue, getYesterday } from '@/utils/date';
+import { dateToDateColumnValue, getYesterday } from '@/utils/date';
 
 export const registerStepRecord = async (props: {
   userId: string;
@@ -11,7 +11,7 @@ export const registerStepRecord = async (props: {
     .from('step_records')
     .insert({
       user_id: props.userId,
-      date: formatToDateColumnValue(props.date),
+      date: dateToDateColumnValue(props.date),
       step: props.step,
     })
     .then((res) => {
@@ -25,7 +25,7 @@ export const getYesterdayStep = async (userId: string) => {
     .from('step_records')
     .select('step')
     .eq('user_id', userId)
-    .eq('date', formatToDateColumnValue(getYesterday()))
+    .eq('date', dateToDateColumnValue(getYesterday()))
     .maybeSingle();
 
   if (res.error) throw res.error;

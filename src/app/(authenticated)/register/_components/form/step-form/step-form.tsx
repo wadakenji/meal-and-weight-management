@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { registerStepAction } from '@/app/actions/register-step';
-import { formatDateInputValue, getYesterday } from '@/utils/date';
+import { dateToDateInputValue, getYesterday } from '@/utils/date';
 import { STEP_FORM_VALUE_NAMES } from '@/constants/form-input-name';
 import { Form } from '@/components/form/form-base/form-base';
 import { FormSubmitButton } from '@/components/control/button/form-submit-button/form-submit-button';
@@ -14,7 +14,7 @@ export const StepForm: FC = () => {
           labelText="日付"
           type="date"
           name={STEP_FORM_VALUE_NAMES.DATE}
-          defaultValue={formatDateInputValue(getYesterday())}
+          defaultValue={dateToDateInputValue(getYesterday())}
           required
         />
         <LabelInputSet

@@ -1,5 +1,5 @@
 import { createSupabaseServerClient } from '@/libs/supabase/createClient';
-import { formatToDateColumnValue, dateColumnValueToDate } from '@/utils/date';
+import { dateToDateColumnValue, dateColumnValueToDate } from '@/utils/date';
 
 export const registerWeightRecord = async (props: {
   userId: string;
@@ -12,7 +12,7 @@ export const registerWeightRecord = async (props: {
     .upsert(
       {
         user_id: props.userId,
-        date: formatToDateColumnValue(props.date),
+        date: dateToDateColumnValue(props.date),
         weight: props.weight,
       },
       { onConflict: 'user_id,date' },
@@ -35,7 +35,7 @@ export const getTodayWeight = async (userId: string) => {
     .from('weight_records')
     .select('weight')
     .eq('user_id', userId)
-    .eq('date', formatToDateColumnValue(new Date()))
+    .eq('date', dateToDateColumnValue(new Date()))
     .maybeSingle();
 
   if (res.error) throw res.error;

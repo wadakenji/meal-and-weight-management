@@ -7,18 +7,17 @@ import {
   isToday as dateFnsIsToday,
 } from 'date-fns';
 
-export const formatDatetimeInputValue = (date: Date) =>
+export const dateToDatetimeInputValue = (date: Date) =>
   format(date, 'yyyy-MM-dd') + 'T' + format(date, 'hh:mm');
 
-export const formatDateInputValue = (date: Date) => format(date, 'yyyy-MM-dd');
+export const dateToDateInputValue = (date: Date) => format(date, 'yyyy-MM-dd');
 
 export const dateInputValueToDate = (value: string): Date =>
   toDate(value + 'T00:00');
 
-export const formatToDatetimeColumnValue = (date: Date) => date.toISOString();
+export const dateToDatetimeColumnValue = (date: Date) => date.toISOString();
 
-export const formatToDateColumnValue = (date: Date) =>
-  format(date, 'yyyy-MM-dd');
+export const dateToDateColumnValue = (date: Date) => format(date, 'yyyy-MM-dd');
 
 export const dateColumnValueToDate = (value: string): Date =>
   toDate(value + 'T00:00');
