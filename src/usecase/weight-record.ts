@@ -1,32 +1,25 @@
 import { createSupabaseServerClient } from '@/libs/supabase/createClient';
-import { dateToDateColumnValue, dateColumnValueToDate } from '@/utils/date';
+import { dateToDateColumnValue } from '@/utils/date';
+import {
+  supabaseWeightRecordToWeightRecord,
+  weightRecordToSupabaseWeightRecordProps,
+} from '@/libs/supabase/interface/weight-record';
 
-export const registerWeightRecord = async (props: {
-  userId: string;
-  date: Date;
-  weight: number;
-}): Promise<WeightRecord> => {
+export const registerWeightRecord = async (
+  weightRecord: WeightRecord,
+): Promise<WeightRecord> => {
   const supabaseClient = await createSupabaseServerClient();
+
+  const props = weightRecordToSupabaseWeightRecordProps(weightRecord);
   const res = await supabaseClient
     .from('weight_records')
-    .upsert(
-      {
-        user_id: props.userId,
-        date: dateToDateColumnValue(props.date),
-        weight: props.weight,
-      },
-      { onConflict: 'user_id,date' },
-    )
+    .upsert(props, { onConflict: 'user_id,date' })
     .select()
     .single();
 
   if (res.error) throw res.error;
 
-  return {
-    userId: res.data.user_id,
-    date: dateColumnValueToDate(res.data.date),
-    weight: res.data.weight,
-  };
+  return supabaseWeightRecordToWeightRecord(res.data);
 };
 
 export const getTodayWeight = async (userId: string) => {
