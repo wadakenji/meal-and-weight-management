@@ -3,10 +3,10 @@
 import { FC, useActionState, useState } from 'react';
 import { updateUserAction } from '@/app/actions/update-user';
 import { LabelInputSet } from '@/components/control/label-input-set/label-input-set';
-import { USER_FORM_VALUE_NAMES } from '@/constants/form-input-name';
 import { FormSubmitButton } from '@/components/control/button/form-submit-button/form-submit-button';
 import { Form } from '@/components/form/form-base/form-base';
 import { PrimaryButton } from '@/components/control/button/primary-button/primary-button';
+import { USER_FORM_VALUE_NAMES } from '@/helpers/form/update-user-form';
 
 type Props = {
   initialUser: User;

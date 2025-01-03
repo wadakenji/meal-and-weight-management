@@ -1,49 +1,39 @@
 'use server';
 
 import { getUser, updateUser } from '@/usecase/user';
-import { USER_FORM_VALUE_NAMES } from '@/constants/form-input-name';
-import { z } from 'zod';
-import { UpdateUserActionState } from '@/app/(authenticated)/user-settings/_types';
 import { ERROR_MESSAGES } from '@/constants/error-message';
+import {
+  parsedUpdateUserFormDataToUser,
+  validateAndParseUpdateUserFormData,
+} from '@/helpers/form/update-user-form';
 
-const userFormSchema = z.object({
-  name: z.string(),
-  basalMetabolismRate: z.number(),
-  energyPerStep: z.number(),
-  password: z
-    .string()
-    .min(8)
-    .regex(/^[a-zA-Z0-9]*$/)
-    .nullable(),
-});
+type UpdateUserActionState =
+  | {
+      updatedUser?: never;
+      error: string;
+    }
+  | {
+      updatedUser: User;
+      error?: never;
+    }
+  | null;
 
 export const updateUserAction = async (
   _prevState: UpdateUserActionState,
   formData: FormData,
 ): Promise<UpdateUserActionState> => {
-  const name = formData.get(USER_FORM_VALUE_NAMES.NAME);
-  const password = formData.get(USER_FORM_VALUE_NAMES.PASSWORD);
-  const basalMetabolismRate = Number(
-    formData.get(USER_FORM_VALUE_NAMES.BASAL_METABOLISM_RATE),
-  );
-  const energyPerStep = Number(
-    formData.get(USER_FORM_VALUE_NAMES.ENERGY_PER_STEP),
-  );
-
   const user = await getUser();
   if (!user) return { error: ERROR_MESSAGES.NOT_AUTHORIZED };
 
-  const parseResult = userFormSchema.safeParse({
-    name,
-    basalMetabolismRate,
-    energyPerStep,
-    password: password || null,
-  });
+  const parseResult = validateAndParseUpdateUserFormData(formData);
+  if (!parseResult) return { error: ERROR_MESSAGES.INVALID_USER_INPUT };
 
-  if (parseResult.error) return { error: ERROR_MESSAGES.INVALID_USER_INPUT };
+  const userToUpdate = parsedUpdateUserFormDataToUser(
+    user.id,
+    user.email,
+    parseResult,
+  );
 
-  await updateUser(user.id, parseResult.data);
-  const updatedUser = await getUser();
-  if (!updatedUser) return { error: ERROR_MESSAGES.NOT_AUTHORIZED };
+  const updatedUser = await updateUser(userToUpdate, parseResult.password);
   return { updatedUser };
 };

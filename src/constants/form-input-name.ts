@@ -3,13 +3,6 @@ export const SIGN_IN_FORM_VALUE_NAMES = {
   PASSWORD: 'password',
 } as const;
 
-export const USER_FORM_VALUE_NAMES = {
-  NAME: 'name',
-  PASSWORD: 'password',
-  BASAL_METABOLISM_RATE: 'basal_metabolism_rate',
-  ENERGY_PER_STEP: 'energy_per_step',
-} as const;
-
 export const MEAL_FORM_VALUE_NAMES = {
   DATETIME: 'datetime',
   NAME: 'name',

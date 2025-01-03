@@ -1,4 +1,8 @@
 import { createSupabaseServerClient } from '@/libs/supabase/createClient';
+import {
+  supabaseUserToUser,
+  userToSupabaseUserProps,
+} from '@/libs/supabase/interface/user';
 
 export const getUser = async (): Promise<User | null> => {
   const supabaseClient = await createSupabaseServerClient();
@@ -18,31 +22,27 @@ export const getUser = async (): Promise<User | null> => {
   const user = queryResponse.data?.[0];
   if (!user) return { id, email };
 
-  const {
-    name,
-    basal_metabolism_rate: basalMetabolismRate,
-    energy_per_step: energyPerStep,
-  } = user;
-
-  return { id, email, name, basalMetabolismRate, energyPerStep };
+  return supabaseUserToUser(id, email, user);
 };
 
 export const updateUser = async (
-  id: string,
-  props: {
-    name: string;
-    password: string | null;
-    basalMetabolismRate: number;
-    energyPerStep: number;
-  },
-): Promise<void> => {
-  const { name, password, basalMetabolismRate, energyPerStep } = props;
+  user: User,
+  password: string | null,
+): Promise<User> => {
   const supabaseClient = await createSupabaseServerClient();
+
   if (password !== null) await supabaseClient.auth.updateUser({ password });
-  await supabaseClient.from('users').upsert({
-    id,
-    name,
-    basal_metabolism_rate: basalMetabolismRate,
-    energy_per_step: energyPerStep,
-  });
+
+  const res = await supabaseClient
+    .from('users')
+    .upsert(userToSupabaseUserProps(user))
+    .select()
+    .single();
+
+  if (res.error) {
+    console.error(res.error);
+    throw new Error('usecase: updateUser');
+  }
+
+  return supabaseUserToUser(user.id, user.email, res.data);
 };
