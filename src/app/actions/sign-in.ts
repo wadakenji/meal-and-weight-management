@@ -2,20 +2,20 @@
 
 import { signIn } from '@/usecase/authentication';
 import { redirect } from 'next/navigation';
-import { SIGN_IN_FORM_VALUE_NAMES } from '@/constants/form-input-name';
+import { validateAndParseSignInFormData } from '@/helpers/form/sign-in';
 
 export const signInAction = async (formData: FormData) => {
-  const email = formData.get(SIGN_IN_FORM_VALUE_NAMES.EMAIL);
-  const password = formData.get(SIGN_IN_FORM_VALUE_NAMES.PASSWORD);
+  const parseResult = validateAndParseSignInFormData(formData);
 
-  // todo validation
-  if (typeof email !== 'string' || typeof password !== 'string')
-    throw new Error('');
+  if (!parseResult) return; // todo error handling
 
-  await signIn(email, password).catch((e) => {
-    console.error(e);
-    throw new Error('');
-  });
-
-  redirect('/');
+  const { email, password } = parseResult;
+  await signIn(email, password)
+    .then(() => {
+      redirect('/');
+    })
+    .catch((e) => {
+      console.error(e);
+      throw new Error(''); // todo error handling
+    });
 };
