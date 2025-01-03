@@ -8,7 +8,10 @@ export const signIn = async (
   await supabaseClient.auth
     .signInWithPassword({ email, password })
     .then((res) => {
-      if (res.error) throw res.error;
+      if (res.error) {
+        console.error(res.error);
+        throw new Error('usecase: signIn');
+      }
     });
 };
 
@@ -20,6 +23,9 @@ export const verifyInviteEmailToken = async (
   await supabaseClient.auth
     .verifyOtp({ email, token, type: 'invite' })
     .then((res) => {
-      if (res.error) throw res.error;
+      if (res.error) {
+        console.error(res.error);
+        throw new Error('usecase: verifyInviteEmailToken');
+      }
     });
 };

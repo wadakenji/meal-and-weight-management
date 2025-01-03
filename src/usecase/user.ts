@@ -12,11 +12,19 @@ export const getUser = async (): Promise<User | null> => {
   const { email, id } = authUser;
   if (email === undefined) return null;
 
-  const queryResponse = await supabaseClient
+  const res = await supabaseClient
     .from('users')
     .select()
-    .eq('id', id);
-  const user = queryResponse.data?.[0];
+    .eq('id', id)
+    .limit(1)
+    .maybeSingle();
+
+  if (res.error) {
+    console.error(res.error);
+    throw new Error('usecase: getUser');
+  }
+
+  const user = res.data;
   if (!user) return { id, email };
 
   return userRowToUser(id, email, user);

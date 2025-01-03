@@ -14,7 +14,10 @@ export const registerStepRecord = async (stepRecord: StepRecord) => {
     .select()
     .single();
 
-  if (res.error) throw res.error;
+  if (res.error) {
+    console.error(res.error);
+    throw new Error('usecase: registerStepRecord');
+  }
 
   return stepRecordRowToStepRecord(res.data);
 };
@@ -28,7 +31,10 @@ export const getYesterdayStep = async (userId: string) => {
     .eq('date', dateToDateColumnValue(getYesterday()))
     .maybeSingle();
 
-  if (res.error) throw res.error;
+  if (res.error) {
+    console.error(res.error);
+    throw new Error('usecase: getYesterdayStep');
+  }
 
   return res.data && res.data.step;
 };

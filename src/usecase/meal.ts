@@ -29,7 +29,10 @@ export const getTodayTotalEnergy = async (userId: string) => {
     .gte('datetime', dateToDatetimeColumnValue(startOfDate))
     .lte('datetime', dateToDatetimeColumnValue(endOfDate));
 
-  if (res.error) throw res.error;
+  if (res.error) {
+    console.error(res.error);
+    throw new Error('usecase: getTodayTotalEnergy');
+  }
 
   return res.data.reduce(
     (acc, { amount_of_energy }) => acc + amount_of_energy,

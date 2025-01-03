@@ -17,7 +17,10 @@ export const registerWeightRecord = async (
     .select()
     .single();
 
-  if (res.error) throw res.error;
+  if (res.error) {
+    console.error(res.error);
+    throw new Error('usecase: registerWeightRecord');
+  }
 
   return weightRecordRowToWeightRecord(res.data);
 };
@@ -31,7 +34,10 @@ export const getTodayWeight = async (userId: string) => {
     .eq('date', dateToDateColumnValue(new Date()))
     .maybeSingle();
 
-  if (res.error) throw res.error;
+  if (res.error) {
+    console.error(res.error);
+    throw new Error('usecase: getTodayWeight');
+  }
 
   return res.data && res.data.weight;
 };
