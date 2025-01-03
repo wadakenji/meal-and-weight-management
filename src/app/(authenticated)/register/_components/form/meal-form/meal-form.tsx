@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import { registerMealAction } from '@/app/actions/register-meal';
 import { dateToDatetimeInputValue } from '@/utils/date';
-import { MEAL_FORM_VALUE_NAMES } from '@/constants/form-input-name';
 import { Form } from '@/components/form/form-base/form-base';
 import { LabelInputSet } from '@/components/control/label-input-set/label-input-set';
 import { FormSubmitButton } from '@/components/control/button/form-submit-button/form-submit-button';
+import { MEAL_FORM_VALUE_NAMES } from '@/helpers/form/register-meal-form';
 
 export const MealForm: FC = () => {
   return (

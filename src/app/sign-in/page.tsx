@@ -2,10 +2,10 @@
 
 import { FC } from 'react';
 import { signInAction } from '@/app/actions/sign-in';
-import { SIGN_IN_FORM_VALUE_NAMES } from '@/constants/form-input-name';
 import { Form } from '@/components/form/form-base/form-base';
 import { LabelInputSet } from '@/components/control/label-input-set/label-input-set';
 import { FormSubmitButton } from '@/components/control/button/form-submit-button/form-submit-button';
+import { SIGN_IN_FORM_VALUE_NAMES } from '@/helpers/form/sign-in';
 
 const Page: FC = () => {
   return (
