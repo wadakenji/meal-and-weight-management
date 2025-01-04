@@ -13,8 +13,8 @@ type Props = {
 };
 
 export const UserForm: FC<Props> = ({ initialUser }) => {
-  const neverRegistered = initialUser.name === undefined;
-  const [showsPasswordInput, setShowsPasswordInput] = useState(neverRegistered);
+  const isFirstRegister = initialUser.name === undefined;
+  const [showsPasswordInput, setShowsPasswordInput] = useState(isFirstRegister);
   const [state, formAction, isPending] = useActionState(updateUserAction, null);
   const updatedUser = state?.updatedUser;
   const user = updatedUser || initialUser;
@@ -50,7 +50,7 @@ export const UserForm: FC<Props> = ({ initialUser }) => {
             type="password"
             name={USER_FORM_VALUE_NAMES.PASSWORD}
             placeholder="半角英数字8文字以上"
-            required={neverRegistered}
+            required={isFirstRegister}
           />
         ) : (
           <PrimaryButton
