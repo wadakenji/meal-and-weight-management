@@ -10,12 +10,10 @@ export const signInAction = async (formData: FormData) => {
   if (!parseResult) return; // todo error handling
 
   const { email, password } = parseResult;
-  await signIn(email, password)
-    .then(() => {
-      redirect('/');
-    })
-    .catch((e) => {
-      console.error(e);
-      throw new Error(''); // todo error handling
-    });
+  await signIn(email, password).catch((e) => {
+    console.error(e);
+    throw new Error(''); // todo error handling
+  });
+
+  redirect('/');
 };
