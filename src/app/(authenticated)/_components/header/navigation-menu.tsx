@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { IconPenToSquare } from '@/components/icon/pen-to-square';
 import { IconUser } from '@/components/icon/user';
 import { IconLineChart } from '@/components/icon/line-chart';
+import { VERSION } from '@/constants/version';
 
 const ITEMS = [
   {
@@ -36,26 +37,31 @@ export const NavigationMenu: FC = () => {
         <span className="text-sm">メニュー</span>
         <IconChevronDown />
       </button>
-      <nav
+      <div
         className={clsx(
           'absolute right-0 top-full translate-y-8px rounded border border-line bg-white px-16px py-8px',
           !isOpen && 'hidden',
         )}
       >
-        <ul>
-          {ITEMS.map(({ href, text, icon }) => (
-            <li key={href}>
-              <a
-                href={href}
-                className="flex min-h-min-button-size items-center gap-8px whitespace-nowrap text-sm text-text-gray transition-opacity hover:opacity-70"
-              >
-                {icon}
-                <span>{text}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+        <nav className="mb-8px">
+          <ul>
+            {ITEMS.map(({ href, text, icon }) => (
+              <li key={href}>
+                <a
+                  href={href}
+                  className="flex min-h-min-button-size items-center gap-8px whitespace-nowrap text-sm text-text-gray transition-opacity hover:opacity-70"
+                >
+                  {icon}
+                  <span>{text}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div className="text-right text-sm font-bold text-text-default">
+          {VERSION}
+        </div>
+      </div>
     </div>
   );
 };
