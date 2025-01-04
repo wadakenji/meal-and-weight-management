@@ -13,9 +13,15 @@ export const middleware = async (request: NextRequest) => {
       if (isLoggedIn)
         return NextResponse.redirect(new URL('/register', request.url));
       break;
+    case '/user-settings':
+      if (!isLoggedIn)
+        return NextResponse.redirect(new URL('/sign-in', request.url));
+      break;
     default:
       if (!isLoggedIn)
         return NextResponse.redirect(new URL('/sign-in', request.url));
+      if (!user.name)
+        return NextResponse.redirect(new URL('/user-settings', request.url));
       break;
   }
 };
