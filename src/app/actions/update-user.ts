@@ -6,6 +6,7 @@ import {
   parsedUpdateUserFormDataToUser,
   validateAndParseUpdateUserFormData,
 } from '@/helpers/form/update-user-form';
+import { redirect } from 'next/navigation';
 
 type UpdateUserActionState =
   | {
@@ -25,6 +26,8 @@ export const updateUserAction = async (
   const user = await getUser();
   if (!user) return { error: ERROR_MESSAGES.NOT_AUTHORIZED };
 
+  const isFirstRegister = user.name === undefined;
+
   const parseResult = validateAndParseUpdateUserFormData(formData);
   if (!parseResult) return { error: ERROR_MESSAGES.INVALID_USER_INPUT };
 
@@ -35,5 +38,8 @@ export const updateUserAction = async (
   );
 
   const updatedUser = await updateUser(userToUpdate, parseResult.password);
+
+  if (isFirstRegister) redirect('/register');
+
   return { updatedUser };
 };
