@@ -24,6 +24,7 @@ export const WeightForm: FC<Props> = ({ registerWeightAction }) => {
           labelText="体重（kg）"
           type="number"
           name={WEIGHT_FORM_VALUE_NAMES.WEIGHT}
+          step={0.01}
           required
         />
       </div>
