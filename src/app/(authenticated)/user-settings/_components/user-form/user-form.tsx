@@ -34,6 +34,7 @@ export const UserForm: FC<Props> = ({ initialUser }) => {
           type="number"
           name={USER_FORM_VALUE_NAMES.BASAL_METABOLISM_RATE}
           defaultValue={user.basalMetabolismRate || 1000}
+          step={0.01}
           required
         />
         <LabelInputSet
@@ -41,7 +42,7 @@ export const UserForm: FC<Props> = ({ initialUser }) => {
           type="number"
           name={USER_FORM_VALUE_NAMES.ENERGY_PER_STEP}
           defaultValue={user.energyPerStep || 0.03}
-          step={0.01}
+          step={0.001}
           required
         />
         {showsPasswordInput ? (
