@@ -30,11 +30,13 @@ export const MealForm: FC<Props> = ({ registerMealAction }) => {
           labelText="カロリー（kcal）"
           type="number"
           name={MEAL_FORM_VALUE_NAMES.AMOUNT_OF_ENERGY}
+          step={0.01}
           required
         />
         <LabelInputSet
           labelText="タンパク質（g）"
           type="number"
+          step={0.01}
           name={MEAL_FORM_VALUE_NAMES.AMOUNT_OF_PROTEIN}
         />
       </div>
