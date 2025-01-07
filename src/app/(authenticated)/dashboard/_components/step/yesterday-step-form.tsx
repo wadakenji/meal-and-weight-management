@@ -24,7 +24,7 @@ export const YesterdayStepForm: FC<Props> = ({ yesterdayStepPromise }) => {
       ) : (
         <form action={registerStepFormAction}>
           <div className="mb-8px flex items-end gap-x-8px">
-            <Input name={STEP_FORM_VALUE_NAMES.STEP} type="number" />
+            <Input name={STEP_FORM_VALUE_NAMES.STEP} type="number" required />
             <span className="font-bold">歩</span>
           </div>
           <CheckIconButton isPending={isPending} disabled={isPending} />

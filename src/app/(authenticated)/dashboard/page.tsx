@@ -6,6 +6,7 @@ import { getTodayTotalEnergy } from '@/usecase/meal';
 import { getUserCache } from '@/app/_cache/getUser';
 import { TodayWeightPanel } from '@/app/(authenticated)/dashboard/_components/weight/today-weight-panel';
 import { YesterdayStepPanel } from '@/app/(authenticated)/dashboard/_components/step/yesterday-step-panel';
+import { TodayTotalEnergyPanel } from '@/app/(authenticated)/dashboard/_components/meal/today-total-energy-panel';
 
 const Page: FC = async () => {
   const user = await getUserCache();
@@ -17,10 +18,13 @@ const Page: FC = async () => {
 
   return (
     <AuthenticatedTemplate pageTitle="ホーム">
-      <div className="mb-16px flex items-baseline gap-x-8px">
+      <div className="mb-8px flex items-baseline gap-x-8px">
         <YesterdayStepPanel yesterdayStepPromise={yesterdayStepPromise} />
         <TodayWeightPanel todayWeightPromise={todayWeightPromise} />
       </div>
+      <TodayTotalEnergyPanel
+        todayTotalEnergyPromise={todayTotalEnergyPromise}
+      />
     </AuthenticatedTemplate>
   );
 };

@@ -28,6 +28,7 @@ export const TodayWeightForm: FC<Props> = ({ todayWeightPromise }) => {
               name={WEIGHT_FORM_VALUE_NAMES.WEIGHT}
               type="number"
               step={0.01}
+              required
             />
             <span className="font-bold">kg</span>
           </div>
