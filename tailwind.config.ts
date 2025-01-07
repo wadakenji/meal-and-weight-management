@@ -25,14 +25,6 @@ export default {
         DEFAULT: '#CCCCCC',
       },
     },
-    fontSize: {
-      '2xs': '10px',
-      xs: '12px',
-      sm: '14px',
-      base: '16px',
-      'app-title': '22px',
-      'page-title': '20px',
-    },
     spacing: {
       '0': '0',
       '1px': '1px',
@@ -44,6 +36,13 @@ export default {
       '32px': '32px',
       'header-height': '58px',
       'min-button-size': '44px',
+    },
+    extend: {
+      fontSize: {
+        '2xs': '10px',
+        'app-title': '22px',
+        'page-title': '20px',
+      },
     },
   },
   plugins: [],
