@@ -12,7 +12,9 @@ export const signInAction = async (formData: FormData) => {
   const { email, password } = parseResult;
   await signIn(email, password).catch((e) => {
     console.error(e);
-    throw new Error(''); // todo error handling
+    const errorMessage = 'ログインに失敗しました。再度やり直してください。';
+    redirect(`/sign-in?error=${encodeURI(errorMessage)}`);
+    // todo error handling
   });
 
   redirect('/');
