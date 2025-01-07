@@ -5,10 +5,8 @@ import { isToday } from '@/utils/date';
 export const useTodayWeightAndForm = (
   todayWeightInitialValue: number | null,
 ) => {
-  const [registerWeightState, registerWeightFormAction] = useActionState(
-    registerWeightAction,
-    null,
-  );
+  const [registerWeightState, registerWeightFormAction, isPending] =
+    useActionState(registerWeightAction, null);
 
   const [todayWeight, setTodayWeight] = useState(todayWeightInitialValue);
 
@@ -18,5 +16,5 @@ export const useTodayWeightAndForm = (
     setTodayWeight(registerWeightState.registeredWeightRecord.weight);
   }, [registerWeightState]);
 
-  return { todayWeight, registerWeightFormAction };
+  return { todayWeight, registerWeightFormAction, isPending };
 };

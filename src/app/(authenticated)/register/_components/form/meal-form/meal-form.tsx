@@ -4,14 +4,16 @@ import { Form } from '@/components/form/form-base/form-base';
 import { LabelInputSet } from '@/components/control/label-input-set/label-input-set';
 import { FormSubmitButton } from '@/components/control/button/form-submit-button/form-submit-button';
 import { MEAL_FORM_VALUE_NAMES } from '@/helpers/form/register-meal-form';
+import { registerMealAction } from '@/app/actions/register-meal';
 
-type Props = {
-  registerMealAction: (formData: FormData) => void;
-};
+export const MealForm: FC = () => {
+  const action = async (formData: FormData) => {
+    'use server';
+    await registerMealAction(null, formData);
+  };
 
-export const MealForm: FC<Props> = ({ registerMealAction }) => {
   return (
-    <Form action={registerMealAction}>
+    <Form action={action}>
       <div className="mb-24px space-y-16px">
         <LabelInputSet
           labelText="日時"

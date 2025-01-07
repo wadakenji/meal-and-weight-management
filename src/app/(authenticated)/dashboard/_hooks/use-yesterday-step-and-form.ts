@@ -5,7 +5,7 @@ import { isYesterday } from '@/utils/date';
 export const useYesterdayStepAndForm = (
   yesterdayStepInitialValue: number | null,
 ) => {
-  const [registerStepState, registerStepFormAction] = useActionState(
+  const [registerStepState, registerStepFormAction, isPending] = useActionState(
     registerStepAction,
     null,
   );
@@ -18,5 +18,5 @@ export const useYesterdayStepAndForm = (
     setYesterdayStep(registerStepState.registeredStepRecord.step);
   }, [registerStepState]);
 
-  return { yesterdayStep, registerStepFormAction };
+  return { yesterdayStep, registerStepFormAction, isPending };
 };

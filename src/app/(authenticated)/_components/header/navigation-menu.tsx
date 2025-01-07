@@ -7,17 +7,23 @@ import { IconPenToSquare } from '@/components/icon/pen-to-square';
 import { IconUser } from '@/components/icon/user';
 import { IconLineChart } from '@/components/icon/line-chart';
 import { VERSION } from '@/constants/version';
+import { IconHouse } from '@/components/icon/house';
 
 const ITEMS = [
   {
-    href: '/register',
-    text: 'データ登録',
-    icon: <IconPenToSquare />,
+    href: '/dashboard',
+    text: 'ホーム',
+    icon: <IconHouse />,
   },
   {
     href: '/data-view',
     text: 'グラフ表示',
     icon: <IconLineChart />,
+  },
+  {
+    href: '/register',
+    text: 'データ登録',
+    icon: <IconPenToSquare />,
   },
   {
     href: '/user-settings',
