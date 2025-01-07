@@ -12,7 +12,7 @@ export const CheckIconButton: FC<Props> = ({ isPending, ...props }) => {
       className="mx-auto flex size-min-button-size items-center justify-center rounded-full bg-primary"
       {...props}
     >
-      {!isPending ? <IconCheck /> : <IconSpinner />}
+      {!isPending ? <IconCheck /> : <IconSpinner color="white" />}
     </button>
   );
 };
