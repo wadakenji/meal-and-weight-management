@@ -4,14 +4,16 @@ import { Form } from '@/components/form/form-base/form-base';
 import { FormSubmitButton } from '@/components/control/button/form-submit-button/form-submit-button';
 import { LabelInputSet } from '@/components/control/label-input-set/label-input-set';
 import { WEIGHT_FORM_VALUE_NAMES } from '@/helpers/form/register-weight-record-form';
+import { registerWeightAction } from '@/app/actions/register-weight';
 
-type Props = {
-  registerWeightAction: (formData: FormData) => void;
-};
+export const WeightForm: FC = () => {
+  const action = async (formData: FormData) => {
+    'use server';
+    await registerWeightAction(null, formData);
+  };
 
-export const WeightForm: FC<Props> = ({ registerWeightAction }) => {
   return (
-    <Form action={registerWeightAction}>
+    <Form action={action}>
       <div className="mb-24px space-y-16px">
         <LabelInputSet
           labelText="日付"
