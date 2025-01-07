@@ -24,6 +24,9 @@ export default {
       line: {
         DEFAULT: '#CCCCCC',
       },
+      icon: {
+        gray: '#888888',
+      },
     },
     spacing: {
       '0': '0',

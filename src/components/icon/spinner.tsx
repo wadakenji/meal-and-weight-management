@@ -1,9 +1,22 @@
-export const IconSpinner = () => {
+import { FC } from 'react';
+import clsx from 'clsx';
+
+type Props = {
+  color?: 'white' | 'gray';
+  mxAuto?: boolean;
+};
+
+export const IconSpinner: FC<Props> = ({ color = 'gray', mxAuto = false }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 512 512"
-      className="animate-spin fill-white"
+      className={clsx(
+        'animate-spin',
+        color === 'gray' && 'fill-icon-gray',
+        color === 'white' && 'fill-white',
+        mxAuto && 'mx-auto',
+      )}
       width={20}
       height={20}
     >
