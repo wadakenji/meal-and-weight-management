@@ -179,7 +179,7 @@ export const DateLineChart: FC<Props> = ({
                   y={gridRangeEnd.y}
                   dy={X_GRID_LABEL_DY}
                 >
-                  {dateToMonthDateString(date)}
+                  {isToday(date) ? '今日' : dateToMonthDateString(date)}
                 </text>
               );
             }
