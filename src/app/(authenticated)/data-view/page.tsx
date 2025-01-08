@@ -3,13 +3,9 @@ import { AuthenticatedTemplate } from '@/app/(authenticated)/_components/templat
 import { getLastOneMonthWeightRecords } from '@/usecase/weight-record';
 import { WeightChart } from '@/app/(authenticated)/data-view/_components/weight-chart/weight-chart';
 import { IconSpinner } from '@/components/icon/spinner';
-import { getSession } from '@/usecase/authentication';
 
 const Page: FC = async () => {
-  const session = await getSession();
-  if (!session) return null;
-
-  const weightRecordsPromise = getLastOneMonthWeightRecords(session.userId);
+  const weightRecordsPromise = getLastOneMonthWeightRecords();
 
   return (
     <AuthenticatedTemplate pageTitle="グラフ表示">

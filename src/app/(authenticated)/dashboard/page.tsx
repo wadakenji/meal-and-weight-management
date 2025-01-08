@@ -6,15 +6,11 @@ import { getTodayTotalEnergy } from '@/usecase/meal';
 import { TodayWeightPanel } from '@/app/(authenticated)/dashboard/_components/weight/today-weight-panel';
 import { YesterdayStepPanel } from '@/app/(authenticated)/dashboard/_components/step/yesterday-step-panel';
 import { TodayTotalEnergyPanel } from '@/app/(authenticated)/dashboard/_components/meal/today-total-energy-panel';
-import { getSession } from '@/usecase/authentication';
 
 const Page: FC = async () => {
-  const session = await getSession();
-  if (!session) return null;
-
-  const todayWeightPromise = getTodayWeight(session.userId);
-  const yesterdayStepPromise = getYesterdayStep(session.userId);
-  const todayTotalEnergyPromise = getTodayTotalEnergy(session.userId);
+  const todayWeightPromise = getTodayWeight();
+  const yesterdayStepPromise = getYesterdayStep();
+  const todayTotalEnergyPromise = getTodayTotalEnergy();
 
   return (
     <AuthenticatedTemplate pageTitle="ホーム">
