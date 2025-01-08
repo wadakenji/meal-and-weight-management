@@ -9,7 +9,6 @@ type Props = {
 
 export const Header: FC<Props> = ({ session }) => {
   const userPromise = getUserCache();
-  console.log(session);
   return (
     <header className="fixed top-0 flex h-header-height w-full items-center justify-between bg-primary p-16px text-white">
       <a href="/dashboard">
