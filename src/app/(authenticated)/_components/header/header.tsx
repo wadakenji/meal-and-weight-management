@@ -1,23 +1,29 @@
-import { FC } from 'react';
+import { FC, Suspense } from 'react';
 import { NavigationMenu } from '@/app/(authenticated)/_components/header/navigation-menu';
+import { getUserCache } from '@/app/_cache/getUser';
+import { UsernameText } from '@/app/(authenticated)/_components/header/username-text';
 
 type Props = {
-  user: User;
+  session: Session;
 };
 
-export const Header: FC<Props> = ({ user }) => {
+export const Header: FC<Props> = ({ session }) => {
+  const userPromise = getUserCache();
   return (
     <header className="fixed top-0 flex h-header-height w-full items-center justify-between bg-primary p-16px text-white">
       <a href="/dashboard">
-        {user.name ? (
+        {session.userRegistered ? (
           <h1 className="font-title-family text-app-title font-bold">
-            ダイエッター{user.name}
+            <span>ダイエッター</span>
+            <Suspense>
+              <UsernameText userPromise={userPromise} />
+            </Suspense>
           </h1>
         ) : (
-          <span>email: {user.email}</span>
+          <span>email: {session.email}</span>
         )}
       </a>
-      {user.name && <NavigationMenu />}
+      {session.userRegistered && <NavigationMenu />}
     </header>
   );
 };

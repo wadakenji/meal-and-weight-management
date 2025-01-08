@@ -1,5 +1,6 @@
 type Session = {
   userId: string;
+  email: string | undefined;
   userRegistered: boolean | undefined;
 };
 
