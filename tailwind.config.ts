@@ -27,6 +27,13 @@ export default {
       icon: {
         gray: '#888888',
       },
+      'line-chart': {
+        'x-axis': '#999999',
+        'x-grid': '#999999',
+        'x-grid-label': '#999999',
+        'y-grid': '#999999',
+        'y-grid-label': '#999999',
+      },
     },
     spacing: {
       '0': '0',
