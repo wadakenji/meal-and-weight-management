@@ -3,18 +3,14 @@ import { AuthenticatedTemplate } from '../_components/template/authenticated-tem
 import { getTodayWeight } from '@/usecase/weight-record';
 import { getYesterdayStep } from '@/usecase/step-record';
 import { getTodayTotalEnergy } from '@/usecase/meal';
-import { getUserCache } from '@/app/_cache/getUser';
 import { TodayWeightPanel } from '@/app/(authenticated)/dashboard/_components/weight/today-weight-panel';
 import { YesterdayStepPanel } from '@/app/(authenticated)/dashboard/_components/step/yesterday-step-panel';
 import { TodayTotalEnergyPanel } from '@/app/(authenticated)/dashboard/_components/meal/today-total-energy-panel';
 
 const Page: FC = async () => {
-  const user = await getUserCache();
-  if (!user) return null;
-
-  const todayWeightPromise = getTodayWeight(user.id);
-  const yesterdayStepPromise = getYesterdayStep(user.id);
-  const todayTotalEnergyPromise = getTodayTotalEnergy(user.id);
+  const todayWeightPromise = getTodayWeight();
+  const yesterdayStepPromise = getYesterdayStep();
+  const todayTotalEnergyPromise = getTodayTotalEnergy();
 
   return (
     <AuthenticatedTemplate pageTitle="ホーム">

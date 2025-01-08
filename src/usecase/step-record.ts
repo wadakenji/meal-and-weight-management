@@ -22,8 +22,18 @@ export const registerStepRecord = async (stepRecord: StepRecord) => {
   return stepRecordRowToStepRecord(res.data);
 };
 
-export const getYesterdayStep = async (userId: string) => {
+export const getYesterdayStep = async (userId?: string) => {
   const supabaseClient = await createSupabaseServerClient();
+
+  if (userId === undefined) {
+    const res = await supabaseClient.auth.getUser();
+    if (res.error) {
+      console.error(res.error);
+      throw new Error('usecase: getYesterdayStep');
+    }
+    userId = res.data.user.id;
+  }
+
   const res = await supabaseClient
     .from('step_records')
     .select('step')

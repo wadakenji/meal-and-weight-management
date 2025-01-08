@@ -1,3 +1,10 @@
+type Session = {
+  userId: string;
+  email: string | undefined;
+  username: string | undefined;
+  userRegistered: boolean | undefined;
+};
+
 type User = { id: string; email: string } & (
   | {
       name: string;

@@ -1,15 +1,17 @@
-import { FC } from 'react';
+import { FC, Suspense } from 'react';
 import { AuthenticatedTemplate } from '@/app/(authenticated)/_components/template/authenticated-template/authenticated-template';
-import { getUserCache } from '@/app/_cache/getUser';
 import { UserForm } from '@/app/(authenticated)/user-settings/_components/user-form/user-form';
+import { getUser } from '@/usecase/user';
+import { IconSpinner } from '@/components/icon/spinner';
 
 const Page: FC = async () => {
-  const user = await getUserCache();
-  if (!user) return null;
+  const userPromise = getUser();
 
   return (
     <AuthenticatedTemplate pageTitle="ユーザー設定">
-      <UserForm initialUser={user} />
+      <Suspense fallback={<IconSpinner mxAuto />}>
+        <UserForm initialUserPromise={userPromise} />
+      </Suspense>
     </AuthenticatedTemplate>
   );
 };

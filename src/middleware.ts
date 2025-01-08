@@ -1,9 +1,9 @@
-import { getUser } from '@/usecase/user';
 import { NextRequest, NextResponse } from 'next/server';
+import { getSession } from '@/usecase/authentication';
 
 export const middleware = async (request: NextRequest) => {
-  const user = await getUser();
-  const isLoggedIn = !!user;
+  const session = await getSession();
+  const isLoggedIn = !!session;
 
   switch (request.nextUrl.pathname) {
     case '/':
@@ -20,7 +20,7 @@ export const middleware = async (request: NextRequest) => {
     default:
       if (!isLoggedIn)
         return NextResponse.redirect(new URL('/sign-in', request.url));
-      if (!user.name)
+      if (!session.userRegistered)
         return NextResponse.redirect(new URL('/user-settings', request.url));
       break;
   }

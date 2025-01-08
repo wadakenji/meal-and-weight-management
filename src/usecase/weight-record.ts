@@ -25,8 +25,18 @@ export const registerWeightRecord = async (
   return weightRecordRowToWeightRecord(res.data);
 };
 
-export const getTodayWeight = async (userId: string) => {
+export const getTodayWeight = async (userId?: string) => {
   const supabaseClient = await createSupabaseServerClient();
+
+  if (userId === undefined) {
+    const res = await supabaseClient.auth.getUser();
+    if (res.error) {
+      console.error(res.error);
+      throw new Error('usecase: getTodayWeight');
+    }
+    userId = res.data.user.id;
+  }
+
   const res = await supabaseClient
     .from('weight_records')
     .select('weight')
@@ -43,9 +53,18 @@ export const getTodayWeight = async (userId: string) => {
 };
 
 export const getLastOneMonthWeightRecords = async (
-  userId: string,
+  userId?: string,
 ): Promise<WeightRecord[]> => {
   const supabaseClient = await createSupabaseServerClient();
+
+  if (userId === undefined) {
+    const res = await supabaseClient.auth.getUser();
+    if (res.error) {
+      console.error(res.error);
+      throw new Error('usecase: getLastOneMonthWeightRecords');
+    }
+    userId = res.data.user.id;
+  }
 
   const today = new Date();
   const oneMonthAgo = getOneMonthAgoDate();
@@ -60,7 +79,7 @@ export const getLastOneMonthWeightRecords = async (
 
   if (res.error) {
     console.error(res.error);
-    throw new Error('usecase: getTodayWeight');
+    throw new Error('usecase: getLastOneMonthWeightRecords');
   }
 
   return res.data.map((row) => weightRecordRowToWeightRecord(row));

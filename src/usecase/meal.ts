@@ -19,8 +19,18 @@ export const registerMeal = async (meal: MealToCreate) => {
   return mealRowToMeal(res.data);
 };
 
-export const getTodayTotalEnergy = async (userId: string) => {
+export const getTodayTotalEnergy = async (userId?: string) => {
   const supabaseClient = await createSupabaseServerClient();
+
+  if (userId === undefined) {
+    const res = await supabaseClient.auth.getUser();
+    if (res.error) {
+      console.error(res.error);
+      throw new Error('usecase: getTodayTotalEnergy');
+    }
+    userId = res.data.user.id;
+  }
+
   const [startOfDate, endOfDate] = getRangeOfDate(new Date());
   const res = await supabaseClient
     .from('meals')

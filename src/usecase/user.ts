@@ -36,7 +36,11 @@ export const updateUser = async (
 ): Promise<User> => {
   const supabaseClient = await createSupabaseServerClient();
 
-  if (password !== null) await supabaseClient.auth.updateUser({ password });
+  // todo error handling
+  await supabaseClient.auth.updateUser({
+    password: password || undefined,
+    data: { userRegistered: true, username: user.name },
+  });
 
   const res = await supabaseClient
     .from('users')
