@@ -39,7 +39,7 @@ export const updateUser = async (
   // todo error handling
   await supabaseClient.auth.updateUser({
     password: password || undefined,
-    data: { userRegistered: true },
+    data: { userRegistered: true, username: user.name },
   });
 
   const res = await supabaseClient

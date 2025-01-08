@@ -37,9 +37,12 @@ export const getSession = async (): Promise<Session | null> => {
 
   const userId = res.data.session.user.id;
   const email = res.data.session.user.email;
+  const username = res.data.session.user.user_metadata.username as
+    | string
+    | undefined;
   const userRegistered = res.data.session.user.user_metadata.userRegistered as
     | boolean
     | undefined;
 
-  return { userId, email, userRegistered };
+  return { userId, email, username, userRegistered };
 };
