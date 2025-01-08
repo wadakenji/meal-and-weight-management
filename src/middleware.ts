@@ -7,11 +7,11 @@ export const middleware = async (request: NextRequest) => {
 
   switch (request.nextUrl.pathname) {
     case '/':
-      const redirectPath = isLoggedIn ? '/register' : '/sign-in';
+      const redirectPath = isLoggedIn ? '/dashboard' : '/sign-in';
       return NextResponse.redirect(new URL(redirectPath, request.url));
     case '/sign-in':
       if (isLoggedIn)
-        return NextResponse.redirect(new URL('/register', request.url));
+        return NextResponse.redirect(new URL('/dashboard', request.url));
       break;
     case '/user-settings':
       if (!isLoggedIn)

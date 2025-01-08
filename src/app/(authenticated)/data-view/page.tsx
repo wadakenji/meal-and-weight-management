@@ -1,23 +1,22 @@
-import { FC } from 'react';
+import { FC, Suspense } from 'react';
 import { AuthenticatedTemplate } from '@/app/(authenticated)/_components/template/authenticated-template/authenticated-template';
 import { getUserCache } from '@/app/_cache/getUser';
 import { getLastOneMonthWeightRecords } from '@/usecase/weight-record';
-import { dateToDateInputValue } from '@/utils/date';
+import { WeightChart } from '@/app/(authenticated)/data-view/_components/weight-chart/weight-chart';
+import { IconSpinner } from '@/components/icon/spinner';
 
 const Page: FC = async () => {
   const user = await getUserCache();
   if (!user) return null;
 
-  const weightRecords = await getLastOneMonthWeightRecords(user.id);
+  const weightRecordsPromise = getLastOneMonthWeightRecords(user.id);
 
   return (
     <AuthenticatedTemplate pageTitle="グラフ表示">
-      <p>工事中…</p>
-      {weightRecords.map(({ date, weight }) => (
-        <p key={date.toISOString()}>
-          {dateToDateInputValue(date)}：{weight} kg
-        </p>
-      ))}
+      <h2 className="mb-8px font-bold">体重</h2>
+      <Suspense fallback={<IconSpinner mxAuto />}>
+        <WeightChart weightRecordsPromise={weightRecordsPromise} />
+      </Suspense>
     </AuthenticatedTemplate>
   );
 };
