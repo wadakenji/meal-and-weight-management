@@ -29,3 +29,16 @@ export const verifyInviteEmailToken = async (
       }
     });
 };
+
+export const getSession = async (): Promise<Session | null> => {
+  const supabaseClient = await createSupabaseServerClient();
+  const res = await supabaseClient.auth.getSession();
+  if (!res.data.session) return null;
+
+  const userId = res.data.session.user.id;
+  const userRegistered = res.data.session.user.user_metadata.userRegistered as
+    | boolean
+    | undefined;
+
+  return { userId, userRegistered };
+};
