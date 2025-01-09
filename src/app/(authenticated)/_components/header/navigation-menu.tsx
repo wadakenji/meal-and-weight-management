@@ -8,6 +8,7 @@ import { IconUser } from '@/components/icon/user';
 import { IconLineChart } from '@/components/icon/line-chart';
 import { VERSION } from '@/constants/version';
 import { IconHouse } from '@/components/icon/house';
+import { SignOutButton } from '@/app/(authenticated)/_components/header/sign-out-button';
 
 const ITEMS = [
   {
@@ -45,11 +46,11 @@ export const NavigationMenu: FC = () => {
       </button>
       <div
         className={clsx(
-          'absolute right-0 top-full translate-y-8px rounded border border-line bg-white px-16px py-8px',
+          'absolute right-0 top-full translate-y-8px space-y-8px rounded border border-line bg-white px-16px py-8px',
           !isOpen && 'hidden',
         )}
       >
-        <nav className="mb-8px">
+        <nav>
           <ul>
             {ITEMS.map(({ href, text, icon }) => (
               <li key={href}>
@@ -64,6 +65,7 @@ export const NavigationMenu: FC = () => {
             ))}
           </ul>
         </nav>
+        <SignOutButton />
         <div className="text-right text-sm font-bold text-text-default">
           {VERSION}
         </div>

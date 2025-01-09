@@ -2,7 +2,7 @@ import { FC } from 'react';
 import clsx from 'clsx';
 
 type Props = {
-  color?: 'white' | 'gray';
+  color?: 'white' | 'gray' | 'primary';
   mxAuto?: boolean;
 };
 
@@ -15,6 +15,7 @@ export const IconSpinner: FC<Props> = ({ color = 'gray', mxAuto = false }) => {
         'animate-spin',
         color === 'gray' && 'fill-icon-gray',
         color === 'white' && 'fill-white',
+        color === 'primary' && 'fill-primary',
         mxAuto && 'mx-auto',
       )}
       width={20}

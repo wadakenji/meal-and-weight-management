@@ -15,6 +15,11 @@ export const signIn = async (
     });
 };
 
+export const signOut = async () => {
+  const supabaseClient = await createSupabaseServerClient();
+  await supabaseClient.auth.signOut();
+};
+
 export const verifyInviteEmailToken = async (
   email: string,
   token: string,
