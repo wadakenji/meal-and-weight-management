@@ -8,7 +8,6 @@ import { YesterdayStepPanel } from '@/app/(authenticated)/dashboard/_components/
 import { TodayTotalEnergyPanel } from '@/app/(authenticated)/dashboard/_components/meal/today-total-energy-panel';
 
 const Page: FC = async () => {
-  throw new Error('');
   const todayWeightPromise = getTodayWeight();
   const yesterdayStepPromise = getYesterdayStep();
   const todayTotalEnergyPromise = getTodayTotalEnergy();
