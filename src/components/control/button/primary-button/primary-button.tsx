@@ -1,13 +1,16 @@
 import { ButtonHTMLAttributes, FC } from 'react';
 import clsx from 'clsx';
+import { IconSpinner } from '@/components/icon/spinner';
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   style?: 'outlined' | 'filled';
+  pending?: boolean;
 };
 
 export const PrimaryButton: FC<Props> = ({
   className,
   children,
+  pending,
   style = 'outlined',
   ...props
 }) => {
@@ -21,7 +24,14 @@ export const PrimaryButton: FC<Props> = ({
       )}
       {...props}
     >
-      {children}
+      {pending ? (
+        <IconSpinner
+          mxAuto
+          color={style === 'outlined' ? 'primary' : 'white'}
+        />
+      ) : (
+        children
+      )}
     </button>
   );
 };
