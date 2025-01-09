@@ -17,7 +17,7 @@ export const PrimaryButton: FC<Props> = ({
   return (
     <button
       className={clsx(
-        'block min-h-min-button-size min-w-[200px] rounded-lg',
+        'block min-h-min-button-size rounded-lg px-16px py-8px',
         style === 'outlined' && 'border border-primary text-primary',
         style === 'filled' && 'bg-primary text-white',
         className,
