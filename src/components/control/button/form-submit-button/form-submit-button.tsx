@@ -12,7 +12,7 @@ export const FormSubmitButton: FC<Props> = ({ children }) => {
     <PrimaryButton
       style="filled"
       type="submit"
-      className="mx-auto disabled:opacity-30"
+      className="mx-auto min-w-[200px] disabled:opacity-30"
       pending={pending}
       disabled={pending}
     >

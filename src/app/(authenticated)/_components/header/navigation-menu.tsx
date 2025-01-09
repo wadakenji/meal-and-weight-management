@@ -8,7 +8,7 @@ import { IconUser } from '@/components/icon/user';
 import { IconLineChart } from '@/components/icon/line-chart';
 import { VERSION } from '@/constants/version';
 import { IconHouse } from '@/components/icon/house';
-import { SignOutButton } from '@/app/(authenticated)/_components/header/sign-out-button';
+import { SignOutButton } from '@/app/(authenticated)/_components/sign-out-button/sign-out-button';
 
 const ITEMS = [
   {
@@ -65,7 +65,7 @@ export const NavigationMenu: FC = () => {
             ))}
           </ul>
         </nav>
-        <SignOutButton />
+        <SignOutButton className="w-[150px]" />
         <div className="text-right text-sm font-bold text-text-default">
           {VERSION}
         </div>

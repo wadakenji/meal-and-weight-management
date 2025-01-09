@@ -4,6 +4,7 @@ import {
   weightRecordRowToWeightRecord,
   weightRecordToWeightRecordProps,
 } from '@/libs/supabase/interface/weight-record';
+import { UsecaseAuthError, UsecaseDbError } from '@/usecase/shared/error';
 
 export const registerWeightRecord = async (
   weightRecord: WeightRecord,
@@ -19,7 +20,10 @@ export const registerWeightRecord = async (
 
   if (res.error) {
     console.error(res.error);
-    throw new Error('usecase: registerWeightRecord');
+    throw new UsecaseDbError({
+      module: 'weight-record',
+      function: 'registerWeightRecord',
+    });
   }
 
   return weightRecordRowToWeightRecord(res.data);
@@ -32,7 +36,10 @@ export const getTodayWeight = async (userId?: string) => {
     const res = await supabaseClient.auth.getUser();
     if (res.error) {
       console.error(res.error);
-      throw new Error('usecase: getTodayWeight');
+      throw new UsecaseAuthError({
+        module: 'weight-record',
+        function: 'getTodayWeight',
+      });
     }
     userId = res.data.user.id;
   }
@@ -46,7 +53,10 @@ export const getTodayWeight = async (userId?: string) => {
 
   if (res.error) {
     console.error(res.error);
-    throw new Error('usecase: getTodayWeight');
+    throw new UsecaseDbError({
+      module: 'weight-record',
+      function: 'getTodayWeight',
+    });
   }
 
   return res.data && res.data.weight;
@@ -61,7 +71,10 @@ export const getLastOneMonthWeightRecords = async (
     const res = await supabaseClient.auth.getUser();
     if (res.error) {
       console.error(res.error);
-      throw new Error('usecase: getLastOneMonthWeightRecords');
+      throw new UsecaseAuthError({
+        module: 'weight-record',
+        function: 'getLastOneMonthWeightRecords',
+      });
     }
     userId = res.data.user.id;
   }
@@ -79,7 +92,10 @@ export const getLastOneMonthWeightRecords = async (
 
   if (res.error) {
     console.error(res.error);
-    throw new Error('usecase: getLastOneMonthWeightRecords');
+    throw new UsecaseDbError({
+      module: 'weight-record',
+      function: 'getLastOneMonthWeightRecords',
+    });
   }
 
   return res.data.map((row) => weightRecordRowToWeightRecord(row));

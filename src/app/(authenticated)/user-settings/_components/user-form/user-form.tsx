@@ -60,7 +60,7 @@ export const UserForm: FC<Props> = ({ initialUserPromise }) => {
           />
         ) : (
           <PrimaryButton
-            className="mx-auto"
+            className="mx-auto w-[200px]"
             type="button"
             onClick={() => setShowsPasswordInput(true)}
           >

@@ -4,6 +4,7 @@ import {
   stepRecordToStepRecordProps,
   stepRecordRowToStepRecord,
 } from '@/libs/supabase/interface/step-record';
+import { UsecaseAuthError, UsecaseDbError } from '@/usecase/shared/error';
 
 export const registerStepRecord = async (stepRecord: StepRecord) => {
   const supabaseClient = await createSupabaseServerClient();
@@ -16,7 +17,10 @@ export const registerStepRecord = async (stepRecord: StepRecord) => {
 
   if (res.error) {
     console.error(res.error);
-    throw new Error('usecase: registerStepRecord');
+    throw new UsecaseDbError({
+      module: 'step-record',
+      function: 'registerStepRecord',
+    });
   }
 
   return stepRecordRowToStepRecord(res.data);
@@ -29,7 +33,10 @@ export const getYesterdayStep = async (userId?: string) => {
     const res = await supabaseClient.auth.getUser();
     if (res.error) {
       console.error(res.error);
-      throw new Error('usecase: getYesterdayStep');
+      throw new UsecaseAuthError({
+        module: 'step-record',
+        function: 'getYesterdayStep',
+      });
     }
     userId = res.data.user.id;
   }
@@ -43,7 +50,10 @@ export const getYesterdayStep = async (userId?: string) => {
 
   if (res.error) {
     console.error(res.error);
-    throw new Error('usecase: getYesterdayStep');
+    throw new UsecaseDbError({
+      module: 'step-record',
+      function: 'getYesterdayStep',
+    });
   }
 
   return res.data && res.data.step;
