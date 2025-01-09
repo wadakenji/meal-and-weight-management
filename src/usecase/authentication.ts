@@ -1,4 +1,5 @@
 import { createSupabaseServerClient } from '@/libs/supabase/createClient';
+import { UsecaseAuthError } from '@/usecase/shared/error';
 
 export const signIn = async (
   email: string,
@@ -10,14 +11,25 @@ export const signIn = async (
     .then((res) => {
       if (res.error) {
         console.error(res.error);
-        throw new Error('usecase: signIn');
+        throw new UsecaseAuthError({
+          module: 'authentication',
+          function: 'signIn',
+        });
       }
     });
 };
 
 export const signOut = async () => {
   const supabaseClient = await createSupabaseServerClient();
-  await supabaseClient.auth.signOut();
+  await supabaseClient.auth.signOut().then((res) => {
+    if (res.error) {
+      console.error(res.error);
+      throw new UsecaseAuthError({
+        module: 'authentication',
+        function: 'signOut',
+      });
+    }
+  });
 };
 
 export const verifyInviteEmailToken = async (
@@ -30,7 +42,10 @@ export const verifyInviteEmailToken = async (
     .then((res) => {
       if (res.error) {
         console.error(res.error);
-        throw new Error('usecase: verifyInviteEmailToken');
+        throw new UsecaseAuthError({
+          module: 'authentication',
+          function: 'verifyInviteEmailToken',
+        });
       }
     });
 };
