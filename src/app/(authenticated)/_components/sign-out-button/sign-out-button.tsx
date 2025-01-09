@@ -8,19 +8,19 @@ import { useFormStatus } from 'react-dom';
 const Button: FC = () => {
   const { pending } = useFormStatus();
   return (
-    <PrimaryButton
-      className="min-w-[150px]"
-      disabled={pending}
-      pending={pending}
-    >
+    <PrimaryButton className="w-full" disabled={pending} pending={pending}>
       ログアウト
     </PrimaryButton>
   );
 };
 
-export const SignOutButton: FC = () => {
+type Props = {
+  className?: string;
+};
+
+export const SignOutButton: FC<Props> = ({ className }) => {
   return (
-    <form action={signOutAction}>
+    <form action={signOutAction} className={className}>
       <Button />
     </form>
   );
