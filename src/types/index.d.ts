@@ -18,6 +18,15 @@ type User = { id: string; email: string } & (
     }
 );
 
+type UserGroup = {
+  id: number;
+  name: string;
+  users: {
+    id: string;
+    name: string;
+  }[];
+};
+
 type WeightRecord = {
   userId: string;
   date: Date;
