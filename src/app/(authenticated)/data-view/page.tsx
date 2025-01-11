@@ -1,17 +1,27 @@
 import { FC, Suspense } from 'react';
 import { AuthenticatedTemplate } from '@/app/(authenticated)/_components/template/authenticated-template/authenticated-template';
 import { getLastOneMonthWeightRecords } from '@/usecase/weight-record';
-import { WeightChart } from '@/app/(authenticated)/data-view/_components/weight-chart/weight-chart';
 import { IconSpinner } from '@/components/icon/spinner';
+import { getBelongingUserGroups } from '@/usecase/user-group';
+import { UserDataList } from '@/app/(authenticated)/data-view/_components/user-data-list/user-data-list';
 
+// todo データの見せ方検討
 const Page: FC = async () => {
-  const weightRecordsPromise = getLastOneMonthWeightRecords();
+  const userDataPromise = getBelongingUserGroups().then((userGroups) => {
+    const users = userGroups[0].users;
+    return Promise.all(
+      users.map(async ({ id, name }) => ({
+        userId: id,
+        username: name,
+        weightRecords: await getLastOneMonthWeightRecords(id),
+      })),
+    );
+  });
 
   return (
     <AuthenticatedTemplate pageTitle="グラフ表示">
-      <h2 className="mb-8px font-bold">体重</h2>
       <Suspense fallback={<IconSpinner mxAuto />}>
-        <WeightChart weightRecordsPromise={weightRecordsPromise} />
+        <UserDataList userDataPromise={userDataPromise} />
       </Suspense>
     </AuthenticatedTemplate>
   );
