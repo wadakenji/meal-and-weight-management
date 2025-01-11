@@ -6,3 +6,15 @@ body {
   @apply text-text-default;
   @apply font-base-family;
 }
+
+.dir-rtl {
+  direction: rtl;
+}
+
+.dir-ltr {
+  direction: ltr;
+}
+
+.transform-box-content {
+  transform-box: content-box;
+}

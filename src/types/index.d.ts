@@ -1,3 +1,10 @@
+type Session = {
+  userId: string;
+  email: string | undefined;
+  username: string | undefined;
+  userRegistered: boolean | undefined;
+};
+
 type User = { id: string; email: string } & (
   | {
       name: string;
@@ -10,6 +17,15 @@ type User = { id: string; email: string } & (
       energyPerStep?: never;
     }
 );
+
+type UserGroup = {
+  id: number;
+  name: string;
+  users: {
+    id: string;
+    name: string;
+  }[];
+};
 
 type WeightRecord = {
   userId: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useActionState, useState } from 'react';
+import { FC, use, useActionState, useState } from 'react';
 import { updateUserAction } from '@/app/actions/update-user';
 import { LabelInputSet } from '@/components/control/label-input-set/label-input-set';
 import { FormSubmitButton } from '@/components/control/button/form-submit-button/form-submit-button';
@@ -9,13 +9,18 @@ import { PrimaryButton } from '@/components/control/button/primary-button/primar
 import { USER_FORM_VALUE_NAMES } from '@/helpers/form/update-user-form';
 
 type Props = {
-  initialUser: User;
+  initialUserPromise: Promise<User | null>;
 };
 
-export const UserForm: FC<Props> = ({ initialUser }) => {
-  const isFirstRegister = initialUser.name === undefined;
+export const UserForm: FC<Props> = ({ initialUserPromise }) => {
+  const initialUser = use(initialUserPromise);
+
+  const isFirstRegister = !!initialUser && initialUser.name === undefined;
   const [showsPasswordInput, setShowsPasswordInput] = useState(isFirstRegister);
   const [state, formAction, isPending] = useActionState(updateUserAction, null);
+
+  if (!initialUser) return null;
+
   const updatedUser = state?.updatedUser;
   const user = updatedUser || initialUser;
 
@@ -55,7 +60,7 @@ export const UserForm: FC<Props> = ({ initialUser }) => {
           />
         ) : (
           <PrimaryButton
-            className="mx-auto"
+            className="mx-auto w-[200px]"
             type="button"
             onClick={() => setShowsPasswordInput(true)}
           >

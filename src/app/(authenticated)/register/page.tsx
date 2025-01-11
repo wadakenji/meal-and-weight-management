@@ -1,24 +1,24 @@
 import { FC } from 'react';
 import { AuthenticatedTemplate } from '@/app/(authenticated)/_components/template/authenticated-template/authenticated-template';
-import { getTodayWeight } from '@/usecase/weight-record';
-import { getYesterdayStep } from '@/usecase/step-record';
-import { getUserCache } from '@/app/_cache/getUser';
-import { getTodayTotalEnergy } from '@/usecase/meal';
-import { DataViewAndForms } from '@/app/(authenticated)/register/_components/data-view-and-forms/data-view-and-forms';
+import { MealForm } from '@/app/(authenticated)/register/_components/form/meal-form/meal-form';
+import { WeightForm } from '@/app/(authenticated)/register/_components/form/weight-form/weight-form';
+import { StepForm } from '@/app/(authenticated)/register/_components/form/step-form/step-form';
 
 const Page: FC = async () => {
-  const user = await getUserCache();
-  if (!user) return null;
-
-  const todayWeight = await getTodayWeight(user.id);
-  const yesterdayStep = await getYesterdayStep(user.id);
-  const todayTotalEnergy = await getTodayTotalEnergy(user.id);
-
   return (
     <AuthenticatedTemplate pageTitle="データ登録">
-      <DataViewAndForms
-        initialValue={{ todayWeight, yesterdayStep, todayTotalEnergy }}
-      />
+      <section className="mb-24px">
+        <h2 className="mb-8px font-bold">食事登録</h2>
+        <MealForm />
+      </section>
+      <section className="mb-24px">
+        <h2 className="mb-8px font-bold">体重登録</h2>
+        <WeightForm />
+      </section>
+      <section>
+        <h2 className="mb-8px font-bold">歩数登録</h2>
+        <StepForm />
+      </section>
     </AuthenticatedTemplate>
   );
 };

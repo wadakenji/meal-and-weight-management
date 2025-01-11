@@ -1,5 +1,6 @@
 import { createSupabaseServerClient } from '@/libs/supabase/createClient';
 import { userRowToUser, userToUserProps } from '@/libs/supabase/interface/user';
+import { UsecaseAuthError, UsecaseDbError } from '@/usecase/shared/error';
 
 export const getUser = async (): Promise<User | null> => {
   const supabaseClient = await createSupabaseServerClient();
@@ -21,7 +22,7 @@ export const getUser = async (): Promise<User | null> => {
 
   if (res.error) {
     console.error(res.error);
-    throw new Error('usecase: getUser');
+    throw new UsecaseDbError({ module: 'user', function: 'getUser' });
   }
 
   const user = res.data;
@@ -36,18 +37,30 @@ export const updateUser = async (
 ): Promise<User> => {
   const supabaseClient = await createSupabaseServerClient();
 
-  if (password !== null) await supabaseClient.auth.updateUser({ password });
+  const res = await supabaseClient.auth
+    .updateUser({
+      password: password || undefined,
+      data: { userRegistered: true, username: user.name },
+    })
+    .then(async (authRes) => {
+      if (authRes.error) {
+        console.error(authRes.error);
+        throw new UsecaseAuthError({ module: 'user', function: 'updateUser' });
+      }
 
-  const res = await supabaseClient
-    .from('users')
-    .upsert(userToUserProps(user))
-    .select()
-    .single();
+      const dbRes = await supabaseClient
+        .from('users')
+        .upsert(userToUserProps(user))
+        .select()
+        .single();
 
-  if (res.error) {
-    console.error(res.error);
-    throw new Error('usecase: updateUser');
-  }
+      if (dbRes.error) {
+        console.error(dbRes.error);
+        throw new UsecaseDbError({ module: 'user', function: 'updateUser' });
+      }
+
+      return dbRes;
+    });
 
   return userRowToUser(user.id, user.email, res.data);
 };

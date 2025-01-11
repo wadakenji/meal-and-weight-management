@@ -24,14 +24,16 @@ export default {
       line: {
         DEFAULT: '#CCCCCC',
       },
-    },
-    fontSize: {
-      '2xs': '10px',
-      xs: '12px',
-      sm: '14px',
-      base: '16px',
-      'app-title': '22px',
-      'page-title': '20px',
+      icon: {
+        gray: '#888888',
+      },
+      'line-chart': {
+        'x-axis': '#999999',
+        'x-grid': '#999999',
+        'x-grid-label': '#999999',
+        'y-grid': '#999999',
+        'y-grid-label': '#999999',
+      },
     },
     spacing: {
       '0': '0',
@@ -44,6 +46,13 @@ export default {
       '32px': '32px',
       'header-height': '58px',
       'min-button-size': '44px',
+    },
+    extend: {
+      fontSize: {
+        '2xs': '10px',
+        'app-title': '22px',
+        'page-title': '20px',
+      },
     },
   },
   plugins: [],

@@ -1,23 +1,28 @@
-import { FC } from 'react';
+import { FC, Suspense } from 'react';
 import { AuthenticatedTemplate } from '@/app/(authenticated)/_components/template/authenticated-template/authenticated-template';
-import { getUserCache } from '@/app/_cache/getUser';
 import { getLastOneMonthWeightRecords } from '@/usecase/weight-record';
-import { dateToDateInputValue } from '@/utils/date';
+import { IconSpinner } from '@/components/icon/spinner';
+import { getBelongingUserGroups } from '@/usecase/user-group';
+import { UserDataList } from '@/app/(authenticated)/data-view/_components/user-data-list/user-data-list';
 
+// todo データの見せ方検討
 const Page: FC = async () => {
-  const user = await getUserCache();
-  if (!user) return null;
-
-  const weightRecords = await getLastOneMonthWeightRecords(user.id);
+  const userDataPromise = getBelongingUserGroups().then((userGroups) => {
+    const users = userGroups[0].users;
+    return Promise.all(
+      users.map(async ({ id, name }) => ({
+        userId: id,
+        username: name,
+        weightRecords: await getLastOneMonthWeightRecords(id),
+      })),
+    );
+  });
 
   return (
     <AuthenticatedTemplate pageTitle="グラフ表示">
-      <p>工事中…</p>
-      {weightRecords.map(({ date, weight }) => (
-        <p key={date.toISOString()}>
-          {dateToDateInputValue(date)}：{weight} kg
-        </p>
-      ))}
+      <Suspense fallback={<IconSpinner mxAuto />}>
+        <UserDataList userDataPromise={userDataPromise} />
+      </Suspense>
     </AuthenticatedTemplate>
   );
 };
