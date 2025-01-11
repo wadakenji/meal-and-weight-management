@@ -85,6 +85,8 @@ export const DateLineChart: FC<Props> = ({
   color = 'primary',
   marginRight,
 }) => {
+  if (data.length < 1) return <p>データがありません。</p>;
+
   const colorClassName = colorClassNameMap[color];
 
   const chartMargin = {

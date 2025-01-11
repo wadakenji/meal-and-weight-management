@@ -1,15 +1,12 @@
-'use client';
-
-import { FC, use } from 'react';
+import { FC } from 'react';
 import { DateLineChart } from '@/components/chart/date-line-chart';
 import { getOneMonthAgoDate } from '@/utils/date';
 
 type Props = {
-  weightRecordsPromise: Promise<WeightRecord[]>;
+  weightRecords: WeightRecord[];
 };
 
-export const WeightChart: FC<Props> = ({ weightRecordsPromise }) => {
-  const weightRecords = use(weightRecordsPromise);
+export const WeightChart: FC<Props> = ({ weightRecords }) => {
   const chartData = weightRecords.map(({ date, weight }) => ({
     date,
     value: weight,
