@@ -33,8 +33,6 @@ export const dateToDatetimeInputValue = (
   return `${format(date, 'yyyy-MM-dd', { in: tz })}T${format(date, 'HH:mm', { in: tz })}`;
 };
 
-export const datetimeInputValueToDate = (value: string) => toDate(value);
-
 export const dateToDateInputValue = (
   date: Date,
   options?: DateFunctionOptions,
