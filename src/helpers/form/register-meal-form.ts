@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { datetimeInputValueToDate, isValidDate } from '@/utils/date';
+import { isValidDate } from '@/utils/date';
 
 const mealFormSchema = z.object({
   datetime: z.custom<string>((value: unknown) => {
@@ -54,7 +54,10 @@ export const parsedMealFormDataToMeal = (
   const { datetime, name, amountOfEnergy, amountOfProtein } = parsedFormData;
   return {
     userId,
-    datetime: datetimeInputValueToDate(datetime),
+    // fixme input[type=datetime-local]を使用しており、
+    //  一意なdatetime文字列をフォームデータから取得できない問題に対する応急処置
+    //  タイムゾーンの情報も含めてフォームから送信するように修正する
+    datetime: new Date(datetime + ':00+0900'),
     name,
     amountOfEnergy,
     amountOfProtein,
