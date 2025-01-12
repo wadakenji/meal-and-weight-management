@@ -10,6 +10,7 @@
     "generate": "supabase gen types --lang typescript --linked > src/types/supabase.ts"
   },
   "dependencies": {
+    "@date-fns/tz": "^1.2.0",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.47.10",
     "clsx": "^2.1.1",
