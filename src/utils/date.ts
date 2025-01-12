@@ -20,12 +20,25 @@ type DateFunctionOptions = {
 const optionsToTz = (options: DateFunctionOptions | undefined) =>
   typeof options?.timezone === 'string' ? tz(options.timezone) : undefined;
 
-export const dateToDatetimeInputValue = (date: Date) =>
-  format(date, 'yyyy-MM-dd') + 'T' + format(date, 'HH:mm');
+export const dateToMonthDateString = (
+  date: Date,
+  options?: DateFunctionOptions,
+) => format(date, 'M/d', { in: optionsToTz(options) });
+
+export const dateToDatetimeInputValue = (
+  date: Date,
+  options?: DateFunctionOptions,
+) => {
+  const tz = optionsToTz(options);
+  return `${format(date, 'yyyy-MM-dd', { in: tz })}T${format(date, 'HH:mm', { in: tz })}`;
+};
 
 export const datetimeInputValueToDate = (value: string) => toDate(value);
 
-export const dateToDateInputValue = (date: Date) => format(date, 'yyyy-MM-dd');
+export const dateToDateInputValue = (
+  date: Date,
+  options?: DateFunctionOptions,
+) => format(date, 'yyyy-MM-dd', { in: optionsToTz(options) });
 
 export const dateInputValueToDate = (value: string): Date =>
   toDate(value + 'T00:00');
@@ -39,7 +52,10 @@ export const dateToDateColumnValue = (
   options?: DateFunctionOptions,
 ) => format(date, 'yyyy-MM-dd', { in: optionsToTz(options) });
 
-export const dateColumnValueToDate = (value: string): Date =>
+/**
+ * 日付を表す文字列（yyyy-MM-dd）をシステムのタイムゾーンにおけるその日付の0時を表すDateオブジェクトに変換する
+ */
+export const dateStringToLocalTimezoneDate = (value: string): Date =>
   toDate(value + 'T00:00');
 
 export const getYesterday = () => {
@@ -58,13 +74,21 @@ export const getRangeOfDate = (date: Date, options?: DateFunctionOptions) => {
   ];
 };
 
-export const getEachDates = (start: Date, end: Date) =>
-  eachDayOfInterval({ start, end });
+export const getEachDates = (
+  start: Date,
+  end: Date,
+  options?: DateFunctionOptions,
+) => eachDayOfInterval({ start, end }, { in: optionsToTz(options) });
 
-export const getDateDiff = (earlier: Date, later: Date) =>
-  differenceInCalendarDays(later, earlier);
+export const getDateDiff = (
+  earlier: Date,
+  later: Date,
+  options?: DateFunctionOptions,
+) => differenceInCalendarDays(later, earlier, { in: optionsToTz(options) });
 
-export const isToday = dateFnsIsToday;
-export const isYesterday = dateFnsIsYesterday;
+export const isToday = (date: Date, options?: DateFunctionOptions) =>
+  dateFnsIsToday(date, { in: optionsToTz(options) });
+export const isYesterday = (date: Date, options?: DateFunctionOptions) =>
+  dateFnsIsYesterday(date, { in: optionsToTz(options) });
 
 export const isValidDate = isValid;
