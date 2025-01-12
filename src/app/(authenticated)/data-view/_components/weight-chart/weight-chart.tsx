@@ -1,6 +1,11 @@
+'use client';
+
 import { FC } from 'react';
 import { DateLineChart } from '@/components/chart/date-line-chart';
-import { getOneMonthAgoDate } from '@/utils/date';
+import {
+  dateStringToLocalTimezoneDate,
+  getOneMonthAgoDate,
+} from '@/utils/date';
 
 type Props = {
   weightRecords: WeightRecord[];
@@ -8,7 +13,7 @@ type Props = {
 
 export const WeightChart: FC<Props> = ({ weightRecords }) => {
   const chartData = weightRecords.map(({ date, weight }) => ({
-    date,
+    date: dateStringToLocalTimezoneDate(date),
     value: weight,
   }));
 

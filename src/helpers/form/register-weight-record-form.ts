@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { dateInputValueToDate } from '@/utils/date';
 
 const weightFormSchema = z.object({
   date: z.string().date(),
@@ -35,5 +34,5 @@ export const parsedWeightFormDataToWeightRecord = (
   parsedFormData: ParsedWeightFormData,
 ): WeightRecord => {
   const { date, weight } = parsedFormData;
-  return { userId, date: dateInputValueToDate(date), weight };
+  return { userId, date, weight };
 };

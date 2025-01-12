@@ -29,7 +29,7 @@ type UserGroup = {
 
 type WeightRecord = {
   userId: string;
-  date: Date;
+  date: string;
   weight: number;
 };
 

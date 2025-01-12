@@ -29,8 +29,13 @@ export const registerWeightAction = async (
   const parseResult = validateAndParseWeightFormData(formData);
   if (!parseResult) return { error: ERROR_MESSAGES.INVALID_USER_INPUT };
 
+  const weightRecordToRegister = parsedWeightFormDataToWeightRecord(
+    user.id,
+    parseResult,
+  );
+
   const registeredWeightRecord = await registerWeightRecord(
-    parsedWeightFormDataToWeightRecord(user.id, parseResult),
+    weightRecordToRegister,
   );
 
   return { registeredWeightRecord };
