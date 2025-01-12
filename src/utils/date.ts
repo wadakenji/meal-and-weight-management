@@ -11,8 +11,14 @@ import {
   eachDayOfInterval,
   differenceInCalendarDays,
 } from 'date-fns';
+import { tz } from '@date-fns/tz';
 
-export const dateToMonthDateString = (date: Date) => format(date, 'M/d');
+type DateFunctionOptions = {
+  timezone?: string;
+};
+
+const optionsToTz = (options: DateFunctionOptions | undefined) =>
+  typeof options?.timezone === 'string' ? tz(options.timezone) : undefined;
 
 export const dateToDatetimeInputValue = (date: Date) =>
   format(date, 'yyyy-MM-dd') + 'T' + format(date, 'HH:mm');
@@ -28,7 +34,10 @@ export const dateToDatetimeColumnValue = (date: Date) => date.toISOString();
 
 export const datetimeColumnValueToDate = (value: string): Date => toDate(value);
 
-export const dateToDateColumnValue = (date: Date) => format(date, 'yyyy-MM-dd');
+export const dateToDateColumnValue = (
+  date: Date,
+  options?: DateFunctionOptions,
+) => format(date, 'yyyy-MM-dd', { in: optionsToTz(options) });
 
 export const dateColumnValueToDate = (value: string): Date =>
   toDate(value + 'T00:00');

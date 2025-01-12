@@ -5,6 +5,7 @@ import {
   weightRecordToWeightRecordProps,
 } from '@/libs/supabase/interface/weight-record';
 import { UsecaseAuthError, UsecaseDbError } from '@/usecase/shared/error';
+import { TIMEZONE } from '@/constants/timezone';
 
 export const registerWeightRecord = async (
   weightRecord: WeightRecord,
@@ -44,11 +45,14 @@ export const getTodayWeight = async (userId?: string) => {
     userId = res.data.user.id;
   }
 
+  const todayString = dateToDateColumnValue(new Date(), {
+    timezone: TIMEZONE.ASIA_TOKYO,
+  });
   const res = await supabaseClient
     .from('weight_records')
     .select('weight')
     .eq('user_id', userId)
-    .eq('date', dateToDateColumnValue(new Date()))
+    .eq('date', todayString)
     .maybeSingle();
 
   if (res.error) {
