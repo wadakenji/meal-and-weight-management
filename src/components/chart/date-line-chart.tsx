@@ -76,14 +76,16 @@ type Props = {
   endDate: Date;
   color?: Color;
   marginRight?: number;
+  timezone?: string;
 };
 
 export const DateLineChart: FC<Props> = ({
   data,
   startDate,
   endDate,
-  color = 'primary',
   marginRight,
+  timezone,
+  color = 'primary',
 }) => {
   if (data.length < 1) return <p>データがありません。</p>;
 
@@ -96,7 +98,7 @@ export const DateLineChart: FC<Props> = ({
     left: MARGIN_LEFT,
   };
 
-  const dates = getEachDates(startDate, endDate);
+  const dates = getEachDates(startDate, endDate, { timezone });
 
   const gridRangeWidth = (dates.length - 1) * DATE_WIDTH;
   const gridRangeHeight = GRID_RANGE_HEIGHT;
@@ -118,7 +120,7 @@ export const DateLineChart: FC<Props> = ({
   const valueToY = (value: number) =>
     gridRangeEnd.y - (value - yGridLowest) * heightByValue;
   const dateToX = (date: Date) =>
-    gridRangeStart.x + DATE_WIDTH * getDateDiff(startDate, date);
+    gridRangeStart.x + DATE_WIDTH * getDateDiff(startDate, date, { timezone });
 
   const circleXYs = data
     .map(({ date, value }) => ({
@@ -152,7 +154,10 @@ export const DateLineChart: FC<Props> = ({
           className="fill-line-chart-x-grid stroke-line-chart-x-grid"
         >
           {dates.map((date) => {
-            if (!isToday(date) && getDateDiff(date, endDate) % 7 === 0) {
+            if (
+              !isToday(date, { timezone }) &&
+              getDateDiff(date, endDate, { timezone }) % 7 === 0
+            ) {
               const x = dateToX(date);
               return (
                 <line
@@ -171,7 +176,7 @@ export const DateLineChart: FC<Props> = ({
           className="fill-line-chart-x-grid-label stroke-0 text-sm"
         >
           {dates.map((date) => {
-            if (getDateDiff(date, endDate) % 7 === 0) {
+            if (getDateDiff(date, endDate, { timezone }) % 7 === 0) {
               const x = dateToX(date);
               return (
                 <text
@@ -181,7 +186,9 @@ export const DateLineChart: FC<Props> = ({
                   y={gridRangeEnd.y}
                   dy={X_GRID_LABEL_DY}
                 >
-                  {isToday(date) ? '今日' : dateToMonthDateString(date)}
+                  {isToday(date, { timezone })
+                    ? '今日'
+                    : dateToMonthDateString(date, { timezone })}
                 </text>
               );
             }

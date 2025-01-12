@@ -5,6 +5,7 @@ import {
   stepRecordRowToStepRecord,
 } from '@/libs/supabase/interface/step-record';
 import { UsecaseAuthError, UsecaseDbError } from '@/usecase/shared/error';
+import { TIMEZONE } from '@/constants/timezone';
 
 export const registerStepRecord = async (stepRecord: StepRecord) => {
   const supabaseClient = await createSupabaseServerClient();
@@ -41,11 +42,14 @@ export const getYesterdayStep = async (userId?: string) => {
     userId = res.data.user.id;
   }
 
+  const yesterdayString = dateToDateColumnValue(getYesterday(), {
+    timezone: TIMEZONE.ASIA_TOKYO,
+  });
   const res = await supabaseClient
     .from('step_records')
     .select('step')
     .eq('user_id', userId)
-    .eq('date', dateToDateColumnValue(getYesterday()))
+    .eq('date', yesterdayString)
     .maybeSingle();
 
   if (res.error) {

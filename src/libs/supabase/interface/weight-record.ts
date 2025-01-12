@@ -1,5 +1,4 @@
 import { Database } from '@/types/supabase';
-import { dateColumnValueToDate, dateToDateColumnValue } from '@/utils/date';
 
 type WeightRecordRow = Database['public']['Tables']['weight_records']['Row'];
 type WeightRecordProps =
@@ -10,7 +9,7 @@ export const weightRecordRowToWeightRecord = (
 ): WeightRecord => {
   return {
     userId: weightRecordRow.user_id,
-    date: dateColumnValueToDate(weightRecordRow.date),
+    date: weightRecordRow.date,
     weight: weightRecordRow.weight,
   };
 };
@@ -20,7 +19,7 @@ export const weightRecordToWeightRecordProps = (
 ): WeightRecordProps => {
   return {
     user_id: weightRecord.userId,
-    date: dateToDateColumnValue(weightRecord.date),
+    date: weightRecord.date,
     weight: weightRecord.weight,
   };
 };

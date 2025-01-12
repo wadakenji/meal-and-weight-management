@@ -5,6 +5,7 @@ import { LabelInputSet } from '@/components/control/label-input-set/label-input-
 import { FormSubmitButton } from '@/components/control/button/form-submit-button/form-submit-button';
 import { MEAL_FORM_VALUE_NAMES } from '@/helpers/form/register-meal-form';
 import { registerMealAction } from '@/app/actions/register-meal';
+import { TIMEZONE } from '@/constants/timezone';
 
 export const MealForm: FC = () => {
   const action = async (formData: FormData) => {
@@ -19,7 +20,9 @@ export const MealForm: FC = () => {
           labelText="日時"
           type="datetime-local"
           name={MEAL_FORM_VALUE_NAMES.DATETIME}
-          defaultValue={dateToDatetimeInputValue(new Date())}
+          defaultValue={dateToDatetimeInputValue(new Date(), {
+            timezone: TIMEZONE.ASIA_TOKYO,
+          })}
           required
         />
         <LabelInputSet

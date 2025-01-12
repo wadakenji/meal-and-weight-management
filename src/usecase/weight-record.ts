@@ -5,6 +5,7 @@ import {
   weightRecordToWeightRecordProps,
 } from '@/libs/supabase/interface/weight-record';
 import { UsecaseAuthError, UsecaseDbError } from '@/usecase/shared/error';
+import { TIMEZONE } from '@/constants/timezone';
 
 export const registerWeightRecord = async (
   weightRecord: WeightRecord,
@@ -44,11 +45,14 @@ export const getTodayWeight = async (userId?: string) => {
     userId = res.data.user.id;
   }
 
+  const todayString = dateToDateColumnValue(new Date(), {
+    timezone: TIMEZONE.ASIA_TOKYO,
+  });
   const res = await supabaseClient
     .from('weight_records')
     .select('weight')
     .eq('user_id', userId)
-    .eq('date', dateToDateColumnValue(new Date()))
+    .eq('date', todayString)
     .maybeSingle();
 
   if (res.error) {
@@ -79,15 +83,19 @@ export const getLastOneMonthWeightRecords = async (
     userId = res.data.user.id;
   }
 
-  const today = new Date();
-  const oneMonthAgo = getOneMonthAgoDate();
+  const todayString = dateToDateColumnValue(new Date(), {
+    timezone: TIMEZONE.ASIA_TOKYO,
+  });
+  const oneMonthAgoString = dateToDateColumnValue(getOneMonthAgoDate(), {
+    timezone: TIMEZONE.ASIA_TOKYO,
+  });
 
   const res = await supabaseClient
     .from('weight_records')
     .select('*')
     .eq('user_id', userId)
-    .gt('date', dateToDateColumnValue(oneMonthAgo))
-    .lte('date', dateToDateColumnValue(today))
+    .gt('date', oneMonthAgoString)
+    .lte('date', todayString)
     .order('date');
 
   if (res.error) {

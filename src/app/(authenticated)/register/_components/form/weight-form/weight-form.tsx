@@ -5,6 +5,7 @@ import { FormSubmitButton } from '@/components/control/button/form-submit-button
 import { LabelInputSet } from '@/components/control/label-input-set/label-input-set';
 import { WEIGHT_FORM_VALUE_NAMES } from '@/helpers/form/register-weight-record-form';
 import { registerWeightAction } from '@/app/actions/register-weight';
+import { TIMEZONE } from '@/constants/timezone';
 
 export const WeightForm: FC = () => {
   const action = async (formData: FormData) => {
@@ -19,7 +20,9 @@ export const WeightForm: FC = () => {
           labelText="日付"
           type="date"
           name={WEIGHT_FORM_VALUE_NAMES.DATE}
-          defaultValue={dateToDateInputValue(new Date())}
+          defaultValue={dateToDateInputValue(new Date(), {
+            timezone: TIMEZONE.ASIA_TOKYO,
+          })}
           required
         />
         <LabelInputSet

@@ -5,6 +5,7 @@ import { FormSubmitButton } from '@/components/control/button/form-submit-button
 import { LabelInputSet } from '@/components/control/label-input-set/label-input-set';
 import { STEP_FORM_VALUE_NAMES } from '@/helpers/form/register-step-record-form';
 import { registerStepAction } from '@/app/actions/register-step';
+import { TIMEZONE } from '@/constants/timezone';
 
 export const StepForm: FC = () => {
   const action = async (formData: FormData) => {
@@ -19,7 +20,9 @@ export const StepForm: FC = () => {
           labelText="日付"
           type="date"
           name={STEP_FORM_VALUE_NAMES.DATE}
-          defaultValue={dateToDateInputValue(getYesterday())}
+          defaultValue={dateToDateInputValue(getYesterday(), {
+            timezone: TIMEZONE.ASIA_TOKYO,
+          })}
           required
         />
         <LabelInputSet

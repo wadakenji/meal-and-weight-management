@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { dateInputValueToDate } from '@/utils/date';
 
 const stepFormSchema = z.object({
   date: z.string().date(),
@@ -35,5 +34,5 @@ export const parsedStepFormDataToStepRecord = (
   parsedFormData: ParsedStepFormData,
 ): StepRecord => {
   const { date, step } = parsedFormData;
-  return { userId, date: dateInputValueToDate(date), step };
+  return { userId, date, step };
 };

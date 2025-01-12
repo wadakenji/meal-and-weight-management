@@ -11,26 +11,46 @@ import {
   eachDayOfInterval,
   differenceInCalendarDays,
 } from 'date-fns';
+import { tz } from '@date-fns/tz';
 
-export const dateToMonthDateString = (date: Date) => format(date, 'M/d');
+type DateFunctionOptions = {
+  timezone?: string;
+};
 
-export const dateToDatetimeInputValue = (date: Date) =>
-  format(date, 'yyyy-MM-dd') + 'T' + format(date, 'HH:mm');
+const optionsToTz = (options: DateFunctionOptions | undefined) =>
+  typeof options?.timezone === 'string' ? tz(options.timezone) : undefined;
 
-export const datetimeInputValueToDate = (value: string) => toDate(value);
+export const dateToMonthDateString = (
+  date: Date,
+  options?: DateFunctionOptions,
+) => format(date, 'M/d', { in: optionsToTz(options) });
 
-export const dateToDateInputValue = (date: Date) => format(date, 'yyyy-MM-dd');
+export const dateToDatetimeInputValue = (
+  date: Date,
+  options?: DateFunctionOptions,
+) => {
+  const tz = optionsToTz(options);
+  return `${format(date, 'yyyy-MM-dd', { in: tz })}T${format(date, 'HH:mm', { in: tz })}`;
+};
 
-export const dateInputValueToDate = (value: string): Date =>
-  toDate(value + 'T00:00');
+export const dateToDateInputValue = (
+  date: Date,
+  options?: DateFunctionOptions,
+) => format(date, 'yyyy-MM-dd', { in: optionsToTz(options) });
 
 export const dateToDatetimeColumnValue = (date: Date) => date.toISOString();
 
 export const datetimeColumnValueToDate = (value: string): Date => toDate(value);
 
-export const dateToDateColumnValue = (date: Date) => format(date, 'yyyy-MM-dd');
+export const dateToDateColumnValue = (
+  date: Date,
+  options?: DateFunctionOptions,
+) => format(date, 'yyyy-MM-dd', { in: optionsToTz(options) });
 
-export const dateColumnValueToDate = (value: string): Date =>
+/**
+ * 日付を表す文字列（yyyy-MM-dd）をシステムのタイムゾーンにおけるその日付の0時を表すDateオブジェクトに変換する
+ */
+export const dateStringToLocalTimezoneDate = (value: string): Date =>
   toDate(value + 'T00:00');
 
 export const getYesterday = () => {
@@ -42,17 +62,28 @@ export const getOneMonthAgoDate = (date: Date = new Date()) => {
   return subMonths(date, 1);
 };
 
-export const getRangeOfDate = (date: Date) => {
-  return [startOfDay(date), endOfDay(date)];
+export const getRangeOfDate = (date: Date, options?: DateFunctionOptions) => {
+  return [
+    startOfDay(date, { in: optionsToTz(options) }),
+    endOfDay(date, { in: optionsToTz(options) }),
+  ];
 };
 
-export const getEachDates = (start: Date, end: Date) =>
-  eachDayOfInterval({ start, end });
+export const getEachDates = (
+  start: Date,
+  end: Date,
+  options?: DateFunctionOptions,
+) => eachDayOfInterval({ start, end }, { in: optionsToTz(options) });
 
-export const getDateDiff = (earlier: Date, later: Date) =>
-  differenceInCalendarDays(later, earlier);
+export const getDateDiff = (
+  earlier: Date,
+  later: Date,
+  options?: DateFunctionOptions,
+) => differenceInCalendarDays(later, earlier, { in: optionsToTz(options) });
 
-export const isToday = dateFnsIsToday;
-export const isYesterday = dateFnsIsYesterday;
+export const isToday = (date: Date, options?: DateFunctionOptions) =>
+  dateFnsIsToday(date, { in: optionsToTz(options) });
+export const isYesterday = (date: Date, options?: DateFunctionOptions) =>
+  dateFnsIsYesterday(date, { in: optionsToTz(options) });
 
 export const isValidDate = isValid;
