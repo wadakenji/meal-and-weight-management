@@ -2,6 +2,7 @@ import { createSupabaseServerClient } from '@/libs/supabase/createClient';
 import { dateToDatetimeColumnValue, getRangeOfDate } from '@/utils/date';
 import { mealRowToMeal, mealToMealProps } from '@/libs/supabase/interface/meal';
 import { UsecaseAuthError, UsecaseDbError } from '@/usecase/shared/error';
+import { TIMEZONE } from '@/constants/timezone';
 
 export const registerMeal = async (meal: MealToCreate) => {
   const supabaseClient = await createSupabaseServerClient();
@@ -35,7 +36,9 @@ export const getTodayTotalEnergy = async (userId?: string) => {
     userId = res.data.user.id;
   }
 
-  const [startOfDate, endOfDate] = getRangeOfDate(new Date());
+  const [startOfDate, endOfDate] = getRangeOfDate(new Date(), {
+    timezone: TIMEZONE.ASIA_TOKYO,
+  });
   const res = await supabaseClient
     .from('meals')
     .select('amount_of_energy')

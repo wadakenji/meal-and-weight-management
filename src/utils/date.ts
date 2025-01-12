@@ -51,8 +51,11 @@ export const getOneMonthAgoDate = (date: Date = new Date()) => {
   return subMonths(date, 1);
 };
 
-export const getRangeOfDate = (date: Date) => {
-  return [startOfDay(date), endOfDay(date)];
+export const getRangeOfDate = (date: Date, options?: DateFunctionOptions) => {
+  return [
+    startOfDay(date, { in: optionsToTz(options) }),
+    endOfDay(date, { in: optionsToTz(options) }),
+  ];
 };
 
 export const getEachDates = (start: Date, end: Date) =>
