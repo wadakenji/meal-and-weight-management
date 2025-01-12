@@ -40,9 +40,6 @@ export const dateToDateInputValue = (
   options?: DateFunctionOptions,
 ) => format(date, 'yyyy-MM-dd', { in: optionsToTz(options) });
 
-export const dateInputValueToDate = (value: string): Date =>
-  toDate(value + 'T00:00');
-
 export const dateToDatetimeColumnValue = (date: Date) => date.toISOString();
 
 export const datetimeColumnValueToDate = (value: string): Date => toDate(value);
