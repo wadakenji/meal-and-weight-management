@@ -83,15 +83,19 @@ export const getLastOneMonthWeightRecords = async (
     userId = res.data.user.id;
   }
 
-  const today = new Date();
-  const oneMonthAgo = getOneMonthAgoDate();
+  const todayString = dateToDateColumnValue(new Date(), {
+    timezone: TIMEZONE.ASIA_TOKYO,
+  });
+  const oneMonthAgoString = dateToDateColumnValue(getOneMonthAgoDate(), {
+    timezone: TIMEZONE.ASIA_TOKYO,
+  });
 
   const res = await supabaseClient
     .from('weight_records')
     .select('*')
     .eq('user_id', userId)
-    .gt('date', dateToDateColumnValue(oneMonthAgo))
-    .lte('date', dateToDateColumnValue(today))
+    .gt('date', oneMonthAgoString)
+    .lte('date', todayString)
     .order('date');
 
   if (res.error) {
