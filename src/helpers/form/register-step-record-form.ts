@@ -35,5 +35,5 @@ export const parsedStepFormDataToStepRecord = (
   parsedFormData: ParsedStepFormData,
 ): StepRecord => {
   const { date, step } = parsedFormData;
-  return { userId, date: dateInputValueToDate(date), step };
+  return { userId, date, step };
 };

@@ -1,5 +1,4 @@
 import { Database } from '@/types/supabase';
-import { dateColumnValueToDate, dateToDateColumnValue } from '@/utils/date';
 
 type StepRecordRow = Database['public']['Tables']['step_records']['Row'];
 type StepRecordProps = Database['public']['Tables']['step_records']['Insert'];
@@ -9,7 +8,7 @@ export const stepRecordRowToStepRecord = (
 ): StepRecord => {
   return {
     userId: stepRecordRow.user_id,
-    date: dateColumnValueToDate(stepRecordRow.date),
+    date: stepRecordRow.date,
     step: stepRecordRow.step,
   };
 };
@@ -19,7 +18,7 @@ export const stepRecordToStepRecordProps = (
 ): StepRecordProps => {
   return {
     user_id: stepRecord.userId,
-    date: dateToDateColumnValue(stepRecord.date),
+    date: stepRecord.date,
     step: stepRecord.step,
   };
 };
