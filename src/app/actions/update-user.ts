@@ -40,7 +40,7 @@ export const updateUserAction = async (
 
   const updatedUser = await updateUser(userToUpdate, parseResult.password);
 
-  if (isFirstRegister) redirect('/register');
+  if (isFirstRegister) redirect('/dashboard');
 
   revalidatePath('/user-settings');
 
