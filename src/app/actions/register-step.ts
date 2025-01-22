@@ -7,6 +7,7 @@ import {
   validateAndParseStepFormData,
 } from '@/helpers/form/register-step-record-form';
 import { ERROR_MESSAGES } from '@/constants/error-message';
+import { revalidatePath } from 'next/cache';
 
 type ActionState =
   | {
@@ -35,5 +36,8 @@ export const registerStepAction = async (
   );
 
   const registeredStepRecord = await registerStepRecord(stepRecordToRegister);
+
+  revalidatePath('/dashboard');
+
   return { registeredStepRecord };
 };
