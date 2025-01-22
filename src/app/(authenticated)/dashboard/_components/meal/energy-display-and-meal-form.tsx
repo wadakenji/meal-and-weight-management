@@ -30,9 +30,15 @@ export const EnergyDisplayAndMealForm: FC = () => {
             labelText="時間"
             type="datetime-local"
             name={MEAL_FORM_VALUE_NAMES.DATETIME}
-            defaultValue={dateToDatetimeInputValue(today)}
-            min={dateToDatetimeInputValue(startOfToday)}
-            max={dateToDatetimeInputValue(endOfToday)}
+            defaultValue={dateToDatetimeInputValue(today, {
+              timezone: TIMEZONE.ASIA_TOKYO,
+            })}
+            min={dateToDatetimeInputValue(startOfToday, {
+              timezone: TIMEZONE.ASIA_TOKYO,
+            })}
+            max={dateToDatetimeInputValue(endOfToday, {
+              timezone: TIMEZONE.ASIA_TOKYO,
+            })}
             required
           />
           <LabelInputSet
