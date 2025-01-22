@@ -1,28 +1,25 @@
-'use client';
-
 import { FC, use } from 'react';
 import { DashboardDataText } from '@/app/(authenticated)/dashboard/_components/data-text/data-text';
 import { Input } from '@/components/control/input/input';
-import { CheckIconButton } from '@/components/control/button/check-icon-button/check-icon-button';
 import { dateToDateInputValue } from '@/utils/date';
-import { useTodayWeightAndForm } from '@/app/(authenticated)/dashboard/_hooks/use-today-weight-and-form';
 import { WEIGHT_FORM_VALUE_NAMES } from '@/helpers/form/register-weight-record-form';
+import { getTodayWeight } from '@/usecase/weight-record';
+import { registerWeightAction } from '@/app/actions/register-weight';
+import { FormSubmitCheckIconButton } from '@/components/control/button/form-submit-button/form-submit-check-icon-button';
 
-type Props = {
-  todayWeightPromise: Promise<number | null>;
-};
-
-export const TodayWeightForm: FC<Props> = ({ todayWeightPromise }) => {
-  const initialTodayWeight = use(todayWeightPromise);
-  const { todayWeight, registerWeightFormAction, isPending } =
-    useTodayWeightAndForm(initialTodayWeight);
+export const TodayWeightForm: FC = () => {
+  const todayWeight = use(getTodayWeight());
+  const action = async (formData: FormData) => {
+    'use server';
+    await registerWeightAction(null, formData);
+  };
 
   return (
     <>
       {todayWeight !== null ? (
         <DashboardDataText unitText="kg" value={todayWeight} />
       ) : (
-        <form action={registerWeightFormAction}>
+        <form action={action}>
           <div className="mb-8px flex items-end gap-x-8px">
             <Input
               name={WEIGHT_FORM_VALUE_NAMES.WEIGHT}
@@ -32,7 +29,7 @@ export const TodayWeightForm: FC<Props> = ({ todayWeightPromise }) => {
             />
             <span className="font-bold">kg</span>
           </div>
-          <CheckIconButton isPending={isPending} disabled={isPending} />
+          <FormSubmitCheckIconButton />
           <input
             name={WEIGHT_FORM_VALUE_NAMES.DATE}
             type="hidden"

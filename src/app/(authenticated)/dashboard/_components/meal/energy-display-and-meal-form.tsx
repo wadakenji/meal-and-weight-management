@@ -1,39 +1,44 @@
-'use client';
-
 import { FC, use } from 'react';
 import { DashboardDataText } from '@/app/(authenticated)/dashboard/_components/data-text/data-text';
-import { useTodayTotalEnergyAndForm } from '@/app/(authenticated)/dashboard/_hooks/use-today-total-energy-and-form';
 import { LabelInputSet } from '@/components/control/label-input-set/label-input-set';
 import { MEAL_FORM_VALUE_NAMES } from '@/helpers/form/register-meal-form';
 import { dateToDatetimeInputValue, getRangeOfDate } from '@/utils/date';
 import { FormSubmitButton } from '@/components/control/button/form-submit-button/form-submit-button';
+import { getTodayTotalEnergy } from '@/usecase/meal';
+import { registerMealAction } from '@/app/actions/register-meal';
+import { TIMEZONE } from '@/constants/timezone';
 
-type Props = {
-  todayTotalEnergyPromise: Promise<number>;
-};
+export const EnergyDisplayAndMealForm: FC = () => {
+  const todayTotalEnergy = use(getTodayTotalEnergy());
 
-export const EnergyDisplayAndMealForm: FC<Props> = ({
-  todayTotalEnergyPromise,
-}) => {
-  const initialTodayTotalEnergy = use(todayTotalEnergyPromise);
-  const { todayTotalEnergy, registerMealFormAction } =
-    useTodayTotalEnergyAndForm(initialTodayTotalEnergy);
+  const action = async (formData: FormData) => {
+    'use server';
+    await registerMealAction(null, formData);
+  };
 
   const today = new Date();
-  const [startOfToday, endOfToday] = getRangeOfDate(today);
+  const [startOfToday, endOfToday] = getRangeOfDate(today, {
+    timezone: TIMEZONE.ASIA_TOKYO,
+  });
 
   return (
     <>
       <DashboardDataText unitText={'kcal'} value={todayTotalEnergy} />
-      <form action={registerMealFormAction} className="mt-8px">
+      <form action={action} className="mt-8px">
         <div className="mb-24px space-y-16px">
           <LabelInputSet
             labelText="時間"
             type="datetime-local"
             name={MEAL_FORM_VALUE_NAMES.DATETIME}
-            defaultValue={dateToDatetimeInputValue(today)}
-            min={dateToDatetimeInputValue(startOfToday)}
-            max={dateToDatetimeInputValue(endOfToday)}
+            defaultValue={dateToDatetimeInputValue(today, {
+              timezone: TIMEZONE.ASIA_TOKYO,
+            })}
+            min={dateToDatetimeInputValue(startOfToday, {
+              timezone: TIMEZONE.ASIA_TOKYO,
+            })}
+            max={dateToDatetimeInputValue(endOfToday, {
+              timezone: TIMEZONE.ASIA_TOKYO,
+            })}
             required
           />
           <LabelInputSet
