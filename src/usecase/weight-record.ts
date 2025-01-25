@@ -30,6 +30,36 @@ export const registerWeightRecord = async (
   return weightRecordRowToWeightRecord(res.data);
 };
 
+export const getWeightRecord = async (
+  userId: string,
+  date: string,
+): Promise<WeightRecord | null> => {
+  const supabaseClient = await createSupabaseServerClient();
+
+  const res = await supabaseClient
+    .from('weight_records')
+    .select()
+    .eq('user_id', userId)
+    .eq('date', date)
+    .maybeSingle();
+
+  if (res.error) {
+    console.error(res.error);
+    throw new UsecaseDbError({
+      module: 'weight-record',
+      function: 'getWeightRecord',
+    });
+  }
+
+  return (
+    res.data && {
+      userId: res.data.user_id,
+      date: res.data.date,
+      weight: res.data.weight,
+    }
+  );
+};
+
 export const getTodayWeight = async (userId?: string) => {
   const supabaseClient = await createSupabaseServerClient();
 
@@ -48,22 +78,10 @@ export const getTodayWeight = async (userId?: string) => {
   const todayString = dateToDateColumnValue(new Date(), {
     timezone: TIMEZONE.ASIA_TOKYO,
   });
-  const res = await supabaseClient
-    .from('weight_records')
-    .select('weight')
-    .eq('user_id', userId)
-    .eq('date', todayString)
-    .maybeSingle();
 
-  if (res.error) {
-    console.error(res.error);
-    throw new UsecaseDbError({
-      module: 'weight-record',
-      function: 'getTodayWeight',
-    });
-  }
+  const weightRecord = await getWeightRecord(userId, todayString);
 
-  return res.data && res.data.weight;
+  return weightRecord && weightRecord.weight;
 };
 
 export const getLastOneMonthWeightRecords = async (
