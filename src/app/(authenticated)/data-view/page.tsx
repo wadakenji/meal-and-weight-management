@@ -19,10 +19,10 @@ const Page: FC = async () => {
   });
 
   return (
-    <AuthenticatedTemplate pageTitle="グラフ表示">
       <Suspense fallback={<IconSpinner mxAuto />}>
         <UserDataList userDataPromise={userDataPromise} />
       </Suspense>
+    <AuthenticatedTemplate pageTitle="データ表示">
     </AuthenticatedTemplate>
   );
 };
