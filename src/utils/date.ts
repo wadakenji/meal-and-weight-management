@@ -47,6 +47,11 @@ export const dateToDateColumnValue = (
   options?: DateFunctionOptions,
 ) => format(date, 'yyyy-MM-dd', { in: optionsToTz(options) });
 
+export const dateStringToDate = (
+  value: string,
+  options?: DateFunctionOptions,
+): Date => toDate(`${value}T00:00:00${options?.timezone || ''}`);
+
 /**
  * 日付を表す文字列（yyyy-MM-dd）をシステムのタイムゾーンにおけるその日付の0時を表すDateオブジェクトに変換する
  */
