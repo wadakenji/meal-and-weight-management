@@ -4,7 +4,7 @@ import { getStepRecord } from '@/usecase/step-record';
 import { getMealsByDate } from '@/usecase/meal';
 import { isValidDate } from '@/utils/date';
 
-type SummaryOfDayResponseData = {
+export type SummaryOfDayResponseData = {
   weightRecord: WeightRecord | null;
   stepRecord: StepRecord | null;
   meals: Meal[];
