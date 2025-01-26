@@ -27,6 +27,36 @@ export const registerStepRecord = async (stepRecord: StepRecord) => {
   return stepRecordRowToStepRecord(res.data);
 };
 
+export const getStepRecord = async (
+  userId: string,
+  date: string,
+): Promise<StepRecord | null> => {
+  const supabaseClient = await createSupabaseServerClient();
+
+  const res = await supabaseClient
+    .from('step_records')
+    .select()
+    .eq('user_id', userId)
+    .eq('date', date)
+    .maybeSingle();
+
+  if (res.error) {
+    console.error(res.error);
+    throw new UsecaseDbError({
+      module: 'step-record',
+      function: 'getStepRecord',
+    });
+  }
+
+  return (
+    res.data && {
+      userId: res.data.user_id,
+      date: res.data.date,
+      step: res.data.step,
+    }
+  );
+};
+
 export const getYesterdayStep = async (userId?: string) => {
   const supabaseClient = await createSupabaseServerClient();
 
@@ -45,20 +75,7 @@ export const getYesterdayStep = async (userId?: string) => {
   const yesterdayString = dateToDateColumnValue(getYesterday(), {
     timezone: TIMEZONE.ASIA_TOKYO,
   });
-  const res = await supabaseClient
-    .from('step_records')
-    .select('step')
-    .eq('user_id', userId)
-    .eq('date', yesterdayString)
-    .maybeSingle();
+  const stepRecord = await getStepRecord(userId, yesterdayString);
 
-  if (res.error) {
-    console.error(res.error);
-    throw new UsecaseDbError({
-      module: 'step-record',
-      function: 'getYesterdayStep',
-    });
-  }
-
-  return res.data && res.data.step;
+  return stepRecord && stepRecord.step;
 };

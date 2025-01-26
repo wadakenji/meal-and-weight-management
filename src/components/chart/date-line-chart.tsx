@@ -8,7 +8,7 @@ import {
 } from '@/utils/date';
 import { roundSecondDecimal } from '@/utils/number';
 
-const DATE_WIDTH = 30;
+const DATE_WIDTH = 40;
 const GRID_RANGE_HEIGHT = 300;
 
 const MARGIN_TOP = 30;
@@ -21,10 +21,11 @@ const Y_GRID_LABEL_DX = 15;
 const Y_GRID_LABEL_DY = 5;
 const DOT_LABEL_DY = -10;
 
-type Color = 'primary';
+type Color = 'primary' | 'red';
 
 const colorClassNameMap: Record<Color, string> = {
   primary: 'stroke-primary fill-primary',
+  red: 'stroke-line-chart-red fill-line-chart-red',
 };
 
 const valuesToYGrid = (values: number[]) => {
@@ -222,7 +223,7 @@ export const DateLineChart: FC<Props> = ({
                 y={y}
                 dy={Y_GRID_LABEL_DY}
               >
-                {value}
+                {value.toLocaleString()}
               </text>
             );
           })}

@@ -51,3 +51,17 @@ export const getBelongingUserGroups = async (
     ),
   );
 };
+
+export const getRelatedUsers = async () => {
+  const belongingUserGroups = await getBelongingUserGroups();
+  return (
+    belongingUserGroups
+      .flatMap((userGroup) => userGroup.users)
+      // 重複削除
+      .reduce<UserGroup['users']>((acc, cur) => {
+        if (acc.find(({ id }) => id === cur.id)) return acc;
+        acc.push(cur);
+        return acc;
+      }, [])
+  );
+};
