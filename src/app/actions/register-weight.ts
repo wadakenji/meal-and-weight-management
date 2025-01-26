@@ -7,6 +7,7 @@ import {
   parsedWeightFormDataToWeightRecord,
   validateAndParseWeightFormData,
 } from '@/helpers/form/register-weight-record-form';
+import { revalidatePath } from 'next/cache';
 
 type ActionState =
   | {
@@ -37,6 +38,8 @@ export const registerWeightAction = async (
   const registeredWeightRecord = await registerWeightRecord(
     weightRecordToRegister,
   );
+
+  revalidatePath('/dashboard');
 
   return { registeredWeightRecord };
 };

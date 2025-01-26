@@ -18,7 +18,7 @@ const ITEMS = [
   },
   {
     href: '/data-view',
-    text: 'グラフ表示',
+    text: 'データ表示',
     icon: <IconLineChart />,
   },
   {

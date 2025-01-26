@@ -10,6 +10,8 @@ import {
   subMonths,
   eachDayOfInterval,
   differenceInCalendarDays,
+  addDays as dateFnsAddDays,
+  isSameDay as dateFnsIsSameDay,
 } from 'date-fns';
 import { tz } from '@date-fns/tz';
 
@@ -46,6 +48,11 @@ export const dateToDateColumnValue = (
   date: Date,
   options?: DateFunctionOptions,
 ) => format(date, 'yyyy-MM-dd', { in: optionsToTz(options) });
+
+export const dateStringToDate = (
+  value: string,
+  options?: DateFunctionOptions,
+): Date => toDate(`${value}T00:00:00${options?.timezone || ''}`);
 
 /**
  * 日付を表す文字列（yyyy-MM-dd）をシステムのタイムゾーンにおけるその日付の0時を表すDateオブジェクトに変換する
@@ -87,3 +94,12 @@ export const isYesterday = (date: Date, options?: DateFunctionOptions) =>
   dateFnsIsYesterday(date, { in: optionsToTz(options) });
 
 export const isValidDate = isValid;
+
+export const isSameDay = (
+  date1: Date,
+  date2: Date,
+  options?: DateFunctionOptions,
+) => dateFnsIsSameDay(date1, date2, { in: optionsToTz(options) });
+
+export const addDays = (date: Date, amount: number) =>
+  dateFnsAddDays(date, amount);

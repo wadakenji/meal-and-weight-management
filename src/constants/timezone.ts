@@ -1,4 +1,4 @@
 export const TIMEZONE = {
-  UTC: 'UTC',
-  ASIA_TOKYO: 'Asia/Tokyo',
+  UTC: '+00:00',
+  ASIA_TOKYO: '+09:00',
 } as const;

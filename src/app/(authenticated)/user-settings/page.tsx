@@ -10,7 +10,7 @@ const Page: FC = async () => {
   return (
     <AuthenticatedTemplate pageTitle="ユーザー設定">
       <Suspense fallback={<IconSpinner mxAuto />}>
-        <UserForm initialUserPromise={userPromise} />
+        <UserForm userPromise={userPromise} />
       </Suspense>
     </AuthenticatedTemplate>
   );

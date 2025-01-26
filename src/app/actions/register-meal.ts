@@ -7,6 +7,7 @@ import {
   validateAndParseMealFormData,
 } from '@/helpers/form/register-meal-form';
 import { ERROR_MESSAGES } from '@/constants/error-message';
+import { revalidatePath } from 'next/cache';
 
 type ActionState =
   | {
@@ -32,5 +33,8 @@ export const registerMealAction = async (
   const mealToRegister = parsedMealFormDataToMeal(user.id, parseResult);
 
   const registeredMeal = await registerMeal(mealToRegister);
+
+  revalidatePath('/dashboard');
+
   return { registeredMeal };
 };

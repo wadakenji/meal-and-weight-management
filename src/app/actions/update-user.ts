@@ -7,6 +7,7 @@ import {
   validateAndParseUpdateUserFormData,
 } from '@/helpers/form/update-user-form';
 import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 
 type UpdateUserActionState =
   | {
@@ -39,7 +40,9 @@ export const updateUserAction = async (
 
   const updatedUser = await updateUser(userToUpdate, parseResult.password);
 
-  if (isFirstRegister) redirect('/register');
+  if (isFirstRegister) redirect('/dashboard');
+
+  revalidatePath('/user-settings');
 
   return { updatedUser };
 };

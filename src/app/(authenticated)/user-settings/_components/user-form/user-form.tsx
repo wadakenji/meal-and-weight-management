@@ -9,20 +9,17 @@ import { PrimaryButton } from '@/components/control/button/primary-button/primar
 import { USER_FORM_VALUE_NAMES } from '@/helpers/form/update-user-form';
 
 type Props = {
-  initialUserPromise: Promise<User | null>;
+  userPromise: Promise<User | null>;
 };
 
-export const UserForm: FC<Props> = ({ initialUserPromise }) => {
-  const initialUser = use(initialUserPromise);
+export const UserForm: FC<Props> = ({ userPromise }) => {
+  const user = use(userPromise);
 
-  const isFirstRegister = !!initialUser && initialUser.name === undefined;
+  const isFirstRegister = !!user && user.name === undefined;
   const [showsPasswordInput, setShowsPasswordInput] = useState(isFirstRegister);
   const [state, formAction, isPending] = useActionState(updateUserAction, null);
 
-  if (!initialUser) return null;
-
-  const updatedUser = state?.updatedUser;
-  const user = updatedUser || initialUser;
+  if (!user) return null;
 
   return (
     <Form action={formAction}>

@@ -19,7 +19,10 @@ export default {
       white: '#FFFFFF',
       text: {
         default: '#212121',
-        gray: '#666666',
+        gray: {
+          DEFAULT: '#666666',
+          light: '#999999',
+        },
       },
       line: {
         DEFAULT: '#CCCCCC',
@@ -33,6 +36,7 @@ export default {
         'x-grid-label': '#999999',
         'y-grid': '#999999',
         'y-grid-label': '#999999',
+        red: '#961d44',
       },
     },
     spacing: {
@@ -46,6 +50,9 @@ export default {
       '32px': '32px',
       'header-height': '58px',
       'min-button-size': '44px',
+    },
+    zIndex: {
+      header: '10',
     },
     extend: {
       fontSize: {
