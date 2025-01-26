@@ -11,6 +11,7 @@ import {
   eachDayOfInterval,
   differenceInCalendarDays,
   addDays as dateFnsAddDays,
+  isSameDay as dateFnsIsSameDay,
 } from 'date-fns';
 import { tz } from '@date-fns/tz';
 
@@ -93,6 +94,12 @@ export const isYesterday = (date: Date, options?: DateFunctionOptions) =>
   dateFnsIsYesterday(date, { in: optionsToTz(options) });
 
 export const isValidDate = isValid;
+
+export const isSameDay = (
+  date1: Date,
+  date2: Date,
+  options?: DateFunctionOptions,
+) => dateFnsIsSameDay(date1, date2, { in: optionsToTz(options) });
 
 export const addDays = (date: Date, amount: number) =>
   dateFnsAddDays(date, amount);

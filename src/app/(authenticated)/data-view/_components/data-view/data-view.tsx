@@ -9,6 +9,8 @@ import { Select } from '@/components/control/select/select';
 import { DateInputSet } from '@/components/control/date-input-set/date-input-set';
 import { IconSpinner } from '@/components/icon/spinner';
 import { DataText } from '@/app/(authenticated)/data-view/_components/data-text/data-text';
+import { useGetTotalEnergySet } from '@/app/(authenticated)/data-view/_hooks/use-get-total-energy-set/use-get-total-energy-set';
+import { TotalEnergyChart } from '@/app/(authenticated)/data-view/_components/total-energy-chart/total-energy-chart';
 
 type Props = {
   usersPromise: Promise<UserGroup['users']>;
@@ -31,6 +33,7 @@ export const DataView: FC<Props> = ({ usersPromise, loggedInUserPromise }) => {
     date,
   );
   const { weightRecords } = useGetWeightRecordSet(userId);
+  const { totalEnergyList } = useGetTotalEnergySet(userId);
 
   return (
     <div className="space-y-32px">
@@ -100,6 +103,12 @@ export const DataView: FC<Props> = ({ usersPromise, loggedInUserPromise }) => {
         <section>
           <h2 className="font-bold">体重グラフ</h2>
           <WeightChart weightRecords={weightRecords} />
+        </section>
+      )}
+      {totalEnergyList && (
+        <section>
+          <h2 className="font-bold">摂取カロリーグラフ</h2>
+          <TotalEnergyChart totalEnergyList={totalEnergyList} />
         </section>
       )}
     </div>
