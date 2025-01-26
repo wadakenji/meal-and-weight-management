@@ -19,7 +19,10 @@ export default {
       white: '#FFFFFF',
       text: {
         default: '#212121',
-        gray: '#666666',
+        gray: {
+          DEFAULT: '#666666',
+          light: '#999999',
+        },
       },
       line: {
         DEFAULT: '#CCCCCC',
