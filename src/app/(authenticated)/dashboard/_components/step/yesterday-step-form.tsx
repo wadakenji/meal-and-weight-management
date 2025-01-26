@@ -6,6 +6,7 @@ import { dateToDateInputValue, getYesterday } from '@/utils/date';
 import { getYesterdayStep } from '@/usecase/step-record';
 import { registerStepAction } from '@/app/actions/register-step';
 import { FormSubmitCheckIconButton } from '@/components/control/button/form-submit-button/form-submit-check-icon-button';
+import { TIMEZONE } from '@/constants/timezone';
 
 export const YesterdayStepForm: FC = () => {
   const yesterdayStep = use(getYesterdayStep());
@@ -28,7 +29,9 @@ export const YesterdayStepForm: FC = () => {
           <input
             name={STEP_FORM_VALUE_NAMES.DATE}
             type="hidden"
-            value={dateToDateInputValue(getYesterday())}
+            value={dateToDateInputValue(getYesterday(), {
+              timezone: TIMEZONE.ASIA_TOKYO,
+            })}
           />
         </form>
       )}
