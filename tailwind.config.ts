@@ -47,6 +47,9 @@ export default {
       'header-height': '58px',
       'min-button-size': '44px',
     },
+    zIndex: {
+      header: '10',
+    },
     extend: {
       fontSize: {
         '2xs': '10px',
