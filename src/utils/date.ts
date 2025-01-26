@@ -10,6 +10,7 @@ import {
   subMonths,
   eachDayOfInterval,
   differenceInCalendarDays,
+  addDays as dateFnsAddDays,
 } from 'date-fns';
 import { tz } from '@date-fns/tz';
 
@@ -92,3 +93,6 @@ export const isYesterday = (date: Date, options?: DateFunctionOptions) =>
   dateFnsIsYesterday(date, { in: optionsToTz(options) });
 
 export const isValidDate = isValid;
+
+export const addDays = (date: Date, amount: number) =>
+  dateFnsAddDays(date, amount);

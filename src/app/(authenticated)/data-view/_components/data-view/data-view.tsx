@@ -5,6 +5,8 @@ import { dateToDateInputValue } from '@/utils/date';
 import { useGetSummaryOfDay } from '@/app/(authenticated)/data-view/_hooks/use-get-summary-of-day/use-get-summary-of-day';
 import { useGetWeightRecordSet } from '@/app/(authenticated)/data-view/_hooks/use-get-weight-record-set/use-get-weight-record-set';
 import { WeightChart } from '@/app/(authenticated)/data-view/_components/weight-chart/weight-chart';
+import { Select } from '@/components/control/select/select';
+import { DateInputSet } from '@/components/control/date-input-set/date-input-set';
 
 type Props = {
   usersPromise: Promise<UserGroup['users']>;
@@ -12,6 +14,10 @@ type Props = {
 
 export const DataView: FC<Props> = ({ usersPromise }) => {
   const userOptions = use(usersPromise);
+  const selectOptions = userOptions.map(({ id, name }) => ({
+    value: id,
+    label: name,
+  }));
 
   const [userId, setUserId] = useState(userOptions[0].id);
   const [date, setDate] = useState(dateToDateInputValue(new Date()));
@@ -20,18 +26,18 @@ export const DataView: FC<Props> = ({ usersPromise }) => {
 
   return (
     <div>
-      <select onChange={(e) => setUserId(e.target.value)} value={userId}>
-        {userOptions.map((user) => (
-          <option key={user.id} value={user.id}>
-            {user.name}
-          </option>
-        ))}
-      </select>
-      <div className="rounded border-line p-16px">
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
+      <Select
+        options={selectOptions}
+        setValue={setUserId}
+        value={userId}
+        className="mx-auto mb-16px block"
+      />
+      <div className="rounded border border-line p-16px">
+        <DateInputSet
+          date={date}
+          setDate={setDate}
+          className="mx-auto mb-16px"
+          max={dateToDateInputValue(new Date())}
         />
         {summaryOfDay && (
           <div>
