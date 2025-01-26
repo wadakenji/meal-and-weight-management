@@ -12,16 +12,19 @@ import { DataText } from '@/app/(authenticated)/data-view/_components/data-text/
 
 type Props = {
   usersPromise: Promise<UserGroup['users']>;
+  loggedInUserPromise: Promise<User | null>;
 };
 
-export const DataView: FC<Props> = ({ usersPromise }) => {
+export const DataView: FC<Props> = ({ usersPromise, loggedInUserPromise }) => {
   const userOptions = use(usersPromise);
+  const loggedInUser = use(loggedInUserPromise);
+
   const selectOptions = userOptions.map(({ id, name }) => ({
     value: id,
     label: name,
   }));
 
-  const [userId, setUserId] = useState(userOptions[0].id);
+  const [userId, setUserId] = useState(loggedInUser?.id || userOptions[0].id);
   const [date, setDate] = useState(dateToDateInputValue(new Date()));
   const { summaryOfDay, isLoading: summaryOfDayLoading } = useGetSummaryOfDay(
     userId,
