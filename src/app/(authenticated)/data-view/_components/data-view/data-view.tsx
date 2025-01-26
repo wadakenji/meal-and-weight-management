@@ -30,14 +30,14 @@ export const DataView: FC<Props> = ({ usersPromise }) => {
   const { weightRecords } = useGetWeightRecordSet(userId);
 
   return (
-    <div>
+    <div className="space-y-32px">
       <Select
         options={selectOptions}
         setValue={setUserId}
         value={userId}
-        className="mx-auto mb-24px block"
+        className="mx-auto block"
       />
-      <div className="rounded border border-line p-24px">
+      <section className="rounded border border-line p-24px">
         <DateInputSet
           date={date}
           setDate={setDate}
@@ -92,8 +92,13 @@ export const DataView: FC<Props> = ({ usersPromise }) => {
             </div>
           </div>
         )}
-      </div>
-      {weightRecords && <WeightChart weightRecords={weightRecords} />}
+      </section>
+      {weightRecords && (
+        <section>
+          <h2 className="font-bold">体重グラフ</h2>
+          <WeightChart weightRecords={weightRecords} />
+        </section>
+      )}
     </div>
   );
 };
