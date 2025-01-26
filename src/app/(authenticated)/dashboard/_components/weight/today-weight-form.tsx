@@ -6,6 +6,7 @@ import { WEIGHT_FORM_VALUE_NAMES } from '@/helpers/form/register-weight-record-f
 import { getTodayWeight } from '@/usecase/weight-record';
 import { registerWeightAction } from '@/app/actions/register-weight';
 import { FormSubmitCheckIconButton } from '@/components/control/button/form-submit-button/form-submit-check-icon-button';
+import { TIMEZONE } from '@/constants/timezone';
 
 export const TodayWeightForm: FC = () => {
   const todayWeight = use(getTodayWeight());
@@ -33,7 +34,9 @@ export const TodayWeightForm: FC = () => {
           <input
             name={WEIGHT_FORM_VALUE_NAMES.DATE}
             type="hidden"
-            value={dateToDateInputValue(new Date())}
+            value={dateToDateInputValue(new Date(), {
+              timezone: TIMEZONE.ASIA_TOKYO,
+            })}
           />
         </form>
       )}
