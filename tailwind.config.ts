@@ -36,6 +36,7 @@ export default {
         'x-grid-label': '#999999',
         'y-grid': '#999999',
         'y-grid-label': '#999999',
+        red: '#961d44',
       },
     },
     spacing: {

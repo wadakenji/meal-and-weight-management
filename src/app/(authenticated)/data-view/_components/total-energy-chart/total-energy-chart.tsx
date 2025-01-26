@@ -21,6 +21,12 @@ export const TotalEnergyChart: FC<Props> = ({ totalEnergyList }) => {
   const endDate = new Date();
 
   return (
-    <DateLineChart data={chartData} startDate={startDate} endDate={endDate} />
+    <DateLineChart
+      data={chartData}
+      startDate={startDate}
+      endDate={endDate}
+      marginRight={70}
+      color="red"
+    />
   );
 };
