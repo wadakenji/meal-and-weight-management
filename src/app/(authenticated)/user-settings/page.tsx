@@ -3,6 +3,7 @@ import { AuthenticatedTemplate } from '@/app/(authenticated)/_components/templat
 import { UserForm } from '@/app/(authenticated)/user-settings/_components/user-form/user-form';
 import { getUser } from '@/usecase/user';
 import { IconSpinner } from '@/components/icon/spinner';
+import { PushNotificationManager } from '@/app/(authenticated)/user-settings/_components/push-notification-manager/push-notification-manager';
 
 const Page: FC = async () => {
   const userPromise = getUser();
@@ -12,6 +13,7 @@ const Page: FC = async () => {
       <Suspense fallback={<IconSpinner mxAuto />}>
         <UserForm userPromise={userPromise} />
       </Suspense>
+      <PushNotificationManager />
     </AuthenticatedTemplate>
   );
 };
