@@ -8,6 +8,9 @@ import {
 } from '@/helpers/form/register-meal-form';
 import { ERROR_MESSAGES } from '@/constants/error-message';
 import { revalidatePath } from 'next/cache';
+import { sendNotification } from '@/usecase/push-subscription/send-notification';
+import { isToday } from '@/utils/date';
+import { TIMEZONE } from '@/constants/timezone';
 
 type ActionState =
   | {
@@ -35,6 +38,12 @@ export const registerMealAction = async (
   const registeredMeal = await registerMeal(mealToRegister);
 
   revalidatePath('/dashboard');
+
+  if (isToday(registeredMeal.datetime, { timezone: TIMEZONE.ASIA_TOKYO }))
+    await sendNotification(
+      `${user.name}の食事`,
+      `${user.name} が ${registeredMeal.name} を食べました。`,
+    );
 
   return { registeredMeal };
 };

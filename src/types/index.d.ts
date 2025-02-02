@@ -49,3 +49,12 @@ type Meal = {
 };
 
 type MealToCreate = Omit<Meal, 'id'>;
+
+type PushSubscriptionType = {
+  userId: string;
+  endpoint: string;
+  keys: {
+    p256dh: string;
+    auth: string;
+  };
+};

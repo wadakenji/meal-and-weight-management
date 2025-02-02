@@ -64,6 +64,38 @@ export type Database = {
         }
         Relationships: []
       }
+      push_subscriptions: {
+        Row: {
+          endpoint: string
+          id: number
+          key_auth: string
+          key_p256dh: string
+          user_id: string
+        }
+        Insert: {
+          endpoint: string
+          id?: number
+          key_auth: string
+          key_p256dh: string
+          user_id: string
+        }
+        Update: {
+          endpoint?: string
+          id?: number
+          key_auth?: string
+          key_p256dh?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "push_subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       step_records: {
         Row: {
           created_at: string
