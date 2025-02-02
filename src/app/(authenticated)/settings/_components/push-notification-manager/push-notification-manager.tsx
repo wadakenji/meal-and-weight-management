@@ -15,6 +15,7 @@ import {
 } from '@/app/actions/push-notification';
 import { ENV } from '@/constants/env';
 import { PrimaryButton } from '@/components/control/button/primary-button/primary-button';
+import { IconSpinner } from '@/components/icon/spinner';
 
 type Props = {
   pushSubscriptionPromise: Promise<PushSubscriptionType | null>;
@@ -29,7 +30,9 @@ export const PushNotificationManager: FC<Props> = ({
     boolean
   >(!!pushSubscription, (_, optimisticValue) => optimisticValue);
 
-  const [isSupported, setIsSupported] = useState(false);
+  const [isSupported, setIsSupported] = useState<boolean | undefined>(
+    undefined,
+  );
   const [subscription, setSubscription] = useState<PushSubscription | null>(
     null,
   );
@@ -38,6 +41,8 @@ export const PushNotificationManager: FC<Props> = ({
     if ('serviceWorker' in navigator && 'PushManager' in window) {
       setIsSupported(true);
       registerServiceWorker();
+    } else {
+      setIsSupported(false);
     }
   }, []);
 
@@ -81,7 +86,11 @@ export const PushNotificationManager: FC<Props> = ({
       await unsubscribeUser();
     });
 
-  if (!isSupported) {
+  if (isSupported === undefined) {
+    return <IconSpinner mxAuto />;
+  }
+
+  if (isSupported === false) {
     return <p>プッシュ通知がご利用いただけません。</p>;
   }
 
