@@ -10,8 +10,3 @@ export const urlBase64ToUint8Array = (base64String: string) => {
   }
   return outputArray;
 };
-
-export const bufferToString = (buffer: ArrayBuffer | null): string => {
-  if (!buffer) return '';
-  return new TextDecoder().decode(buffer);
-};

@@ -1,7 +1,7 @@
 'use client';
 
 import { FC, useEffect, useState } from 'react';
-import { bufferToString, urlBase64ToUint8Array } from '@/utils/others';
+import { urlBase64ToUint8Array } from '@/utils/others';
 import {
   sendNotification,
   subscribeUser,
@@ -42,9 +42,15 @@ export const PushNotificationManager: FC = () => {
     });
     setSubscription(sub);
 
-    const p256dh = bufferToString(sub.getKey('p256dh'));
-    const auth = bufferToString(sub.getKey('auth'));
-    await subscribeUser({ endpoint: sub.endpoint, keys: { p256dh, auth } });
+    // PushSubscriptionをJSON.stringifyすると以下のような形になる
+    // {
+    //   endpoint: '.....',
+    //   keys: {
+    //     auth: '.....',
+    //     p256dh: '.....'
+    //   }
+    // };
+    await subscribeUser(JSON.parse(JSON.stringify(sub)));
   }
 
   async function unsubscribeFromPush() {
