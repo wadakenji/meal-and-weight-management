@@ -1,11 +1,12 @@
 'use server';
 
 import webpush, { PushSubscription } from 'web-push';
+import { ENV } from '@/constants/env';
 
 webpush.setVapidDetails(
-  '<mailto:your-email@example.com>',
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!,
+  `https://${ENV.NEXT_PUBLIC_BASE_URL}`,
+  ENV.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+  ENV.VAPID_PRIVATE_KEY!,
 );
 
 let subscription: PushSubscription | null = null;
