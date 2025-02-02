@@ -1,20 +1,38 @@
 'use client';
 
-import { FC, useEffect, useState } from 'react';
+import {
+  FC,
+  startTransition,
+  use,
+  useEffect,
+  useOptimistic,
+  useState,
+} from 'react';
 import { urlBase64ToUint8Array } from '@/utils/others';
 import {
-  sendNotification,
   subscribeUser,
   unsubscribeUser,
 } from '@/app/actions/push-notification';
 import { ENV } from '@/constants/env';
+import { PrimaryButton } from '@/components/control/button/primary-button/primary-button';
 
-export const PushNotificationManager: FC = () => {
+type Props = {
+  pushSubscriptionPromise: Promise<PushSubscriptionType | null>;
+};
+
+export const PushNotificationManager: FC<Props> = ({
+  pushSubscriptionPromise,
+}) => {
+  const pushSubscription = use(pushSubscriptionPromise);
+  const [isSubscribed, setOptimisticIsSubscribed] = useOptimistic<
+    boolean,
+    boolean
+  >(!!pushSubscription, (_, optimisticValue) => optimisticValue);
+
   const [isSupported, setIsSupported] = useState(false);
   const [subscription, setSubscription] = useState<PushSubscription | null>(
     null,
   );
-  const [message, setMessage] = useState('');
 
   useEffect(() => {
     if ('serviceWorker' in navigator && 'PushManager' in window) {
@@ -32,65 +50,54 @@ export const PushNotificationManager: FC = () => {
     setSubscription(sub);
   }
 
-  async function subscribeToPush() {
-    const registration = await navigator.serviceWorker.ready;
-    const sub = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(
-        ENV.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
-      ),
+  const subscribeToPush = () =>
+    startTransition(async () => {
+      setOptimisticIsSubscribed(true);
+      const registration = await navigator.serviceWorker.ready;
+      const sub = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(
+          ENV.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+        ),
+      });
+      setSubscription(sub);
+
+      // PushSubscriptionをJSON.stringifyすると以下のような形になる
+      // {
+      //   endpoint: '.....',
+      //   keys: {
+      //     auth: '.....',
+      //     p256dh: '.....'
+      //   }
+      // };
+      await subscribeUser(JSON.parse(JSON.stringify(sub)));
     });
-    setSubscription(sub);
 
-    // PushSubscriptionをJSON.stringifyすると以下のような形になる
-    // {
-    //   endpoint: '.....',
-    //   keys: {
-    //     auth: '.....',
-    //     p256dh: '.....'
-    //   }
-    // };
-    await subscribeUser(JSON.parse(JSON.stringify(sub)));
-  }
-
-  async function unsubscribeFromPush() {
-    await subscription?.unsubscribe();
-    setSubscription(null);
-    await unsubscribeUser();
-  }
-
-  async function sendTestNotification() {
-    if (subscription) {
-      await sendNotification(message);
-      setMessage('');
-    }
-  }
+  const unsubscribeFromPush = () =>
+    startTransition(async () => {
+      setOptimisticIsSubscribed(false);
+      await subscription?.unsubscribe();
+      setSubscription(null);
+      await unsubscribeUser();
+    });
 
   if (!isSupported) {
-    return <p>Push notifications are not supported in this browser.</p>;
+    return <p>プッシュ通知がご利用いただけません。</p>;
   }
 
   return (
     <div>
-      <h3>Push Notifications</h3>
-      {subscription ? (
-        <>
-          <p>You are subscribed to push notifications.</p>
-          <button onClick={unsubscribeFromPush}>Unsubscribe</button>
-          <input
-            type="text"
-            placeholder="Enter notification message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <button onClick={sendTestNotification}>Send Test</button>
-        </>
-      ) : (
-        <>
-          <p>You are not subscribed to push notifications.</p>
-          <button onClick={subscribeToPush}>Subscribe</button>
-        </>
-      )}
+      <p className="mb-8px">
+        現在の設定：
+        <span className="font-bold">{isSubscribed ? 'オン' : 'オフ'}</span>
+      </p>
+      <PrimaryButton
+        onClick={isSubscribed ? unsubscribeFromPush : subscribeToPush}
+        style={isSubscribed ? 'outlined' : 'filled'}
+        className="w-full"
+      >
+        通知を{isSubscribed ? 'オフ' : 'オン'}にする
+      </PrimaryButton>
     </div>
   );
 };

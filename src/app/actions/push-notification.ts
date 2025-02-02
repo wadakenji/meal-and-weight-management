@@ -7,6 +7,7 @@ import {
   deletePushSubscription,
   getRelatedSubscriptions,
 } from '@/usecase/push-subscription';
+import { revalidatePath } from 'next/cache';
 
 webpush.setVapidDetails(
   `https://${ENV.NEXT_PUBLIC_BASE_URL}`,
@@ -18,10 +19,12 @@ export const subscribeUser = async (
   pushSubscription: Omit<PushSubscriptionType, 'userId'>,
 ) => {
   await createPushSubscription(pushSubscription);
+  revalidatePath('/settings');
 };
 
 export const unsubscribeUser = async () => {
   await deletePushSubscription();
+  revalidatePath('/settings');
 };
 
 export const sendNotification = async (message: string) => {
