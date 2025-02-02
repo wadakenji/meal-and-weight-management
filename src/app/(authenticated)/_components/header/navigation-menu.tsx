@@ -4,11 +4,11 @@ import { FC, useState } from 'react';
 import { IconChevronDown } from '@/components/icon/chevron-down';
 import clsx from 'clsx';
 import { IconPenToSquare } from '@/components/icon/pen-to-square';
-import { IconUser } from '@/components/icon/user';
 import { IconLineChart } from '@/components/icon/line-chart';
 import { VERSION } from '@/constants/version';
 import { IconHouse } from '@/components/icon/house';
 import { SignOutButton } from '@/app/(authenticated)/_components/sign-out-button/sign-out-button';
+import { IconGear } from '@/components/icon/gear';
 
 const ITEMS = [
   {
@@ -29,7 +29,7 @@ const ITEMS = [
   {
     href: '/settings',
     text: '設定',
-    icon: <IconUser />,
+    icon: <IconGear />,
   },
 ];
 
