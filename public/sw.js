@@ -15,5 +15,5 @@ self.addEventListener('push', function (event) {
 self.addEventListener('notificationclick', function (event) {
   console.log('Notification click received.');
   event.notification.close();
-  event.waitUntil(clients.openWindow('<https://your-website.com>'));
+  event.waitUntil(clients.openWindow(process.env.NEXT_PUBLIC_BASE_URL));
 });
