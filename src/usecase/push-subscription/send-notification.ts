@@ -3,6 +3,13 @@ import { createSupabaseServerClient } from '@/libs/supabase/createClient';
 import { getRelatedUsers } from '@/usecase/user-group';
 import { UsecaseAuthError, UsecaseDbError } from '@/usecase/shared/error';
 import { pushSubscriptionRowToPushSubscription } from '@/libs/supabase/interface/push-subscription';
+import { ENV } from '@/constants/env';
+
+webpush.setVapidDetails(
+  ENV.VAPID_SUBJECT,
+  ENV.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+  ENV.VAPID_PRIVATE_KEY,
+);
 
 export const sendNotification = async (title: string, body: string) => {
   const supabaseClient = await createSupabaseServerClient();

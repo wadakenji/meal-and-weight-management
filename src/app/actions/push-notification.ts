@@ -10,9 +10,9 @@ import {
 import { revalidatePath } from 'next/cache';
 
 webpush.setVapidDetails(
-  `https://${ENV.NEXT_PUBLIC_BASE_URL}`,
+  ENV.VAPID_SUBJECT,
   ENV.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
-  ENV.VAPID_PRIVATE_KEY!,
+  ENV.VAPID_PRIVATE_KEY,
 );
 
 export const subscribeUser = async (
