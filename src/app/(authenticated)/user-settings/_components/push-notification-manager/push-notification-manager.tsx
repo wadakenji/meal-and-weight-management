@@ -1,7 +1,7 @@
 'use client';
 
 import { FC, useEffect, useState } from 'react';
-import { urlBase64ToUint8Array } from '@/utils/others';
+import { bufferToString, urlBase64ToUint8Array } from '@/utils/others';
 import {
   sendNotification,
   subscribeUser,
@@ -41,8 +41,10 @@ export const PushNotificationManager: FC = () => {
       ),
     });
     setSubscription(sub);
-    const serializedSub = JSON.parse(JSON.stringify(sub));
-    await subscribeUser(serializedSub);
+
+    const p256dh = bufferToString(sub.getKey('p256dh'));
+    const auth = bufferToString(sub.getKey('auth'));
+    await subscribeUser({ endpoint: sub.endpoint, keys: { p256dh, auth } });
   }
 
   async function unsubscribeFromPush() {

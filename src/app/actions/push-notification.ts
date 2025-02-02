@@ -1,7 +1,12 @@
 'use server';
 
-import webpush, { PushSubscription } from 'web-push';
+import webpush from 'web-push';
 import { ENV } from '@/constants/env';
+import {
+  createPushSubscription,
+  deletePushSubscription,
+  getRelatedSubscriptions,
+} from '@/usecase/push-subscription';
 
 webpush.setVapidDetails(
   `https://${ENV.NEXT_PUBLIC_BASE_URL}`,
@@ -9,39 +14,29 @@ webpush.setVapidDetails(
   ENV.VAPID_PRIVATE_KEY!,
 );
 
-let subscription: PushSubscription | null = null;
-
-export const subscribeUser = async (sub: PushSubscription) => {
-  subscription = sub;
-  // In a production environment, you would want to store the subscription in a database
-  // For example: await db.subscriptions.create({ data: sub })
-  return { success: true };
+export const subscribeUser = async (
+  pushSubscription: Omit<PushSubscriptionType, 'userId'>,
+) => {
+  await createPushSubscription(pushSubscription);
 };
 
 export const unsubscribeUser = async () => {
-  subscription = null;
-  // In a production environment, you would want to remove the subscription from the database
-  // For example: await db.subscriptions.delete({ where: { ... } })
-  return { success: true };
+  await deletePushSubscription();
 };
 
 export const sendNotification = async (message: string) => {
-  if (!subscription) {
-    throw new Error('No subscription available');
-  }
+  const pushSubscriptions = await getRelatedSubscriptions();
 
-  try {
-    await webpush.sendNotification(
-      subscription,
-      JSON.stringify({
-        title: 'Test Notification',
-        body: message,
-        icon: '/icons/48.png',
-      }),
-    );
-    return { success: true };
-  } catch (error) {
-    console.error('Error sending push notification:', error);
-    return { success: false, error: 'Failed to send notification' };
+  for (const pushSubscription of pushSubscriptions) {
+    await webpush
+      .sendNotification(
+        pushSubscription,
+        JSON.stringify({
+          title: 'Test Notification',
+          body: message,
+          icon: '/icons/48.png',
+        }),
+      )
+      .catch(console.error);
   }
 };
