@@ -8,6 +8,9 @@ import {
   validateAndParseWeightFormData,
 } from '@/helpers/form/register-weight-record-form';
 import { revalidatePath } from 'next/cache';
+import { dateStringToDate, isToday } from '@/utils/date';
+import { TIMEZONE } from '@/constants/timezone';
+import { sendNotification } from '@/usecase/push-subscription/send-notification';
 
 type ActionState =
   | {
@@ -40,6 +43,15 @@ export const registerWeightAction = async (
   );
 
   revalidatePath('/dashboard');
+
+  const date = dateStringToDate(registeredWeightRecord.date, {
+    timezone: TIMEZONE.ASIA_TOKYO,
+  });
+  if (isToday(date, { timezone: TIMEZONE.ASIA_TOKYO }))
+    await sendNotification(
+      `${user.name}の体重`,
+      `${user.name} の今日の体重は ${registeredWeightRecord.weight}kg です。`,
+    );
 
   return { registeredWeightRecord };
 };
