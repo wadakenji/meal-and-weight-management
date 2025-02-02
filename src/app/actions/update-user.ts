@@ -42,7 +42,7 @@ export const updateUserAction = async (
 
   if (isFirstRegister) redirect('/dashboard');
 
-  revalidatePath('/user-settings');
+  revalidatePath('/settings');
 
   return { updatedUser };
 };

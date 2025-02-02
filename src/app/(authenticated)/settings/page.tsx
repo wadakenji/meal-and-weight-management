@@ -1,9 +1,9 @@
 import { FC, Suspense } from 'react';
 import { AuthenticatedTemplate } from '@/app/(authenticated)/_components/template/authenticated-template/authenticated-template';
-import { UserForm } from '@/app/(authenticated)/user-settings/_components/user-form/user-form';
+import { UserForm } from '@/app/(authenticated)/settings/_components/user-form/user-form';
 import { getUser } from '@/usecase/user';
 import { IconSpinner } from '@/components/icon/spinner';
-import { PushNotificationManager } from '@/app/(authenticated)/user-settings/_components/push-notification-manager/push-notification-manager';
+import { PushNotificationManager } from '@/app/(authenticated)/settings/_components/push-notification-manager/push-notification-manager';
 
 const Page: FC = async () => {
   const userPromise = getUser();

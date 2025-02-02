@@ -27,8 +27,8 @@ const ITEMS = [
     icon: <IconPenToSquare />,
   },
   {
-    href: '/user-settings',
-    text: 'ユーザー設定',
+    href: '/settings',
+    text: '設定',
     icon: <IconUser />,
   },
 ];
