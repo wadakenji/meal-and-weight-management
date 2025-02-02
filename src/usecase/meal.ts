@@ -117,9 +117,6 @@ export const getEnergyGroupByDate = async (
     timezone: TIMEZONE.ASIA_TOKYO,
   });
 
-  console.log(startDatetime);
-  console.log(endDatetime);
-
   const res = await supabaseClient
     .from('meals')
     .select()
