@@ -3,13 +3,10 @@ self.addEventListener('push', function (event) {
     const data = event.data.json();
     const options = {
       body: data.body,
-      icon: data.icon || '/icons/48.png',
-      badge: '/icons/48.png',
+      icon: '/icons/96.png',
+      badge: '/icons/96.png',
       vibrate: [100, 50, 100],
-      data: {
-        dateOfArrival: Date.now(),
-        primaryKey: '2',
-      },
+      data,
     };
     event.waitUntil(self.registration.showNotification(data.title, options));
   }
