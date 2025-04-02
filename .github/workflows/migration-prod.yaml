@@ -1,13 +1,14 @@
 name: Migrations in Production
-env:
-  DATABASE_URL: ${{ secrets.DATABASE_URL_PRODUCTION }}
 on:
   workflow_dispatch:
   push:
     branches-ignore:
       - main
 jobs:
-  Deploy-Preview:
+  Migration:
+    environment: production
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
