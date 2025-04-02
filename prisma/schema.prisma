@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model meals {
+  id                BigInt   @id @default(autoincrement())
+  user_id           String   @db.Uuid
+  datetime          DateTime @db.Timestamptz(6)
+  name              String   @db.VarChar
+  amount_of_energy  Float    @db.Real
+  amount_of_protein Float?   @db.Real
+  created_at        DateTime @default(now()) @db.Timestamptz(6)
+  users             users    @relation(fields: [user_id], references: [id], map: "meals_user_id_fkey1")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model push_subscriptions {
+  id         BigInt @id @default(autoincrement())
+  user_id    String @unique @db.Uuid
+  endpoint   String @db.VarChar
+  key_p256dh String @db.VarChar
+  key_auth   String @db.VarChar
+  users      users  @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model step_records {
+  id         BigInt   @id @unique @default(autoincrement())
+  user_id    String   @db.Uuid
+  date       DateTime @db.Date
+  step       Int
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  users      users    @relation(fields: [user_id], references: [id], map: "step_records_user_id_fkey2")
+
+  @@unique([user_id, date], map: "step_records_user_id_date_unique_constraint")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model user_group_belongings {
+  id            BigInt      @id @default(autoincrement())
+  user_id       String      @db.Uuid
+  user_group_id BigInt
+  is_admin      Boolean     @default(false)
+  created_at    DateTime    @default(now()) @db.Timestamptz(6)
+  user_groups   user_groups @relation(fields: [user_group_id], references: [id], onDelete: Cascade)
+  users         users       @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "user_group_belongings_user_id_fkey1")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model user_groups {
+  id                    BigInt                  @id @default(autoincrement())
+  name                  String                  @db.VarChar
+  user_group_belongings user_group_belongings[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model users {
+  id                    String                  @id @unique @db.Uuid
+  name                  String                  @default("") @db.VarChar
+  is_admin              Boolean                 @default(false)
+  basal_metabolism_rate Float                   @default(0) @db.Real
+  energy_per_step       Float                   @default(0) @db.Real
+  created_at            DateTime                @default(now()) @db.Timestamptz(6)
+  meals                 meals[]
+  push_subscriptions    push_subscriptions?
+  step_records          step_records[]
+  user_group_belongings user_group_belongings[]
+  weight_records        weight_records[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model weight_records {
+  id         BigInt   @id(map: "weght_records_pkey") @unique(map: "weght_records_id_key") @default(autoincrement())
+  user_id    String   @db.Uuid
+  date       DateTime @db.Date
+  weight     Float    @db.Real
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  users      users    @relation(fields: [user_id], references: [id])
+
+  @@unique([user_id, date], map: "weight_records_user_id_date_unique_constraint")
+}
