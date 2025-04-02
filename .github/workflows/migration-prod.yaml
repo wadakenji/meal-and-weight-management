@@ -1,0 +1,17 @@
+name: Migrations in Production
+env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL_PRODUCTION }}
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - main
+jobs:
+  Deploy-Preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Packages
+        run: npm install
+      - name: Run Migrations
+        run: npx prisma migrate deploy
