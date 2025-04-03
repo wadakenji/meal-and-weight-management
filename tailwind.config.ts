@@ -53,6 +53,7 @@ export default {
     },
     zIndex: {
       header: '10',
+      modal: '20',
     },
     extend: {
       fontSize: {
