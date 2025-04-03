@@ -73,6 +73,8 @@ model users {
   step_records          step_records[]
   user_group_belongings user_group_belongings[]
   weight_records        weight_records[]
+  received_comments     comments[]              @relation("received_comments")
+  sent_comments         comments[]              @relation("sent_comments")
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -85,4 +87,17 @@ model weight_records {
   users      users    @relation(fields: [user_id], references: [id])
 
   @@unique([user_id, date], map: "weight_records_user_id_date_unique_constraint")
+}
+
+model comments {
+  id          BigInt   @id @unique @default(autoincrement())
+  receiver_id String   @db.Uuid
+  sender_id   String   @db.Uuid
+  date        DateTime @db.Date
+  comment     String   @db.VarChar
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  receiver    users    @relation("received_comments", fields: [receiver_id], references: [id])
+  sender      users    @relation("sent_comments", fields: [sender_id], references: [id])
+
+  @@unique([receiver_id,sender_id, date], map: "comments_receiver_id_sender_id_date_unique_constraint")
 }
