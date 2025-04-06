@@ -2,7 +2,7 @@ name: Migrations in Production
 on:
   workflow_dispatch:
   push:
-    branches-ignore:
+    branches:
       - main
 jobs:
   Migration:
