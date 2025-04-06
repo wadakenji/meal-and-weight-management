@@ -14,6 +14,8 @@ self.addEventListener('push', function (event) {
 
 self.addEventListener('notificationclick', function (event) {
   console.log('Notification click received.');
+  const data = event.data.json();
+  const path = typeof data.path === 'string' ? data.path : '';
   event.notification.close();
-  event.waitUntil(clients.openWindow(process.env.NEXT_PUBLIC_BASE_URL));
+  event.waitUntil(clients.openWindow(process.env.NEXT_PUBLIC_BASE_URL + path));
 });

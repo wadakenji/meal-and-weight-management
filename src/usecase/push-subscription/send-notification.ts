@@ -11,7 +11,15 @@ webpush.setVapidDetails(
   ENV.VAPID_PRIVATE_KEY,
 );
 
-export const sendNotification = async (title: string, body: string) => {
+export const sendNotification = async (
+  title: string,
+  body: string,
+  options: {
+    receiverUserIds?: string[];
+    path?: string;
+  },
+) => {
+  const { receiverUserIds, path } = options;
   const supabaseClient = await createSupabaseServerClient();
 
   const authResponse = await supabaseClient.auth.getUser();
@@ -29,10 +37,7 @@ export const sendNotification = async (title: string, body: string) => {
   const res = await supabaseClient
     .from('push_subscriptions')
     .select()
-    .in(
-      'user_id',
-      relatedUsers.map(({ id }) => id),
-    )
+    .in('user_id', receiverUserIds ?? relatedUsers.map(({ id }) => id))
     .neq('user_id', loggedInUser.id);
 
   if (res.error) {
@@ -47,7 +52,7 @@ export const sendNotification = async (title: string, body: string) => {
 
   for (const pushSubscription of pushSubscriptions) {
     await webpush
-      .sendNotification(pushSubscription, JSON.stringify({ title, body }))
+      .sendNotification(pushSubscription, JSON.stringify({ title, body, path }))
       .catch(console.error);
   }
 };
