@@ -23,6 +23,7 @@ export default {
           DEFAULT: '#666666',
           light: '#999999',
         },
+        link: '#36c',
       },
       line: {
         DEFAULT: '#CCCCCC',
@@ -53,6 +54,7 @@ export default {
     },
     zIndex: {
       header: '10',
+      modal: '20',
     },
     extend: {
       fontSize: {

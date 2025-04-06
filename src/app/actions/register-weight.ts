@@ -51,6 +51,7 @@ export const registerWeightAction = async (
     await sendNotification(
       `${user.name}の体重`,
       `${user.name} の今日の体重は ${registeredWeightRecord.weight}kg です。`,
+      { path: `/data-view?user-id=${user.id}` },
     );
 
   return { registeredWeightRecord };

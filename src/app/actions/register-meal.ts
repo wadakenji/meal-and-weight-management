@@ -43,6 +43,7 @@ export const registerMealAction = async (
     await sendNotification(
       `${user.name}の食事`,
       `${user.name} が ${registeredMeal.name} を食べました。`,
+      { path: `/data-view?user-id=${user.id}` },
     );
 
   return { registeredMeal };
