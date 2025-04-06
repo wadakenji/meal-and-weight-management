@@ -58,3 +58,15 @@ type PushSubscriptionType = {
     auth: string;
   };
 };
+
+type CommentType = {
+  id: number;
+  receiverId: string;
+  senderId: string;
+  senderName: string;
+  date: string;
+  comment: string;
+  createdAt: Date;
+};
+
+type CommentToCreate = Omit<CommentType, 'id' | 'senderName' | 'createdAt'>;
