@@ -17,20 +17,42 @@ import { IconComment } from '@/components/icon/comment';
 type Props = {
   usersPromise: Promise<UserGroup['users']>;
   loggedInUserPromise: Promise<User | null>;
+  searchParamsPromise: Promise<{
+    [key: string]: string | string[] | undefined;
+  }>;
 };
 
-export const DataView: FC<Props> = ({ usersPromise, loggedInUserPromise }) => {
+export const DataView: FC<Props> = ({
+  usersPromise,
+  loggedInUserPromise,
+  searchParamsPromise,
+}) => {
   const userOptions = use(usersPromise);
   const loggedInUser = use(loggedInUserPromise);
+  const searchParams = use(searchParamsPromise);
+
+  const initialUserId =
+    typeof searchParams['user-id'] === 'string'
+      ? searchParams['user-id']
+      : undefined;
+  const initialDateString =
+    typeof searchParams['date'] === 'string' ? searchParams['date'] : undefined;
+  const initialIsCommentModalOpen = Boolean(
+    searchParams['is-comment-modal-open'],
+  );
 
   const selectOptions = userOptions.map(({ id, name }) => ({
     value: id,
     label: name,
   }));
 
-  const [userId, setUserId] = useState(loggedInUser?.id || userOptions[0].id);
+  const [userId, setUserId] = useState(
+    initialUserId || loggedInUser?.id || userOptions[0].id,
+  );
   const user = userOptions.find(({ id }) => id === userId);
-  const [date, setDate] = useState(dateToDateInputValue(new Date()));
+  const [date, setDate] = useState(
+    initialDateString || dateToDateInputValue(new Date()),
+  );
   const { summaryOfDay, isLoading: summaryOfDayLoading } = useGetSummaryOfDay(
     userId,
     date,
@@ -38,7 +60,7 @@ export const DataView: FC<Props> = ({ usersPromise, loggedInUserPromise }) => {
   const { weightRecords } = useGetWeightRecordSet(userId);
   const { totalEnergyList } = useGetTotalEnergySet(userId);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(initialIsCommentModalOpen);
 
   if (!loggedInUser) return null;
 
