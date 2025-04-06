@@ -7,6 +7,7 @@ import {
   validateAndParseCommentFormData,
 } from '@/helpers/form/create-comment-form';
 import { createComment } from '@/usecase/comments/create-comment';
+import { sendNotification } from '@/usecase/push-subscription';
 
 type CreateCommentActionState =
   | {
@@ -32,6 +33,15 @@ export const createCommentAction = async (
   const commentToCreate = parsedCommentFormDataToComment(user.id, parseResult);
 
   const createdComment = await createComment(commentToCreate);
+
+  await sendNotification(
+    `${user.name}から応援メッセージが届きました`,
+    createdComment.comment,
+    {
+      path: `/data-view?user-id=${createdComment.receiverId}&date=${createdComment.date}&is-comment-modal-open=true`,
+      receiverUserIds: [createdComment.receiverId],
+    },
+  );
 
   return { createdComment };
 };
