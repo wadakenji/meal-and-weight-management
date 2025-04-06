@@ -11,6 +11,8 @@ import { IconSpinner } from '@/components/icon/spinner';
 import { DataText } from '@/app/(authenticated)/data-view/_components/data-text/data-text';
 import { useGetTotalEnergySet } from '@/app/(authenticated)/data-view/_hooks/use-get-total-energy-set/use-get-total-energy-set';
 import { TotalEnergyChart } from '@/app/(authenticated)/data-view/_components/total-energy-chart/total-energy-chart';
+import { CommentModal } from '@/app/(authenticated)/data-view/_components/comment-modal/comment-modal';
+import { IconComment } from '@/components/icon/comment';
 
 type Props = {
   usersPromise: Promise<UserGroup['users']>;
@@ -27,6 +29,7 @@ export const DataView: FC<Props> = ({ usersPromise, loggedInUserPromise }) => {
   }));
 
   const [userId, setUserId] = useState(loggedInUser?.id || userOptions[0].id);
+  const user = userOptions.find(({ id }) => id === userId);
   const [date, setDate] = useState(dateToDateInputValue(new Date()));
   const { summaryOfDay, isLoading: summaryOfDayLoading } = useGetSummaryOfDay(
     userId,
@@ -34,6 +37,10 @@ export const DataView: FC<Props> = ({ usersPromise, loggedInUserPromise }) => {
   );
   const { weightRecords } = useGetWeightRecordSet(userId);
   const { totalEnergyList } = useGetTotalEnergySet(userId);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  if (!loggedInUser) return null;
 
   return (
     <div className="space-y-32px">
@@ -71,7 +78,7 @@ export const DataView: FC<Props> = ({ usersPromise, loggedInUserPromise }) => {
                 className="flex-1"
               />
             </div>
-            <div className="min-h-[64px]">
+            <div className="mb-24px min-h-[64px]">
               <DataText
                 title="摂取カロリー"
                 unit="kcal"
@@ -96,6 +103,16 @@ export const DataView: FC<Props> = ({ usersPromise, loggedInUserPromise }) => {
                 </div>
               )}
             </div>
+            <div className="flex justify-end">
+              <button
+                className="flex items-center gap-x-4px text-text-link hover:underline"
+                onClick={() => setIsModalOpen(true)}
+                type="button"
+              >
+                <span>メッセージ</span>
+                <IconComment />
+              </button>
+            </div>
           </div>
         )}
       </section>
@@ -111,6 +128,14 @@ export const DataView: FC<Props> = ({ usersPromise, loggedInUserPromise }) => {
           <TotalEnergyChart totalEnergyList={totalEnergyList} />
         </section>
       )}
+      <CommentModal
+        close={() => setIsModalOpen(false)}
+        date={date}
+        isOpen={isModalOpen}
+        receiverId={userId}
+        receiverName={user?.name}
+        loggedInUserId={loggedInUser.id}
+      />
     </div>
   );
 };

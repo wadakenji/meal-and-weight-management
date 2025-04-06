@@ -23,6 +23,7 @@ export default {
           DEFAULT: '#666666',
           light: '#999999',
         },
+        link: '#36c',
       },
       line: {
         DEFAULT: '#CCCCCC',
