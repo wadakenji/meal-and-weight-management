@@ -61,9 +61,9 @@ export const CommentModal: FC<Props> = ({
                 className="mb-8px border-b border-line p-8px"
               >
                 <p className="mb-4px">{comment.comment}</p>
-                <div className="flex justify-end gap-x-8px text-text-gray">
-                  <span>{comment.senderId}</span>
-                  <span>{format(comment.createdAt, 'M月d日 H:mm')}</span>
+                <div className="flex justify-end gap-x-8px text-sm text-text-gray">
+                  <span>{comment.senderName}</span>
+                  <span>{format(comment.createdAt, 'M/d H:mm')}</span>
                 </div>
               </li>
             ))}

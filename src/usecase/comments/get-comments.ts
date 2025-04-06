@@ -7,7 +7,7 @@ export const getComments = async (receiverId: string, date: string) => {
 
   const res = await supabaseClient
     .from('comments')
-    .select()
+    .select('*, sender:users!sender_id(name)')
     .eq('date', date)
     .eq('receiver_id', receiverId);
 

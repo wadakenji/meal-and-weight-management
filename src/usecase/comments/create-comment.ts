@@ -24,7 +24,7 @@ export const createComment = async (
   const res = await supabaseClient
     .from('comments')
     .insert(commentToCommentProps({ ...comment, senderId: authUser.id }))
-    .select()
+    .select('*, sender:users!sender_id ( name )')
     .single();
 
   if (res.error) {
