@@ -7,6 +7,8 @@ import { format } from 'date-fns';
 import { FormSubmitButton } from '@/components/control/button/form-submit-button/form-submit-button';
 import { Textarea } from '@/components/control/textarea/textarea';
 import { IconSpinner } from '@/components/icon/spinner';
+import { createCommentAction } from '@/app/actions/create-comment';
+import { COMMENT_FORM_VALUE_NAMES } from '@/helpers/form/create-comment-form';
 
 type Props = {
   date: string;
@@ -25,7 +27,15 @@ export const CommentModal: FC<Props> = ({
   isOpen,
   close,
 }) => {
-  const { comments, isLoading } = useGetComments(receiverId, date);
+  const { comments, isLoading, addNewCommentToCache } = useGetComments(
+    receiverId,
+    date,
+  );
+  const formAction = async (formData: FormData) => {
+    const state = await createCommentAction(null, formData);
+    if (state?.createdComment) await addNewCommentToCache(state.createdComment);
+  };
+
   const showsForm =
     loggedInUserId !== receiverId &&
     comments &&
@@ -60,14 +70,25 @@ export const CommentModal: FC<Props> = ({
         </ul>
       </div>
       {showsForm && (
-        <form className="space-y-8px">
+        <form className="space-y-8px" action={formAction}>
           <Textarea
+            name={COMMENT_FORM_VALUE_NAMES.COMMENT}
             placeholder={
               (receiverName ? `${receiverName}さんに` : '') +
               '応援メッセージを書いて送ろう！'
             }
           />
           <FormSubmitButton>送る</FormSubmitButton>
+          <input
+            type="hidden"
+            name={COMMENT_FORM_VALUE_NAMES.DATE}
+            value={date}
+          />
+          <input
+            type="hidden"
+            name={COMMENT_FORM_VALUE_NAMES.RECEIVER_ID}
+            value={receiverId}
+          />
         </form>
       )}
     </Modal>

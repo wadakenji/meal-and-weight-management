@@ -12,9 +12,12 @@ const fetcher = async ([url, receiverId, date]: [
 };
 
 export const useGetComments = (receiverId: string, date: string) => {
-  const { data, isLoading } = useSWR(
+  const { data, isLoading, mutate } = useSWR(
     ['/api/comments', receiverId, date],
     fetcher,
   );
-  return { comments: data, isLoading };
+  const addNewCommentToCache = (comment: CommentType) =>
+    mutate(data ? [...data, comment] : [comment]);
+
+  return { comments: data, isLoading, addNewCommentToCache };
 };
