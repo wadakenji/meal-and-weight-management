@@ -19,5 +19,5 @@ self.addEventListener('notificationclick', function (event) {
     path = event.notification.data.path;
   }
   event.notification.close();
-  event.waitUntil(clients.openWindow(self.location.host + path));
+  event.waitUntil(clients.openWindow(path));
 });
