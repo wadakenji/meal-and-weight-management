@@ -21,6 +21,8 @@ const Y_GRID_LABEL_DX = 15;
 const Y_GRID_LABEL_DY = 5;
 const DOT_LABEL_DY = -10;
 
+const MORE_BUTTON_WIDTH = 100;
+
 type Color = 'primary' | 'red';
 
 const colorClassNameMap: Record<Color, string> = {
@@ -80,6 +82,8 @@ type Props = {
   timezone?: string;
   dateWidth?: number;
   showsDot?: boolean;
+  onClickMoreButton?: () => Promise<void>;
+  isLoadingMore?: boolean;
 };
 
 export const DateLineChart: FC<Props> = ({
@@ -88,6 +92,8 @@ export const DateLineChart: FC<Props> = ({
   endDate,
   marginRight,
   timezone,
+  onClickMoreButton,
+  isLoadingMore,
   color = 'primary',
   dateWidth = DATE_WIDTH,
   showsDot = true,
@@ -114,8 +120,17 @@ export const DateLineChart: FC<Props> = ({
     y: chartMargin.top + gridRangeHeight,
   };
 
-  const svgWidth = chartMargin.left + gridRangeWidth + chartMargin.right;
+  if (onClickMoreButton) {
+    gridRangeStart.x += MORE_BUTTON_WIDTH;
+    gridRangeEnd.x += MORE_BUTTON_WIDTH;
+  }
+
+  let svgWidth = chartMargin.left + gridRangeWidth + chartMargin.right;
   const svgHeight = chartMargin.top + gridRangeHeight + chartMargin.bottom;
+
+  if (onClickMoreButton) {
+    svgWidth += MORE_BUTTON_WIDTH;
+  }
 
   const values = data.map(({ value }) => value);
   const { yGridValues, yGridLowest, yGridHighest } = valuesToYGrid(values);
@@ -143,8 +158,84 @@ export const DateLineChart: FC<Props> = ({
         width={svgWidth}
         height={svgHeight}
         xmlns="http://www.w3.org/2000/svg"
-        className={clsx('dir-ltr', colorClassName)}
+        className={clsx('dir-ltr text-primary-light', colorClassName)}
       >
+        {onClickMoreButton && (
+          <g id="moreButton" role="button" onClick={onClickMoreButton}>
+            <rect
+              x={chartMargin.left}
+              y={gridRangeStart.y}
+              width={MORE_BUTTON_WIDTH - 4}
+              height={gridRangeHeight}
+              className={
+                isLoadingMore
+                  ? 'fill-white stroke-white'
+                  : 'fill-primary-light stroke-primary-light'
+              }
+            />
+            {isLoadingMore ? (
+              <>
+                <circle
+                  cx={chartMargin.left + MORE_BUTTON_WIDTH / 2}
+                  cy={gridRangeStart.y + gridRangeHeight / 2}
+                  r={3}
+                  className="fill-primary"
+                />
+                <circle
+                  cx={chartMargin.left + MORE_BUTTON_WIDTH / 2 - 15}
+                  cy={gridRangeStart.y + gridRangeHeight / 2}
+                  r={3}
+                  className="fill-primary"
+                />
+                <circle
+                  cx={chartMargin.left + MORE_BUTTON_WIDTH / 2 + 15}
+                  cy={gridRangeStart.y + gridRangeHeight / 2}
+                  r={3}
+                  className="fill-primary"
+                />
+              </>
+            ) : (
+              <>
+                <polygon
+                  points={`
+              ${chartMargin.left + 30}, ${gridRangeStart.y + gridRangeHeight / 2 + 2} 
+              ${chartMargin.left + MORE_BUTTON_WIDTH - 40}, ${gridRangeStart.y + gridRangeHeight / 2 - 20 + 2} 
+              ${chartMargin.left + MORE_BUTTON_WIDTH - 40}, ${gridRangeStart.y + gridRangeHeight / 2 + 20 + 2}
+              `}
+                  className="fill-white stroke-0 shadow"
+                />
+                <polygon
+                  points={`
+              ${chartMargin.left + 30}, ${gridRangeStart.y + gridRangeHeight / 2} 
+              ${chartMargin.left + MORE_BUTTON_WIDTH - 40}, ${gridRangeStart.y + gridRangeHeight / 2 - 20} 
+              ${chartMargin.left + MORE_BUTTON_WIDTH - 40}, ${gridRangeStart.y + gridRangeHeight / 2 + 20}
+              `}
+                  className="fill-primary stroke-0 shadow"
+                />
+              </>
+            )}
+            <text
+              x={chartMargin.left + MORE_BUTTON_WIDTH / 2}
+              y={chartMargin.top + gridRangeHeight / 2 + 45}
+              className={clsx(
+                '-translate-x-1/2 fill-primary stroke-0 text-sm',
+                !isLoadingMore && 'hidden',
+              )}
+            >
+              読込中
+            </text>
+            <text
+              x={chartMargin.left + MORE_BUTTON_WIDTH / 2}
+              y={chartMargin.top + gridRangeHeight / 2 + 45}
+              className={clsx(
+                '-translate-x-1/2 fill-primary stroke-0 text-sm',
+                isLoadingMore && 'hidden',
+              )}
+            >
+              もっと見る
+            </text>
+          </g>
+        )}
         <g
           id="xAxis"
           className="fill-line-chart-x-axis stroke-line-chart-x-axis"

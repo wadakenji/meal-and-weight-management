@@ -55,6 +55,8 @@ export const WeightChartModal: FC<Props> = ({
           endDate={endDate}
           dateWidth={chartDateWidth}
           showsDot={showsChartDot}
+          onClickMoreButton={async () => {}}
+          isLoadingMore={false}
         />
       </div>
       <div className="flex justify-between gap-x-16px">
