@@ -60,7 +60,9 @@ export const DataView: FC<Props> = ({
   const { weightRecords } = useGetWeightRecordSet(userId);
   const { totalEnergyList } = useGetTotalEnergySet(userId);
 
-  const [isModalOpen, setIsModalOpen] = useState(initialIsCommentModalOpen);
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(
+    initialIsCommentModalOpen,
+  );
 
   if (!loggedInUser) return null;
 
@@ -128,7 +130,7 @@ export const DataView: FC<Props> = ({
             <div className="flex justify-end">
               <button
                 className="flex items-center gap-x-4px text-text-link hover:underline"
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => setIsCommentModalOpen(true)}
                 type="button"
               >
                 <span>メッセージ</span>
@@ -151,9 +153,9 @@ export const DataView: FC<Props> = ({
         </section>
       )}
       <CommentModal
-        close={() => setIsModalOpen(false)}
+        close={() => setIsCommentModalOpen(false)}
         date={date}
-        isOpen={isModalOpen}
+        isOpen={isCommentModalOpen}
         receiverId={userId}
         receiverName={user?.name}
         loggedInUserId={loggedInUser.id}
