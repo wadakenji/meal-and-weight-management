@@ -45,7 +45,7 @@ export const WeightChartModal: FC<Props> = ({
 
   return (
     <Modal close={close} isOpen={isOpen}>
-      <h2 className="mb-16px text-center text-xl font-bold">
+      <h2 className="text-center text-xl font-bold">
         {username ? username + 'さんの' : ''}体重グラフ
       </h2>
       <div className="mb-16px">
@@ -57,7 +57,7 @@ export const WeightChartModal: FC<Props> = ({
           showsDot={showsChartDot}
         />
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-x-16px">
         <label className="flex items-center gap-x-4px text-sm text-text-gray">
           <input
             type="checkbox"
@@ -66,17 +66,17 @@ export const WeightChartModal: FC<Props> = ({
           />
           <span>数字を表示する</span>
         </label>
-        <div className="flex gap-x-16px">
+        <div className="flex grow gap-x-8px *:flex-1">
           <button
             onClick={decrementDateWidth}
-            className="flex items-center gap-x-4px text-primary"
+            className="flex items-center justify-center gap-x-4px rounded-lg border border-primary-light p-8px text-primary"
           >
             <IconMagnifyingGlassMinus />
             <span>縮小</span>
           </button>
           <button
             onClick={incrementDateWidth}
-            className="flex items-center gap-x-4px text-primary"
+            className="flex items-center justify-center gap-x-4px rounded-lg border border-primary-light p-8px text-primary"
           >
             <IconMagnifyingGlassPlus />
             <span>拡大</span>
