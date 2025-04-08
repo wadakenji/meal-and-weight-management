@@ -8,7 +8,7 @@ import {
 } from '@/utils/date';
 import { roundSecondDecimal } from '@/utils/number';
 
-const DATE_WIDTH = 40;
+export const DATE_WIDTH = 40;
 const GRID_RANGE_HEIGHT = 300;
 
 const MARGIN_TOP = 30;
@@ -78,6 +78,8 @@ type Props = {
   color?: Color;
   marginRight?: number;
   timezone?: string;
+  dateWidth?: number;
+  showsDot?: boolean;
 };
 
 export const DateLineChart: FC<Props> = ({
@@ -87,6 +89,8 @@ export const DateLineChart: FC<Props> = ({
   marginRight,
   timezone,
   color = 'primary',
+  dateWidth = DATE_WIDTH,
+  showsDot = true,
 }) => {
   if (data.length < 1) return <p>データがありません。</p>;
 
@@ -101,7 +105,7 @@ export const DateLineChart: FC<Props> = ({
 
   const dates = getEachDates(startDate, endDate, { timezone });
 
-  const gridRangeWidth = (dates.length - 1) * DATE_WIDTH;
+  const gridRangeWidth = (dates.length - 1) * dateWidth;
   const gridRangeHeight = GRID_RANGE_HEIGHT;
 
   const gridRangeStart = { x: chartMargin.left, y: chartMargin.top };
@@ -118,10 +122,12 @@ export const DateLineChart: FC<Props> = ({
 
   const heightByValue = GRID_RANGE_HEIGHT / (yGridHighest - yGridLowest);
 
+  const xGridInterval = Math.ceil(120 / dateWidth); // 1日分の横幅の値によってグリッド線を表示する日付を決める
+
   const valueToY = (value: number) =>
     gridRangeEnd.y - (value - yGridLowest) * heightByValue;
   const dateToX = (date: Date) =>
-    gridRangeStart.x + DATE_WIDTH * getDateDiff(startDate, date, { timezone });
+    gridRangeStart.x + dateWidth * getDateDiff(startDate, date, { timezone });
 
   const circleXYs = data
     .map(({ date, value }) => ({
@@ -157,7 +163,7 @@ export const DateLineChart: FC<Props> = ({
           {dates.map((date) => {
             if (
               !isToday(date, { timezone }) &&
-              getDateDiff(date, endDate, { timezone }) % 7 === 0
+              getDateDiff(date, endDate, { timezone }) % xGridInterval === 0
             ) {
               const x = dateToX(date);
               return (
@@ -177,7 +183,10 @@ export const DateLineChart: FC<Props> = ({
           className="fill-line-chart-x-grid-label stroke-0 text-sm"
         >
           {dates.map((date) => {
-            if (getDateDiff(date, endDate, { timezone }) % 7 === 0) {
+            if (
+              getDateDiff(date, endDate, { timezone }) % xGridInterval ===
+              0
+            ) {
               const x = dateToX(date);
               return (
                 <text
@@ -228,28 +237,33 @@ export const DateLineChart: FC<Props> = ({
             );
           })}
         </g>
-        <g id="dots">
-          {circleXYs.map(({ x, y }) => (
-            <circle key={x} cx={x} cy={y} r={3} />
-          ))}
-        </g>
-        <g id="dot-labels" className="stroke-0 text-sm font-bold">
-          {circleXYs.map(({ x, y, label }) => (
-            <text
-              key={x}
-              x={x}
-              y={y}
-              dy={DOT_LABEL_DY}
-              className="transform-box-content -translate-x-1/2"
-            >
-              {label}
-            </text>
-          ))}
-        </g>
+        {showsDot && (
+          <>
+            <g id="dots">
+              {circleXYs.map(({ x, y }) => (
+                <circle key={x} cx={x} cy={y} r={3} />
+              ))}
+            </g>
+            <g id="dot-labels" className="stroke-0 text-sm font-bold">
+              {circleXYs.map(({ x, y, label }) => (
+                <text
+                  key={x}
+                  x={x}
+                  y={y}
+                  dy={DOT_LABEL_DY}
+                  className="transform-box-content -translate-x-1/2"
+                >
+                  {label}
+                </text>
+              ))}
+            </g>
+          </>
+        )}
         <g id="line">
           <polyline
             points={circleXYs.map(({ x, y }) => `${x}, ${y}`).join(' ')}
             fill="none"
+            strokeWidth={showsDot ? 1 : 2}
           />
         </g>
       </svg>
