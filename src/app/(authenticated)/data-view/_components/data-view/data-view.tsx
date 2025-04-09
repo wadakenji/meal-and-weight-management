@@ -3,16 +3,14 @@
 import { FC, use, useState } from 'react';
 import { dateToDateInputValue } from '@/utils/date';
 import { useGetSummaryOfDay } from '@/app/(authenticated)/data-view/_hooks/use-get-summary-of-day/use-get-summary-of-day';
-import { useGetWeightRecordSet } from '@/app/(authenticated)/data-view/_hooks/use-get-weight-record-set/use-get-weight-record-set';
-import { WeightChart } from '@/app/(authenticated)/data-view/_components/weight-chart/weight-chart';
 import { Select } from '@/components/control/select/select';
 import { DateInputSet } from '@/components/control/date-input-set/date-input-set';
 import { IconSpinner } from '@/components/icon/spinner';
 import { DataText } from '@/app/(authenticated)/data-view/_components/data-text/data-text';
-import { useGetTotalEnergySet } from '@/app/(authenticated)/data-view/_hooks/use-get-total-energy-set/use-get-total-energy-set';
-import { TotalEnergyChart } from '@/app/(authenticated)/data-view/_components/total-energy-chart/total-energy-chart';
 import { CommentModal } from '@/app/(authenticated)/data-view/_components/comment-modal/comment-modal';
 import { IconComment } from '@/components/icon/comment';
+import { WeightChartModal } from '@/app/(authenticated)/data-view/_components/weight-chart-modal/weight-chart-modal';
+import { IconLineChart } from '@/components/icon/line-chart';
 
 type Props = {
   usersPromise: Promise<UserGroup['users']>;
@@ -57,12 +55,11 @@ export const DataView: FC<Props> = ({
     userId,
     date,
   );
-  const { weightRecords } = useGetWeightRecordSet(userId);
-  const { totalEnergyList } = useGetTotalEnergySet(userId);
 
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(
     initialIsCommentModalOpen,
   );
+  const [isWeightChartModalOpen, setIsWeightChartModalOpen] = useState(false);
 
   if (!loggedInUser) return null;
 
@@ -74,6 +71,15 @@ export const DataView: FC<Props> = ({
         value={userId}
         className="mx-auto block"
       />
+      <div className="flex justify-center">
+        <button
+          className="flex items-center gap-x-4px text-xl text-text-link"
+          onClick={() => setIsWeightChartModalOpen(true)}
+        >
+          <IconLineChart color="link" size={22} />
+          <span>体重グラフを見る</span>
+        </button>
+      </div>
       <section className="rounded border border-line p-24px">
         <DateInputSet
           date={date}
@@ -140,18 +146,6 @@ export const DataView: FC<Props> = ({
           </div>
         )}
       </section>
-      {weightRecords && (
-        <section>
-          <h2 className="font-bold">体重グラフ</h2>
-          <WeightChart weightRecords={weightRecords} />
-        </section>
-      )}
-      {totalEnergyList && (
-        <section>
-          <h2 className="font-bold">摂取カロリーグラフ</h2>
-          <TotalEnergyChart totalEnergyList={totalEnergyList} />
-        </section>
-      )}
       <CommentModal
         close={() => setIsCommentModalOpen(false)}
         date={date}
@@ -159,6 +153,12 @@ export const DataView: FC<Props> = ({
         receiverId={userId}
         receiverName={user?.name}
         loggedInUserId={loggedInUser.id}
+      />
+      <WeightChartModal
+        close={() => setIsWeightChartModalOpen(false)}
+        isOpen={isWeightChartModalOpen}
+        userId={userId}
+        username={user?.name}
       />
     </div>
   );
