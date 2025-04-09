@@ -218,7 +218,7 @@ export const DateLineChart: FC<Props> = ({
               x={chartMargin.left + MORE_BUTTON_WIDTH / 2}
               y={chartMargin.top + gridRangeHeight / 2 + 45}
               className={clsx(
-                '-translate-x-1/2 fill-primary stroke-0 text-sm',
+                'transform-box-content -translate-x-1/2 fill-primary stroke-0 text-sm',
                 !isLoadingMore && 'hidden',
               )}
             >
@@ -228,7 +228,7 @@ export const DateLineChart: FC<Props> = ({
               x={chartMargin.left + MORE_BUTTON_WIDTH / 2}
               y={chartMargin.top + gridRangeHeight / 2 + 45}
               className={clsx(
-                '-translate-x-1/2 fill-primary stroke-0 text-sm',
+                'transform-box-content -translate-x-1/2 fill-primary stroke-0 text-sm',
                 isLoadingMore && 'hidden',
               )}
             >
