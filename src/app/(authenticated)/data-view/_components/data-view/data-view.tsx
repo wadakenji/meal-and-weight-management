@@ -139,8 +139,8 @@ export const DataView: FC<Props> = ({
                 onClick={() => setIsCommentModalOpen(true)}
                 type="button"
               >
-                <span>メッセージ</span>
                 <IconComment />
+                <span>メッセージを見る</span>
               </button>
             </div>
           </div>
