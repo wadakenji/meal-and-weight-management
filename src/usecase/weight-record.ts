@@ -84,8 +84,10 @@ export const getTodayWeight = async (userId?: string) => {
   return weightRecord && weightRecord.weight;
 };
 
-export const getLastOneMonthWeightRecords = async (
+export const getWeightRecords = async (
   userId?: string,
+  fromDate?: string | null,
+  toDate?: string | null,
 ): Promise<WeightRecord[]> => {
   const supabaseClient = await createSupabaseServerClient();
 
@@ -95,25 +97,30 @@ export const getLastOneMonthWeightRecords = async (
       console.error(res.error);
       throw new UsecaseAuthError({
         module: 'weight-record',
-        function: 'getLastOneMonthWeightRecords',
+        function: 'getWeightRecords',
       });
     }
     userId = res.data.user.id;
   }
 
-  const todayString = dateToDateColumnValue(new Date(), {
-    timezone: TIMEZONE.ASIA_TOKYO,
-  });
-  const oneMonthAgoString = dateToDateColumnValue(getOneMonthAgoDate(), {
-    timezone: TIMEZONE.ASIA_TOKYO,
-  });
+  if (!fromDate) {
+    fromDate = dateToDateColumnValue(getOneMonthAgoDate(), {
+      timezone: TIMEZONE.ASIA_TOKYO,
+    });
+  }
+
+  if (!toDate) {
+    toDate = dateToDateColumnValue(new Date(), {
+      timezone: TIMEZONE.ASIA_TOKYO,
+    });
+  }
 
   const res = await supabaseClient
     .from('weight_records')
     .select('*')
     .eq('user_id', userId)
-    .gt('date', oneMonthAgoString)
-    .lte('date', todayString)
+    .gte('date', fromDate)
+    .lte('date', toDate)
     .order('date');
 
   if (res.error) {
