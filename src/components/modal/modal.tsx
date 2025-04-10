@@ -2,6 +2,7 @@
 
 import { FC, PropsWithChildren, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { IconXMark } from '@/components/icon/x-mark';
 
 type Props = PropsWithChildren<{
   isOpen: boolean;
@@ -25,8 +26,15 @@ export const Modal: FC<Props> = ({ isOpen, close, children }) => {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="max-h-full w-full overflow-y-scroll rounded-lg bg-white p-16px"
+        className="relative max-h-full w-full overflow-y-scroll rounded-lg bg-white p-16px"
       >
+        <button
+          type="button"
+          onClick={close}
+          className="absolute right-16px top-16px"
+        >
+          <IconXMark />
+        </button>
         {children}
       </div>
     </div>,

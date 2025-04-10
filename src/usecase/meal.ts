@@ -58,6 +58,39 @@ export const getMealsByDate = async (
   return res.data.map(mealRowToMeal);
 };
 
+export const getRecentMeals = async (userId?: string): Promise<Meal[]> => {
+  const supabaseClient = await createSupabaseServerClient();
+
+  if (userId === undefined) {
+    const res = await supabaseClient.auth.getUser();
+    if (res.error) {
+      console.error(res.error);
+      throw new UsecaseAuthError({
+        module: 'meal',
+        function: 'getRecentMeals',
+      });
+    }
+    userId = res.data.user.id;
+  }
+
+  const res = await supabaseClient
+    .from('meals')
+    .select()
+    .eq('user_id', userId)
+    .limit(20)
+    .order('created_at', { ascending: false });
+
+  if (res.error) {
+    console.error(res.error);
+    throw new UsecaseDbError({
+      module: 'meal',
+      function: 'getRecentMeals',
+    });
+  }
+
+  return res.data.map(mealRowToMeal);
+};
+
 export const getTodayTotalEnergy = async (userId?: string) => {
   const supabaseClient = await createSupabaseServerClient();
 
