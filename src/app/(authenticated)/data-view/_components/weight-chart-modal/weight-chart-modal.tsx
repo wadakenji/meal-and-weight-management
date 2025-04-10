@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Modal } from '@/components/modal/modal';
 import {
   dateStringToLocalTimezoneDate,
@@ -42,7 +42,8 @@ export const WeightChartModal: FC<Props> = ({
   userId,
   username,
 }) => {
-  const [startDate, setStartDate] = useState(getOneMonthAgoDate());
+  const oneMonthAgoDate = getOneMonthAgoDate();
+  const [startDate, setStartDate] = useState(oneMonthAgoDate);
   const endDate = new Date();
   const { weightRecords, isLoading, addWeightRecordsToCache } =
     useGetWeightRecordSet(userId);
@@ -51,6 +52,10 @@ export const WeightChartModal: FC<Props> = ({
       date: dateStringToLocalTimezoneDate(date),
       value: weight,
     })) ?? [];
+
+  useEffect(() => {
+    setStartDate(oneMonthAgoDate);
+  }, [userId]);
 
   const [chartDateWidth, setChartDateWidth] = useState(DATE_WIDTH);
   const [showsChartDot, setShowsChartDot] = useState(true);
