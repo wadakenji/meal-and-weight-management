@@ -7,6 +7,8 @@ import { dateToDatetimeInputValue, getRangeOfDate } from '@/utils/date';
 import { FormSubmitButton } from '@/components/control/button/form-submit-button/form-submit-button';
 import { useMealRegisterForm } from '@/app/(authenticated)/dashboard/_hooks/use-meal-register-form/use-meal-register-form';
 import { RecentMealsModal } from '@/app/(authenticated)/dashboard/_components/meal/recent-meals-modal';
+import { IconClock } from '@/components/icon/clock';
+import { PrimaryButton } from '@/components/control/button/primary-button/primary-button';
 
 type Props = {
   registerMealAction: (formData: FormData) => Promise<void>;
@@ -53,9 +55,6 @@ export const MealRegisterForm: FC<Props> = ({
           onChange={onChangeDatetime}
           required
         />
-        <button type="button" onClick={() => setIsOpenRecentMealModal(true)}>
-          最近
-        </button>
         <LabelInputSet
           labelText="食べたもの"
           type="text"
@@ -81,6 +80,17 @@ export const MealRegisterForm: FC<Props> = ({
           value={protein}
           onChange={onChangeProtein}
         />
+        <div className="flex justify-center">
+          <PrimaryButton
+            style="outlined"
+            type="button"
+            onClick={() => setIsOpenRecentMealModal(true)}
+            className="flex items-center gap-x-4px"
+          >
+            <IconClock />
+            <span>履歴から入力</span>
+          </PrimaryButton>
+        </div>
       </div>
       <FormSubmitButton />
       <RecentMealsModal
