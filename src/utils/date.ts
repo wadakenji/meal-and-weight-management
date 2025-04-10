@@ -65,6 +65,10 @@ export const getYesterday = () => {
   return subDays(today, 1);
 };
 
+export const getOneDayAgoDate = (date: Date = new Date()) => {
+  return subDays(date, 1);
+};
+
 export const getOneMonthAgoDate = (date: Date = new Date()) => {
   return subMonths(date, 1);
 };

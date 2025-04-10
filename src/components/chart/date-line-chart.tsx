@@ -8,7 +8,7 @@ import {
 } from '@/utils/date';
 import { roundSecondDecimal } from '@/utils/number';
 
-const DATE_WIDTH = 40;
+export const DATE_WIDTH = 40;
 const GRID_RANGE_HEIGHT = 300;
 
 const MARGIN_TOP = 30;
@@ -20,6 +20,8 @@ const X_GRID_LABEL_DY = 22;
 const Y_GRID_LABEL_DX = 15;
 const Y_GRID_LABEL_DY = 5;
 const DOT_LABEL_DY = -10;
+
+const MORE_BUTTON_WIDTH = 100;
 
 type Color = 'primary' | 'red';
 
@@ -78,6 +80,10 @@ type Props = {
   color?: Color;
   marginRight?: number;
   timezone?: string;
+  dateWidth?: number;
+  showsDot?: boolean;
+  onClickMoreButton?: () => Promise<void>;
+  isLoadingMore?: boolean;
 };
 
 export const DateLineChart: FC<Props> = ({
@@ -86,7 +92,11 @@ export const DateLineChart: FC<Props> = ({
   endDate,
   marginRight,
   timezone,
+  onClickMoreButton,
+  isLoadingMore,
   color = 'primary',
+  dateWidth = DATE_WIDTH,
+  showsDot = true,
 }) => {
   if (data.length < 1) return <p>データがありません。</p>;
 
@@ -101,7 +111,7 @@ export const DateLineChart: FC<Props> = ({
 
   const dates = getEachDates(startDate, endDate, { timezone });
 
-  const gridRangeWidth = (dates.length - 1) * DATE_WIDTH;
+  const gridRangeWidth = (dates.length - 1) * dateWidth;
   const gridRangeHeight = GRID_RANGE_HEIGHT;
 
   const gridRangeStart = { x: chartMargin.left, y: chartMargin.top };
@@ -110,18 +120,29 @@ export const DateLineChart: FC<Props> = ({
     y: chartMargin.top + gridRangeHeight,
   };
 
-  const svgWidth = chartMargin.left + gridRangeWidth + chartMargin.right;
+  if (onClickMoreButton) {
+    gridRangeStart.x += MORE_BUTTON_WIDTH;
+    gridRangeEnd.x += MORE_BUTTON_WIDTH;
+  }
+
+  let svgWidth = chartMargin.left + gridRangeWidth + chartMargin.right;
   const svgHeight = chartMargin.top + gridRangeHeight + chartMargin.bottom;
+
+  if (onClickMoreButton) {
+    svgWidth += MORE_BUTTON_WIDTH;
+  }
 
   const values = data.map(({ value }) => value);
   const { yGridValues, yGridLowest, yGridHighest } = valuesToYGrid(values);
 
   const heightByValue = GRID_RANGE_HEIGHT / (yGridHighest - yGridLowest);
 
+  const xGridInterval = Math.ceil(120 / dateWidth); // 1日分の横幅の値によってグリッド線を表示する日付を決める
+
   const valueToY = (value: number) =>
     gridRangeEnd.y - (value - yGridLowest) * heightByValue;
   const dateToX = (date: Date) =>
-    gridRangeStart.x + DATE_WIDTH * getDateDiff(startDate, date, { timezone });
+    gridRangeStart.x + dateWidth * getDateDiff(startDate, date, { timezone });
 
   const circleXYs = data
     .map(({ date, value }) => ({
@@ -137,8 +158,84 @@ export const DateLineChart: FC<Props> = ({
         width={svgWidth}
         height={svgHeight}
         xmlns="http://www.w3.org/2000/svg"
-        className={clsx('dir-ltr', colorClassName)}
+        className={clsx('dir-ltr text-primary-light', colorClassName)}
       >
+        {onClickMoreButton && (
+          <g id="moreButton" role="button" onClick={onClickMoreButton}>
+            <rect
+              x={chartMargin.left}
+              y={gridRangeStart.y}
+              width={MORE_BUTTON_WIDTH - 4}
+              height={gridRangeHeight}
+              className={
+                isLoadingMore
+                  ? 'fill-white stroke-white'
+                  : 'fill-primary-light stroke-primary-light'
+              }
+            />
+            {isLoadingMore ? (
+              <>
+                <circle
+                  cx={chartMargin.left + MORE_BUTTON_WIDTH / 2}
+                  cy={gridRangeStart.y + gridRangeHeight / 2}
+                  r={3}
+                  className="fill-primary"
+                />
+                <circle
+                  cx={chartMargin.left + MORE_BUTTON_WIDTH / 2 - 15}
+                  cy={gridRangeStart.y + gridRangeHeight / 2}
+                  r={3}
+                  className="fill-primary"
+                />
+                <circle
+                  cx={chartMargin.left + MORE_BUTTON_WIDTH / 2 + 15}
+                  cy={gridRangeStart.y + gridRangeHeight / 2}
+                  r={3}
+                  className="fill-primary"
+                />
+              </>
+            ) : (
+              <>
+                <polygon
+                  points={`
+              ${chartMargin.left + 30}, ${gridRangeStart.y + gridRangeHeight / 2 + 2} 
+              ${chartMargin.left + MORE_BUTTON_WIDTH - 40}, ${gridRangeStart.y + gridRangeHeight / 2 - 20 + 2} 
+              ${chartMargin.left + MORE_BUTTON_WIDTH - 40}, ${gridRangeStart.y + gridRangeHeight / 2 + 20 + 2}
+              `}
+                  className="fill-white stroke-0 shadow"
+                />
+                <polygon
+                  points={`
+              ${chartMargin.left + 30}, ${gridRangeStart.y + gridRangeHeight / 2} 
+              ${chartMargin.left + MORE_BUTTON_WIDTH - 40}, ${gridRangeStart.y + gridRangeHeight / 2 - 20} 
+              ${chartMargin.left + MORE_BUTTON_WIDTH - 40}, ${gridRangeStart.y + gridRangeHeight / 2 + 20}
+              `}
+                  className="fill-primary stroke-0 shadow"
+                />
+              </>
+            )}
+            <text
+              x={chartMargin.left + MORE_BUTTON_WIDTH / 2}
+              y={chartMargin.top + gridRangeHeight / 2 + 45}
+              className={clsx(
+                'transform-box-content -translate-x-1/2 fill-primary stroke-0 text-sm',
+                !isLoadingMore && 'hidden',
+              )}
+            >
+              読込中
+            </text>
+            <text
+              x={chartMargin.left + MORE_BUTTON_WIDTH / 2}
+              y={chartMargin.top + gridRangeHeight / 2 + 45}
+              className={clsx(
+                'transform-box-content -translate-x-1/2 fill-primary stroke-0 text-sm',
+                isLoadingMore && 'hidden',
+              )}
+            >
+              もっと見る
+            </text>
+          </g>
+        )}
         <g
           id="xAxis"
           className="fill-line-chart-x-axis stroke-line-chart-x-axis"
@@ -157,7 +254,7 @@ export const DateLineChart: FC<Props> = ({
           {dates.map((date) => {
             if (
               !isToday(date, { timezone }) &&
-              getDateDiff(date, endDate, { timezone }) % 7 === 0
+              getDateDiff(date, endDate, { timezone }) % xGridInterval === 0
             ) {
               const x = dateToX(date);
               return (
@@ -177,7 +274,10 @@ export const DateLineChart: FC<Props> = ({
           className="fill-line-chart-x-grid-label stroke-0 text-sm"
         >
           {dates.map((date) => {
-            if (getDateDiff(date, endDate, { timezone }) % 7 === 0) {
+            if (
+              getDateDiff(date, endDate, { timezone }) % xGridInterval ===
+              0
+            ) {
               const x = dateToX(date);
               return (
                 <text
@@ -228,28 +328,33 @@ export const DateLineChart: FC<Props> = ({
             );
           })}
         </g>
-        <g id="dots">
-          {circleXYs.map(({ x, y }) => (
-            <circle key={x} cx={x} cy={y} r={3} />
-          ))}
-        </g>
-        <g id="dot-labels" className="stroke-0 text-sm font-bold">
-          {circleXYs.map(({ x, y, label }) => (
-            <text
-              key={x}
-              x={x}
-              y={y}
-              dy={DOT_LABEL_DY}
-              className="transform-box-content -translate-x-1/2"
-            >
-              {label}
-            </text>
-          ))}
-        </g>
+        {showsDot && (
+          <>
+            <g id="dots">
+              {circleXYs.map(({ x, y }) => (
+                <circle key={x} cx={x} cy={y} r={3} />
+              ))}
+            </g>
+            <g id="dot-labels" className="stroke-0 text-sm font-bold">
+              {circleXYs.map(({ x, y, label }) => (
+                <text
+                  key={x}
+                  x={x}
+                  y={y}
+                  dy={DOT_LABEL_DY}
+                  className="transform-box-content -translate-x-1/2"
+                >
+                  {label}
+                </text>
+              ))}
+            </g>
+          </>
+        )}
         <g id="line">
           <polyline
             points={circleXYs.map(({ x, y }) => `${x}, ${y}`).join(' ')}
             fill="none"
+            strokeWidth={showsDot ? 1 : 2}
           />
         </g>
       </svg>

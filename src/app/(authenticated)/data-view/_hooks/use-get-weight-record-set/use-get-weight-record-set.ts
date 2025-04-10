@@ -11,9 +11,16 @@ const fetcher = async ([url, userId]: [
 };
 
 export const useGetWeightRecordSet = (userId: string) => {
-  const { data, isLoading } = useSWR(
+  const { data, isLoading, mutate } = useSWR(
     ['/api/weight-record-set', userId],
     fetcher,
   );
-  return { weightRecords: data, isLoading };
+  const addWeightRecordsToCache = async (
+    weightRecords: WeightRecordSetResponseData,
+  ) => {
+    if (!data) return;
+    await mutate([...data, ...weightRecords], { revalidate: false });
+  };
+
+  return { weightRecords: data, isLoading, addWeightRecordsToCache };
 };
