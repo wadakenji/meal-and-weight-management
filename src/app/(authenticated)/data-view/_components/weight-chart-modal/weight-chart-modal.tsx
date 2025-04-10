@@ -13,6 +13,7 @@ import { DATE_WIDTH, DateLineChart } from '@/components/chart/date-line-chart';
 import { IconMagnifyingGlassPlus } from '@/components/icon/magnifying-glass-plus';
 import { IconMagnifyingGlassMinus } from '@/components/icon/magnifying-glass-minus';
 import { WeightRecordSetResponseData } from '@/app/api/weight-record-set/route';
+import { IconSpinner } from '@/components/icon/spinner';
 
 type Props = {
   isOpen: boolean;
@@ -43,7 +44,7 @@ export const WeightChartModal: FC<Props> = ({
 }) => {
   const [startDate, setStartDate] = useState(getOneMonthAgoDate());
   const endDate = new Date();
-  const { weightRecords, addWeightRecordsToCache } =
+  const { weightRecords, isLoading, addWeightRecordsToCache } =
     useGetWeightRecordSet(userId);
   const chartData =
     weightRecords?.map(({ date, weight }) => ({
@@ -81,43 +82,52 @@ export const WeightChartModal: FC<Props> = ({
       <h2 className="text-center text-xl font-bold">
         {username ? username + 'さんの' : ''}体重グラフ
       </h2>
-      <div className="mb-16px">
-        <DateLineChart
-          data={chartData}
-          startDate={startDate}
-          endDate={endDate}
-          dateWidth={chartDateWidth}
-          showsDot={showsChartDot}
-          onClickMoreButton={onClickMoreButton}
-          isLoadingMore={isLoadingMore}
-        />
-      </div>
-      <div className="flex justify-between gap-x-16px">
-        <label className="flex items-center gap-x-4px text-sm text-text-gray">
-          <input
-            type="checkbox"
-            checked={showsChartDot}
-            onChange={(e) => setShowsChartDot(e.target.checked)}
-          />
-          <span>数字を表示する</span>
-        </label>
-        <div className="flex grow gap-x-8px *:flex-1">
-          <button
-            onClick={decrementDateWidth}
-            className="flex items-center justify-center gap-x-4px rounded-lg border border-primary-light p-8px text-primary"
-          >
-            <IconMagnifyingGlassMinus />
-            <span>縮小</span>
-          </button>
-          <button
-            onClick={incrementDateWidth}
-            className="flex items-center justify-center gap-x-4px rounded-lg border border-primary-light p-8px text-primary"
-          >
-            <IconMagnifyingGlassPlus />
-            <span>拡大</span>
-          </button>
+      {weightRecords === undefined && isLoading && (
+        <div className="flex items-center justify-center p-32px">
+          <IconSpinner />
         </div>
-      </div>
+      )}
+      {weightRecords !== undefined && (
+        <>
+          <div className="mb-16px">
+            <DateLineChart
+              data={chartData}
+              startDate={startDate}
+              endDate={endDate}
+              dateWidth={chartDateWidth}
+              showsDot={showsChartDot}
+              onClickMoreButton={onClickMoreButton}
+              isLoadingMore={isLoadingMore}
+            />
+          </div>
+          <div className="flex justify-between gap-x-16px">
+            <label className="flex items-center gap-x-4px text-sm text-text-gray">
+              <input
+                type="checkbox"
+                checked={showsChartDot}
+                onChange={(e) => setShowsChartDot(e.target.checked)}
+              />
+              <span>数字を表示する</span>
+            </label>
+            <div className="flex grow gap-x-8px *:flex-1">
+              <button
+                onClick={decrementDateWidth}
+                className="flex items-center justify-center gap-x-4px rounded-lg border border-primary-light p-8px text-primary"
+              >
+                <IconMagnifyingGlassMinus />
+                <span>縮小</span>
+              </button>
+              <button
+                onClick={incrementDateWidth}
+                className="flex items-center justify-center gap-x-4px rounded-lg border border-primary-light p-8px text-primary"
+              >
+                <IconMagnifyingGlassPlus />
+                <span>拡大</span>
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </Modal>
   );
 };
